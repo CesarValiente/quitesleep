@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  
+ 	Copyright 2010 Cesar Valiente Gordo
+ 
+ 	This file is part of QuiteSleep.
+
+    QuiteSleep is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    QuiteSleep is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+                
+	<ScrollView 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content">
+		
+		
+		<RelativeLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent" >
+	
+	
+			<TextView
+            	style="?android:attr/listSeparatorTextViewStyle"
+            	android:id="@+id/settings.label.mail"
+            	android:text="@string/settings.label.mail"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dip" />
+            	            	
+            
+			<Button 	
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"
+  				android:layout_below="@id/settings.label.mail"
+  				android:drawableLeft="@drawable/mail"
+  				android:text="@string/settings.button.mail"
+  				android:id="@+id/settings.button.mail" />
+  
+  			<TextView
+            	style="?android:attr/listSeparatorTextViewStyle"
+            	android:id="@+id/settings.label.sms"
+            	android:text="@string/settings.label.sms"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dip" 
+            	android:layout_below="@id/settings.button.mail"/>
+  
+  			<Button  	  
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"
+  				android:layout_below="@id/settings.label.sms"
+  				android:drawableLeft="@drawable/sms"
+  				android:text="@string/settings.button.sms"
+  				android:id="@+id/settings.button.sms" />
+		
+			<View
+				android:id="@+id/settings.divider1"
+				android:layout_width="fill_parent"		
+				android:layout_height="3dip"		
+				android:layout_below="@id/settings.button.sms"
+				android:background="@drawable/gradient_black"
+				android:layout_marginTop="5dp"		
+				android:layout_marginBottom="5dp" />
+  	
+  			<TextView
+            	style="?android:attr/listSeparatorTextViewStyle"
+            	android:id="@+id/settings.label.services"
+            	android:text="@string/settings.label.services"
+            	android:layout_marginTop="5dip"
+            	android:layout_below="@id/settings.divider1" />
+  	
+		  	<ToggleButton
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"  	
+  				android:layout_below="@id/settings.label.services" 
+  				android:drawableLeft="@drawable/start_service"
+  				android:id="@+id/settings.togglebutton.service"
+  				android:textOn="@string/settings.label.stop_service"
+  				android:textOff="@string/settings.label.start_service"/>
+  	  		  	  								  
+		</RelativeLayout>
+	</ScrollView>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  
+ 	Copyright 2010 Cesar Valiente Gordo
+ 
+ 	This file is part of QuiteSleep.
+
+    QuiteSleep is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    QuiteSleep is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+ 
+ 
+<!-- SPANISH -->
+<resources>    
+     <string name="app_name">QuiteSleep</string>
+    
+    <!-- ##############		TABS	######################################## -->
+    
+     <!-- @@@@@@		Contacts Tab		@@@@@@@@@@ -->
+    <string name="contacts.tab.label">Contactos</string>
+    <string name="contacts.button.addBanned">Añadir</string>
+    <string name="contacts.button.deleteBanned">Quitar y editar</string>
+    <string name="contacts.button.syncContacts">Sincronizar</string>
+    <string name="contacts.separator.addBanned">Elije contactos a bloquear</string>
+    <string name="contacts.separator.deleteBanned">Elije contactos para editar y quitar de la lista de bloqueados</string>
+    <string name="contacts.separator.syncContacts">Sincronizar desde la lista de contactos del teléfono</string>
+    
+    
+    <!-- @@@@@@@	Schedule Tab		@@@@@@@@@@@ -->
+    <string name="schedule.tab.label">Horario</string>
+    <string name="schedule.button.setDate">Definir fecha</string>
+    <string name="schedule.button.startTime">Hora inicial</string>
+    <string name="schedule.button.endTime">Hora final</string>
+    <string name="schedule.button.daysweek">Confirmar días de la semana</string>
+    <string name="schedule.toast.startTime">Hora inicial establecida</string>
+    <string name="schedule.toast.endTime">Hora final establecida</string>
+    <string name="schedule.toast.daysweek.ok">Días de la semana establecidos</string>
+    <string name="schedule.toast.daysweek.ko">Ooops!!!No se han podido establecer los días de la semana.. ¿Ha establecido la hora inicial y final?</string>
+    <string name="schedule.separator.startTime">Elije la hora inicial</string>
+    <string name="schedule.separator.endTime">Elije la hora final</string>
+    <string name="schedule.separator.daysweek">Elije los días de la semana</string>
+    
+            
+        
+    <!-- @@@@@@@@	Settings Tab		@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="settings.tab.label">Configuración</string>
+    <string name="settings.label.mail">Configuración de Gmail para enviar emails</string>
+    <string name="settings.button.mail">Email</string>
+    <string name="settings.label.sms">Configuración de SMS para enviar mensajes</string>
+    <string name="settings.button.sms">SMS</string>    
+    <string name="settings.label.services">Iniciar/Parar servicio QuiteSleep</string>
+    <string name="settings.label.start_service">Iniciar servicio QuiteSleep</string>
+    <string name="settings.label.stop_service">Parar servicio QuiteSleep</string>
+    <string name="settings.toast.start_service">El servicio QuiteSleep se ha iniciado...</string>
+    <string name="settings.toast.stop_service">El servicio QuiteSleep se ha parado...</string>    
+    <string name="settings.toast.fail_service">Ha ocurrido un error inesperado!!!</string>
+        
+    
+     <!-- @@@@@@@@@@@	Logs Tab	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="logs.tab.label">Historial</string>
+    
+    
+    <!-- @@@@@@@@@		SMS Settings	@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="smssettings.statement.savesms">Escribe tu texto predefinido de SMS</string>
+    <string name="smssettings.edittext.savesms">Hola!! Estoy durmiendo, cuando me levante te llamo. Gracias!</string>
+    <string name="smssettings.button.savesms">Guardar configuración</string>
+    <string name="smssettings.button.cancel">Atrás</string>    
+    <string name="smssettings.togglebutton.start_sms">Activar envio de sms</string>
+    <string name="smssettings.togglebutton.stop_sms">Desactivar envio de sms</string>
+    <string name="smssettings.toast.start_service">El envio de SMS ha sido activado</string>
+    <string name="smssettings.toast.stop_service">El envio de SMS ha sido desactivado</string>    
+    <string name="smssettings.toast.fail_service">Ha ocurrido un error inesperado!!!</string>
+    <string name="smssettings.toast.save">La configuración de SMS ha sido guardada</string>
+               
+        
+     <!-- @@@@@@@@@@@@	MAIL Settings	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="mailsettings.separator.user">Tu usuario de Gmail</string>
+    <string name="mailsettings.edittext.user">tu.nombre@gmail.com</string>
+    <string name="mailsettings.separator.passwd">Tu contraseña de Gmail</string>
+    <string name="mailsettings.edittext.passwd"></string>
+    <string name="mailsettings.separator.subject">Tu asunto predefinido para el email</string>
+    <string name="mailsettings.edittext.subject">Estoy durmiendo!!</string>
+    <string name="mailsettings.separator.body">Tu texto predefinido para el email</string>
+    <string name="mailsettings.edittext.body">Hola!! Estoy durmiendo, cuando me levante te llamo. Gracias!</string>
+    <string name="mailsettings.button.savemail">Guardar datos de configuración</string>    
+    <string name="mailsettings.button.cancel">Atrás</string>
+    <string name="mailsettings.togglebutton.start_mail">Activar envio de mail</string>
+    <string name="mailsettings.togglebutton.stop_mail">Desactivar envio de mail</string>
+    <string name="mailsettings.toast.start_service">El envio de email ha sido activado</string>
+    <string name="mailsettings.toast.stop_service">El envio de email ha sido desactivado</string>
+    <string name="mailsettings.toast.fail_service">Ha ocurrido un error inesperado!!!</string>
+    <string name="mailsettings.toast.save">La configuración de email ha sido guardada</string>
+    
+    
+   	<!-- @@@@@@@@@@@@@@@	ContactDetails		@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="contactdetails.label.phonedetails">Nº Teléfonos. Escoja para enviar SMS</string>
+    <string name="contactdetails.label.maildetails">Direcciones de email. Escoja para enviar Email</string>
+    <string name="contactdetails.button.addcontact">Añadir contacto a bloqueados</string>
+    <string name="contactdetails.button.cancel">Atrás</string>
+    <string name="contactdetails.toast.added">Contacto añadido a la lista de bloqueados</string>
+    <string name="contactdetails.toast.fail">Oppps!!! Algo fue mal.. el contacto no se pudo añadir a la lista de bloqueados!</string>
+    
+    
+    
+    <!-- @@@@@@@@@@@@@@		EditContact	(RemoveContact)		@@@@@@@@@@@@@@ -->
+    <string name="editcontact.button.edit">Modificar contacto</string>
+    <string name="editcontact.button.remove">Quitar de la lista de bloqueados</string>
+ 	<string name="editcontact.toast.edit">Contacto modificado</string>
+ 	<string name="editcontact.toast.edit.fail">Oppps!!! Alfo fue mal.. el contacto no se pudo modificar!</string>
+    <string name="editcontact.toast.remove">Contacto quitado de la lista de bloqueados</string>   
+    <string name="editcontact.toast.remove.fail">Oppps!!! Algo fue mal.. el conacto no se pudo quitar de la lista de bloqueados!</string>
+    
+    
+    <!-- @@@@@@@@@@@@@@@@@		ABOUT		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
+    <string name="information.about.title">Acerca de QuiteSleep</string>
+    <string name="information.about.content">QuiteSleep es una aplicación para controlar
+    que personas pueden interrumpir tu sueño y quienes no. \nQuien dice sueño dice cualquier cosa
+    que estés haciendo entre dos franjas horarias y cualquier día de la semana...
+    \nQuiteSleep además de silenciar la llamada de quien o quienes tu estimes, también 
+    puede enviar un sms (no es muy fiable aún) y mail con un texto predefinido para avisar
+    a esa persona que estas durmiendo, ocupado, etc.   
+    \n\n¿El autor? el autor soy yo, Cesar Valiente Gordo, y he realizado esta aplicación como Proyecto
+    Fin de Master de mis estudios en Sistemas Telemáticos e Informáticos. Doy las gracias 
+    durante todo el desarrollo a lo largo de tres meses, en los que es muy duro compaginar, trabajo, 
+    estudios y vida personal, a mi tutor Jesús M. González Barahona por todo el seguimiento y la 
+    ayuda brindada, a mis amigos, por todo su apoyo, ideas y comentarios, y como no, a mi familia, 
+    que sin ellos nunca podría haber empezado y acabado esta maravillosa aventura que ha 
+    sido la consecución de estos estudios.
+    \nPuedes escribirme a mi mail personal cesar.valiente@gmail.com para cualquier consulta, duda o 
+    comentario que quieras hacer.
+    \n\nQuiteSleep es totalmente FLOSS (Free Libre Open Source Software) y se distribuye bajo
+    licencia GNU GPLv2, con lo que puedes distribuirlo, modificarlo, copiarlo y usarlo como desees.
+    QuiteSleep posee un sitio en GoogleCode en el que puedes obtener el código fuente, el cuál es
+    http://code.google.com/p/quitesleep/,  así como un grupo de discusión en GoogleGroups en 
+    http://groups.google.com/group/QuiteSleep. 
+    \n\nEspero que QuiteSleep te sea útil, es una versión completa pero como todo software, mejorable.
+    Si quieres aportar opiones como por ejemplo, que te gusta, que no, que funciona mal, 
+    que funciona bien, que le sobra, que le falta, errores, etc.. siéntete complétamente libre de hacerlo 
+    en el grupo antes mencionado, y si te interesa el proyecto y quieres colaborar, 
+    en el sitio del proyecto podrás hacerlo.
+    \n\nMuchas gracias por usar QuiteSleep!!!!</string>       	
+   	<string name="information.help.title">Ayuda</string>
+   	<string name="information.help.content">Usar QuiteSleep es muy facil, una vez instalada la
+   	aplicación podrás ver como esta consta de cuatro pestañas, a continuación voy a ir explicando
+   	que se puede hacer en cada una de ellas.
+   	\n\n1- Contactos: 
+   	\nen esta pestaña puedes hacer tres cosas:   	
+   	\n\ a) Añadir contactos bloqueados:
+   	\nUna vez pulsado el botón correspondiente se nos mostrará una lista con todos los contactos
+   	del teléfono que tengan al menos un teléfono, es decir si tienes contactos, que solo tienes su 
+   	email, estos no aparecerán en esta lista puesto que el programa no tendría nada que hacer 
+   	con ellos.
+   	En la lista podemos apretar el botón "Menú" con lo que nos saldrá un menú en la parte
+   	inferior de la ventana con la indicación de "Añadir todos", bien si pulsamos y después de una
+   	confrmación debido al tiempo que en ocasiones esto puede llevar (depende de los contactos que
+   	tengas) se añadirán todos tus contactos a la lista de bloqueados.
+   	Si en vez de pulsar la tecla menú pulsamos la sobre cualquier contacto, nos aparecerá una nueva
+   	pantalla en la que podremos seleccionar ninguno o todos teléfonos y emails para que
+   	en caso de bloqueo de llamada a ese contacto QuiteSleep envie un sms o mail a los casos elegidos, 
+   	una vez establecidos estos parámetros (o no) pasamos a añadir el contacto a la lista de bloqueados
+   	o bien ir hacia atrás.
+   	\n b) Quitar o modificar contactos bloqueados:
+   	Esta acción es muy parecida a la anterior pero para quitar contactos de la lista de bloqueados.
+   	Como vemos si pulsamos el botón, nos aparecerá una lista con los contactos que hemos bloqueado, 
+   	si pulsamos la tecla menú, nos saldrá un botón para quitar todos los contactos que tenemos
+   	bloqueados de esa lista, con lo que se quedará vacia, y ya no habrá más contactos bloqueados.
+   	Si por el contrario pulsamos sobre un contacto bloqueado, nos aparecerá una ventana parecida a la
+   	de añadir contacto de la opción anterior, con toda la configuración que tiene ese contacto, 
+   	como es que mails y sms elegimos para que QuiteSleep le envie cuando llame.
+   	Podremos modificar lo que ya establecimos o bien añadir otros, una vez realizando lo que queramos
+   	si pulsamos la tecla modificar ese contacto ya estará actualizado con los nuevos datos, y podremos
+   	ir atrás mediante el botón atras o el del propio movil, si por el contrario queremos quitarlo
+   	de lista de bloqueados debemos pulsar el boton correspondiente, con lo que ese contacto
+   	ya no estará bloqueado por la aplicación.
+   	\n c)Sincronizar: esta opción sirve para sincronizar y actualizar los datos de los contactos
+   	de nuestro movil con los de la aplicación. La primera vez que se inicia la aplicación realiza
+   	una sincronización automática con los contactos que tenemos en ese momento, pero si por ejemplo
+   	añadimos un nuevo contacto o añadimos un nuevo dato a un contacto existente o lo borramos, 
+   	si queremos que QuiteSleep también tenga esos cambios deberemos utilizar esta acción.
+   	Se avisa al usuario de que si procede finalmente se borrarán los datos anteriores, es decir,
+   	se borrarán todos los contactos no bloqueados que tuvieramos, los bloqueados, sus configuraciones, 
+   	etc. eso si, NUNCA se tocará ningún dato de los contactos de la agenda del teléfono, QuiteSleep
+   	usa su propia base de datos por eficiencia y por seguridad.
+   	\n\n2- Horario:
+   	\nEn esta pestaña se realizarán todas las gestiones correspondientes a la franja horaria y diaría
+   	que QuiteSleep estará activo.
+   	Como se pude ver tenemos dos botones para elegir tanto la hora inicial como la final para
+   	crear entre ellas el intervalo de tiempo deseado, es decir si elegimos por ejemplo 10:00 y 22:00
+   	el sistema estará activo y podrá silenciar llamadas de contactos bloqueados en ese intervalo
+   	de tiempo.
+   	En la parte inferior podemos ver los días de la semana donde podremos elegir en cuales de ellos
+   	está activa la aplicación con el intervalo definido, una vez seleccionados los días debemos validarlos
+   	utilizando el botón indicado para ello.
+   	\n\n3- Configuración:
+   	\nEn esta pestaña podremos configurar tres cosas:
+   	\n a) Email: si pulsamos el botón de email, pasaremos a otra ventana en la que podremos configurar
+   	nuestra cuenta de Gmail (importante, solo de Gmail) con el usuario y contraseña y también podremos
+   	modificar los textos prefedinidos del asunto y el cuerpo del mensaje, una vez realizados los cambios
+   	los deberemos validar con el botón apropiado.
+	Importante: QuiteSleep solo utiliza los datos provistos de usuario y contraseña para el envio
+	de emails a los contactos bloqueados que tu estimes, estos datos se guardan de forma interna
+	en la base de datos del programa y no son compartidos con ninguna otra aplicación, y siempre
+	desaparecerán completamente al desinstalar QuiteSleep.
+   	Para activar el servicio de envio de emails, deberemos pulsar el botón correspondiente, 
+   	donde además y como precaución se nos avisará que el envio de emails está asociado al 
+   	uso de una conexión de datos con lo que puede llevar un recargo para el usario.
+   	Para desactivarlo, basta con pulsar otra vez el botón.
+   	\n b) SMS: si pulsamos el botón de configuracíon de SMS vemos que es muy parecida a la anterior
+   	pero solo debemos editar el cuerpo del mensaje de texto, ya que en los SMS solo se envia un cuerpo
+   	y no hace falta definir nada más.
+   	Una vez conformes debemos validar los cambios, para activar el servicio, al igual que en el caso
+   	anterior tenemos un botón para hacerlo el cual nos indicará también que puede llevar asociado
+   	un recargo por el uso de la red de telefonía.
+   	Para dsactivar el servicio, basta con pulsar el botón otra vez.
+   	\n c) Activar QuiteSleep: pulsando este botón el servicio de QuiteSleep se activa quedando a la
+   	escucha de llamdas entrantes hacia el movil y realizando las gestiones oportunas si el teléfono
+   	de la llamada entrante pertenece a un contacto bloqueado.
+   	Como vemos al activarse el servicio una notifiación aparece en la barra de notificaciones
+   	del sistema, pulsandolo, accederemos a la aplicación estemos donde estemos.
+   	Una vez activo el servicio de QuiteSleep este se iniciará de forma autónoma sin necesidad de hacer
+   	nada despues de apagar el movil y encenderlo de nuevo, como podrás ver en una notificación
+   	del programa.
+   	Para desactivar el servicio QuiteSleep, basta con pulsarlo otra vez, y como veremos la notificación
+   	de la barra de notificaciones también desaparecerá.
+   	\n\n4- Historial:
+   	\nPor último, la pestaña de historial en donde se muestran en una lista
+   	todas las llamadas que QuiteSleep ha procesado, es decir, las llamadas efectuadas en la franja
+   	horaria definida por nosotros y que correspondían a un contacto bloqueado.
+   	Como información se muestra, el nombre del contacto, el teléfono bloqueado,
+   	la fecha (en formato mm/dd/yyyy), la hora (en formato 24h), y el número de SMS o emails enviados
+   	a ese teléfono/contacto, si se ha enviado alguno, si se ha producido algún error durante el 
+   	envio de alguno de estos mensajes se mostrará un -1.
+   	Si pulsamos la tecla menú en esta pestaña podremos ver como hay dos botones, uno para refrescar
+   	el historial, en el caso que creamos que no esté actualizado, y otro para eliminar el historial.
+   	Importante, se eliminará el historial alamacenado hasta el momento de la
+   	base de datos del programa no solo la vista de la lista.
+   	\n\n Consejos;
+   	\n- Si tienes más contactos que quieres bloquear que los que no quieres bloquear, elije bloquear
+   	todos en la lista de añadir contactos bloqueados, y ya en la sección de quitar contactos bloqueados
+   	quita de allí los que no quieres.
+   	\n- La configuración de envio de sms y email que hagas a los contactos tanto al añadirlos a 
+   	la lsita de bloqueados como cuando los editas se queda guardada hasta que sincronices de nuevo
+   	los contactos.
+   	\n- Si quieres poner un día entero (24h) como franja horaria, simplemente establece como
+   	hora final la misma hora que la inicial.
+   	\n- Ten en cuenta que en periodos que ocupen dos días (por ejemplo de 22:00 a 8:00 o un día entero 
+   	de 8:00 a 8:00) que esto también debe estar especificado en los días de la configuración del
+   	horario, con lo que por ejemplo en el caso de 22:00 a 8:00 que poníamos de ejemplo, deberemos
+   	poner por ejemplo miércoles y jueves si queremos que esté activo la noche del miércoles al jueves.
+   	\n- Si el movil lo tienes puesto en modo silencio, y utilizas QuiteSleep, cuando se bloquee una 
+   	llamada, al acabar esta, el modo que se establecerá en el móvil será el modo normal, con vibración
+   	incluida.  
+   	\n- Si en el historial ves en que siempre te muestra un -1 en el envio de SMS, por favor, 
+   	desconecta la opción de envio de estos mensajes, es un error que ocurre en algunos dispositivos
+   	y estoy trabajando en ello para siguientes versiones.</string>
+   	<string name="information.button.cancel">Atrás</string>
+    
+    <!-- ################################################################### -->
+    
+    <!-- #############		DIALOGS		#################################### -->
+    
+      <!-- @@@@@@@	Start Time Dialog	@@@@@@@@@@@@ -->    
+    <string name="starttimedialog.message.label">Tiempo Inicial</string>
+    <string name="starttimedialog.set.label">Ok</string>
+    <string name="starttimedialog.cancel.label">Cancelar</string>
+    
+    <!-- @@@@@@@	End Time Dialog	@@@@@@@@@@@@ -->    
+    <string name="endtimedialog.message.label">Tiempo Final</string>
+    <string name="endtimedialog.set.label">Ok</string>
+    <string name="endtimedialog.cancel.label">Cancelar</string>
+    
+    
+    <!-- @@@@@@@@@	Sync Contacts Dialog	@@@@@@@@@@@@@@@@@ -->
+    <string name="synccontactsdialog.message.firsttime.label">Sincronizando contactos por primera vez. Espere un momento por favor...</string>
+    <string name="syncconctactsdialog.message.anytime.label">Sincronizando contactos. Espere un momento por favor...</string>
+    <string name="synccontactsdialog.message.refresh.label">Actualizando contactos. Espere un momento por favor...</string>
+    
+    
+    <!-- @@@@@@@@@@@	AddAll Dialog	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="addalldialog.dialog.label">Añadiendo contactos a la lista de bloqueados, espere un momento por favor...</string>
+    
+    
+    <!-- @@@@@@@@@@@	RemoveAllDialog		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="removealldialog.dialog.label">Quitando contactos de la lista de bloqueados, espere un momento por favor...</string>
+    
+    <!-- @@@@@@@@@@		Warning Dialog	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="warningdialog.caution.label">Atención!!</string>
+    <string name="warningdialog.contactOperations.label">Esto puede tardar un tiempo. ¿Estás seguro?</string>    
+    <string name="warningdialog.synccontact.label">Esto eliminará la configuración anterior de tus contactos en QuiteSleep y llevará un tiempo. ¿Estás seguro?</string>
+    <string name="warningdialog.sms.label">Has activado esta opción que utiliza tu linea telefónica y puede tener un recargo según tu operador. Puedes desactivarla siempre que quieras</string>
+    <string name="warningdialog.mail.label">Has activado esta opción que utiliza tu conexión a internet y puede tener un recargo según tu operador. Puedes desactivarla siempre que quieras</string>
+    <string name="warningdialog.yes.label">Yes</string>
+    <string name="warningdialog.no.label">No</string>
+    <string name="warningdialog.ok.label">Ok</string>
+    <string name="warningdialog.calllog.remove.label">Esto eliminará toda la información de llamadas silenciadas. ¿Está seguro?</string>
+    <string name="warningdialog.calllog.refresh.label">Esto actualizará la información de llamadas silenciadas. ¿Está seguro?</string>
+    
+    <!-- @@@@@@@@@@@	CallLogDialog		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="calllogdialog.dialog.remove.label">Borrando historial, espere un momento por favor...</string>
+    <string name="calllogdialog.dialog.refresh.label">Actualizando historial, espere un momento por favor...</string>
+    
+    <!-- ################################################################### -->
+    
+    
+    <!-- ##################		MENUS	#################################### -->
+    
+   <!-- @@@@@@@@@@	Menu Information	@@@@@@@@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.information.about">Acerca de</string>
+   <string name="menu.information.help">Ayuda</string>
+   
+   <!-- @@@@@@@@@@@	Menu Add All	@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.addall.label">Añadir todos los contactos</string>
+   <string name="menu.addall.toast.insertscount">contactos han sido añadidos a la lista de bloqueados</string>
+   
+   <!-- @@@@@@@@@@@	Menu Remove All	@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.removeall.label">Quitar todos los contactos</string>
+   <string name="menu.removeall.toast.removecount">contactos han sido quitados de la lista de bloqueados</string>
+    
+    
+   <!-- @@@@@@@@@@@@@@		Menu Remove all Call Log		@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.calllog.remove.label">Borrar</string>
+   <string name="menu.calllog.remove.toast">registros(s) han sido borrados de la lista de información</string>
+	<string name="menu.calllog.refresh.label">Actualizar</string>
+   <string name="menu.calllog.refresh.toast">Lista de llamadas actualizada</string>
+
+    
+      <!-- @@@@@@@@@@@		Notifications 	@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="quitesleep.notification.start.message">QuiteSleep está activo</string>
+    <string name="quitesleep.notification.stop.message">QuiteSleep se ha parado</string>
+    
+    
+    <!-- ###############		OTHERS		################################ -->
+    
+    <!-- @@@@@@@@@	Contact Details		@@@@@@@@@@@@@@@@@@ -->
+    <string name="contact.details.name">Nombre:</string>
+    <string name="contact.details.phones">Teléfono(s):</string>    
+    <string name="contact.details.mails">Mail(s):</string>
+    
+    <!--	Day weeks -->
+    <string name="monday">Lun</string>
+    <string name="tuesday">Mar</string>
+    <string name="wednesday">Mie</string>
+    <string name="thursday">Jue</string>
+    <string name="friday">Vie</string>
+    <string name="saturday">Sab</string>
+    <string name="sunday">Dom</string>
+    
+    <!-- ################################################################### -->
+    
+</resources>
