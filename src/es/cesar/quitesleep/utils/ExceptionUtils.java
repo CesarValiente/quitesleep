@@ -29,7 +29,7 @@ import android.util.Log;
  */
 public class ExceptionUtils {
 	
-	public static final String CLASS_NAME = "ExceptionUtils";
+	public static final String CLASS_NAME = "es.cesar.quitesleep.utils.ExceptionUtils";
 			
 	
 	/**
@@ -55,7 +55,7 @@ public class ExceptionUtils {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, e.toString());
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, e.toString());
 			return "";
 		}
 	}

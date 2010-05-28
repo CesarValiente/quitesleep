@@ -32,6 +32,7 @@ import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.dialogs.CallLogDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -94,7 +95,7 @@ public class RefreshCallLogMenu extends Thread {
 			ClientDDBB clientDDBB = new ClientDDBB();
 				
 			List<CallLog> callLogList = clientDDBB.getSelects().selectAllCallLog();
-			Log.d(CLASS_NAME, "Call log list: " + callLogList);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Call log list: " + callLogList);
 			
 			if (callLogList != null) {
 				
@@ -107,7 +108,7 @@ public class RefreshCallLogMenu extends Thread {
 			clientDDBB.close();
 																		
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));		
 		}finally {

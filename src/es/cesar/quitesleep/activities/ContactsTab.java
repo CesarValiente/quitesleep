@@ -38,6 +38,7 @@ import es.cesar.quitesleep.subactivities.AddBanned;
 import es.cesar.quitesleep.subactivities.DeleteBanned;
 import es.cesar.quitesleep.subactivities.Help;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -86,7 +87,7 @@ public class ContactsTab extends Activity implements OnClickListener {
 								
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.e(CLASS_NAME, e.toString());			
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, e.toString());			
 		}		
 	}
 	
@@ -133,7 +134,7 @@ public class ContactsTab extends Activity implements OnClickListener {
 		
 		switch (id) {
 			case WARNING_DIALOG:
-				Log.d(CLASS_NAME, "Create the WarningDialog for 1st time");
+				if (QSLog.DEBUG_D) QSLog.d(CLASS_NAME, "Create the WarningDialog for 1st time");
 				dialog = warningDialog.getAlertDialog();	
 				break;
 			default:
@@ -148,7 +149,7 @@ public class ContactsTab extends Activity implements OnClickListener {
 	@Override
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {		
 		//TODO
-		Log.d(CLASS_NAME, "RequestCode: " + requestCode + "\nResultCode: " + resultCode);		
+		if (QSLog.DEBUG_D) QSLog.d(CLASS_NAME, "RequestCode: " + requestCode + "\nResultCode: " + resultCode);		
 	}
 		
 	
@@ -162,7 +163,7 @@ public class ContactsTab extends Activity implements OnClickListener {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -193,7 +194,7 @@ public class ContactsTab extends Activity implements OnClickListener {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;			

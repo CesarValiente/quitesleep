@@ -42,6 +42,8 @@ import es.cesar.quitesleep.subactivities.Help;
 import es.cesar.quitesleep.subactivities.MailSettings;
 import es.cesar.quitesleep.subactivities.SmsSettings;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -141,7 +143,7 @@ public class SettingsTab extends Activity implements OnClickListener {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -172,7 +174,7 @@ public class SettingsTab extends Activity implements OnClickListener {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;			
@@ -196,7 +198,7 @@ public class SettingsTab extends Activity implements OnClickListener {
 			clientDDBB.close();						
 						
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -241,21 +243,21 @@ public class SettingsTab extends Activity implements OnClickListener {
 			}else {																												
 				if (result)
 					//All right, stop the service was ok!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		this,
 	                		this.getString(
 	                				R.string.settings_toast_stop_service),
-	                		Toast.LENGTH_SHORT).show();
+	                		Toast.LENGTH_SHORT);
 				else
 					//An error has ocurred!!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		this,
 	                		this.getString(
 	                				R.string.settings_toast_fail_service),
-	                		Toast.LENGTH_SHORT).show();								
+	                		Toast.LENGTH_SHORT);								
 			}							
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}

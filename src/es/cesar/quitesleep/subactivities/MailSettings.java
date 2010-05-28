@@ -37,6 +37,8 @@ import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.operations.MailOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -143,7 +145,7 @@ public class MailSettings extends Activity implements OnClickListener {
 		
 		switch (id) {
 			case WARNING_DIALOG:
-				Log.d(CLASS_NAME, "Create the WarningDialog for 1st time");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create the WarningDialog for 1st time");
 				dialog = warningDialog.getAlertDialog();				
 				break;
 			default:
@@ -176,7 +178,7 @@ public class MailSettings extends Activity implements OnClickListener {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}
@@ -224,7 +226,7 @@ public class MailSettings extends Activity implements OnClickListener {
 			clientDDBB.close();
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -244,22 +246,22 @@ public class MailSettings extends Activity implements OnClickListener {
 			String subject 		= subjectEditText.getText().toString();
 			String body 		= bodyEditText.getText().toString();
 			
-			Log.d(CLASS_NAME, "user: " + user);
-			Log.d(CLASS_NAME, "passwd: " + passwd);
-			Log.d(CLASS_NAME, "subject: " + subject);
-			Log.d(CLASS_NAME, "body: " + body);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "user: " + user);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "passwd: " + passwd);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "subject: " + subject);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "body: " + body);
 						
 			if (MailOperations.saveMailSettings(user, passwd, subject, body))
 				//All right, start the service was ok!
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		this,
                 		this.getString(
                 				R.string.mailsettings_toast_save),
-                		Toast.LENGTH_SHORT).show();
+                		Toast.LENGTH_SHORT);
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}

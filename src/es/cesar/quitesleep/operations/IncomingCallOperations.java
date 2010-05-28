@@ -27,16 +27,15 @@ import java.util.Date;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Vibrator;
-import android.util.Log;
 import es.cesar.quitesleep.ddbb.CallLog;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.ddbb.Schedule;
-import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.mailmessages.SendMail;
 import es.cesar.quitesleep.smsmessages.SendSMSThread;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 import es.cesar.quitesleep.utils.TokenizerUtils;
 
 
@@ -46,10 +45,39 @@ import es.cesar.quitesleep.utils.TokenizerUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class CallFilter {
+public class IncomingCallOperations extends Thread {
 	
-	private static final String CLASS_NAME = "es.cesar.quitesleep.utils.operations.CallFilter"; 
+	private static final String CLASS_NAME = "es.cesar.quitesleep.utils.operations.IncomingCallOperations"; 
 		
+	
+	private String incomingCallNumber;
+	
+	//----------------	Getters & Setters	----------------------------------//
+	public String getIncomingCallNumber() {
+		return incomingCallNumber;
+	}
+
+	public void setIncomingCallNumber(String incomingCallNumber) {
+		this.incomingCallNumber = incomingCallNumber;
+	}
+	//------------------------------------------------------------------------//		
+	
+	/**
+	 * Constructor
+	 * @param incomingCallNumber
+	 */
+	public IncomingCallOperations(String incomingCallNumber) {
+		
+		this.incomingCallNumber = incomingCallNumber;		
+	}
+	
+	
+
+	@Override
+	public void run () {
+		
+		silentIncomingCall();
+	}
 	
 	/**
 	 * Function that check if the incoming call number is from a banned contact,
@@ -70,53 +98,60 @@ public class CallFilter {
 	 * phone silence it, not is the perfect way but is the only and the best way 
 	 * that i have reached with >Android 2.0 at day.  
 	 * 
-	 * @param 		incomingNumber
 	 */
-	public static void silentIncomingCall (String incomingNumber) {
+	public void silentIncomingCall () {
 		
 		try {
 			
-			//Put the mobile phone in silent mode (sound+vibration)
-			putRingerModeSilent();
+			/* Put the mobile phone in silent mode (sound+vibration)
+			 * Here i put this for silent all incoming call for salomonic decision
+			 * that silent all calls for later if the contact is banned let this 
+			 * silent mode and if the contact isn't banned put in normal mode.
+			 * I use this because sometimes a ring second sound when an incoming call.			
+			 */			
+			//putRingerModeSilent();
 			
 			ClientDDBB clientDDBB = new ClientDDBB();
 			
 			String phoneNumberWhithoutDashes = 
-				TokenizerUtils.tokenizerPhoneNumber(incomingNumber, null);
+				TokenizerUtils.tokenizerPhoneNumber(incomingCallNumber, null);
 			
 			Contact contactBanned = 
 				clientDDBB.getSelects().selectBannedContactForPhoneNumber(
 						phoneNumberWhithoutDashes);								
 			
 			//If the contact is in the banned list
-			if (contactBanned != null) {
+			if (contactBanned != null) {								
 				
-				Log.d(CLASS_NAME, "Contact: " + contactBanned.getContactName() + 
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Contact: " + contactBanned.getContactName() + 
 						"\t isBanned: " + contactBanned.isBanned());								
 				
 				//create the CallLog object for log calls.
 				CallLog callLog = new CallLog();
 				
 				//check if the call is in the interval time
-				boolean isInInterval = checkScheduleAndServiceState(callLog);
+				boolean isInInterval = checkSchedule(callLog, clientDDBB);
 				
 				if (isInInterval) {
-										
+			
+					//Put the mobile phone in silent mode (sound+vibration)
+					putRingerModeSilent();
+					
 					/* Check if the mail service is running, if it is true
 					 * create a SendMail object for try to send one or more 
 					 * email to the contact with the incoming number
 					 */
-					sendMail(incomingNumber, callLog);
+					sendMail(incomingCallNumber, callLog, clientDDBB);
 					
 					/* Check if the sms service is running, if it is true
 					 * create a SendSMS object for try to send a SMS to 
 					 * the contact with the incoming number
 					 */
-					sendSMS(incomingNumber, callLog);																		
+					sendSMS(incomingCallNumber, callLog, clientDDBB);																		
 					
 					//get the nomOrder for the new CallLog
 					int numOrder = clientDDBB.getSelects().countCallLog();				
-					Log.d(CLASS_NAME, "CallLog numOrder: " + numOrder);
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "CallLog numOrder: " + numOrder);
 					
 					//Set the parameters and save it
 					callLog.setPhoneNumber(phoneNumberWhithoutDashes);
@@ -127,63 +162,33 @@ public class CallFilter {
 					clientDDBB.commit();
 					clientDDBB.close();
 					
+					
+					
 				}
 				//If the call isn't in the interval time
 				else {
-					putRingerModeNormal();
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "No está en el intervalo");
+					//putRingerModeNormal();
 					clientDDBB.close();
 				}							
 			}
 			//If the incoming call number isn't of the any banned contact
 			else {
-				Log.d(CLASS_NAME, "ContactBanned == NULL!!!!");
-				putRingerModeNormal();
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "ContactBanned == NULL!!!!");
+				//putRingerModeNormal();
 				clientDDBB.close();
 			}
 																											
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
-					e.getStackTrace()));
-				
+					e.getStackTrace()));				
 		}
 	}
 	
 
-	/**
-	 * Check if the Settings object is created in the ddbb. If it's created
-	 * check this attribute serviceState for check if the service is up
-	 * or is down.
-	 * 
-	 * @return		true if the service is running or false if not.
-	 */
-	public static boolean checkQuiteSleepServiceState () {
-		
-		try {
-						 			
-			boolean serviceState = false;
-			
-			if (ConfigAppValues.getQuiteSleepServiceState() != null) 				
-				serviceState = ConfigAppValues.getQuiteSleepServiceState();
-			else {
-				ClientDDBB clientDDBB = new ClientDDBB();
-				Settings settings = clientDDBB.getSelects().selectSettings();
-				clientDDBB.close();
-				
-				if (settings != null)
-					serviceState = settings.isQuiteSleepServiceState();
-			}
-			
-			return serviceState;						
-												
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(),
-					e.getStackTrace()));
-			return false;
-		}
-	}
+	
 	
 	
 	/**
@@ -193,28 +198,22 @@ public class CallFilter {
 	 * 					if isn't
 	 * @see				boolean
 	 */
-	private static boolean checkScheduleAndServiceState (CallLog callLog) {
+	private boolean checkSchedule (CallLog callLog, ClientDDBB clientDDBB) {
 		
-		try {
+		try {						
 			
-			boolean quiteSleepServiceState = checkQuiteSleepServiceState();
-			
-			if (quiteSleepServiceState) {	
-			
-				ClientDDBB clientDDBB = new ClientDDBB();
+				//ClientDDBB clientDDBB = new ClientDDBB();
 				Schedule schedule = clientDDBB.getSelects().selectSchedule();
-				clientDDBB.close();
+				//clientDDBB.close();
 				
-				if (schedule != null && quiteSleepServiceState && checkDayWeek(schedule)) {
+				if (schedule != null && CheckSettingsOperations.checkDayWeek(schedule)) {
 					
 					return isInInterval(callLog, schedule);								
 				}
-				return false;
-			}
-			return false;
+				return false;			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -232,7 +231,7 @@ public class CallFilter {
 	 * 					is in an interval delimit by the start and end hours
 	 * @see				boolean
 	 */
-	private static boolean isInInterval (CallLog callLog, Schedule schedule) {
+	private boolean isInInterval (CallLog callLog, Schedule schedule) {
 		
 		try {
 			DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);					
@@ -243,7 +242,7 @@ public class CallFilter {
 			String timeEnd = schedule.getEndFormatTime();
 													
 			String timeNowComplete = getCompleteDate(dateAndTime);
-			Log.d(CLASS_NAME, "time now: " + timeNowComplete);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "time now: " + timeNowComplete);
 			
 			callLog.setTimeCall(timeNowComplete);
 			
@@ -252,9 +251,9 @@ public class CallFilter {
 			Date end = parser.parse(timeEnd);
 			Date now = parser.parse(timeNow);
 			
-			Log.d(CLASS_NAME, "start: " + start + "\ttimeStart: " + timeStart);
-			Log.d(CLASS_NAME, "end: " + end + "\ttimeEnd: " + timeEnd);
-			Log.d(CLASS_NAME, "now: " + now + "\timeNow: " + timeNow);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "start: " + start + "\ttimeStart: " + timeStart);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "end: " + end + "\ttimeEnd: " + timeEnd);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "now: " + now + "\timeNow: " + timeNow);
 			
 			
 			String dayCompleteString = "24:00";
@@ -312,12 +311,12 @@ public class CallFilter {
 			}else
 				isInInterval = false;
 																		
-			Log.d(CLASS_NAME, "Está en el intervalo: " + isInInterval);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Está en el intervalo: " + isInInterval);
 			
 			return isInInterval;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;
@@ -331,7 +330,7 @@ public class CallFilter {
 	 * @return			the complete format date
 	 * @see				String
 	 */
-	private static String getCompleteDate (Calendar now) {
+	private String getCompleteDate (Calendar now) {
 		
 		try {
 			
@@ -341,136 +340,20 @@ public class CallFilter {
 			        + now.get(Calendar.SECOND);
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
 		}
 	}
 	
-	/**
-	 * Check if today is a selected day for use the banned contacts list and schedule.
-	 * 
-	 * @param 			schedule
-	 * @return			true if today is one "banned day" or false if isn't
-	 * @see				boolean
-	 */
-	private static boolean checkDayWeek (Schedule schedule) {
-		
-		try {
-							
-			Calendar dateAndTime = Calendar.getInstance();
-			
-			int dayWeek = dateAndTime.get(Calendar.DAY_OF_WEEK);
-			
-			Log.d(CLASS_NAME, "Day Week: " + dayWeek);
-		
-			switch (dayWeek) {
-				case Calendar.SUNDAY:
-					return schedule.isSunday();					
-				case Calendar.MONDAY:
-					return schedule.isMonday();					
-				case Calendar.TUESDAY:
-					return schedule.isTuesday();					
-				case Calendar.WEDNESDAY:
-					return schedule.isWednesday();
-				case Calendar.THURSDAY:
-					return schedule.isThursday();
-				case Calendar.FRIDAY:
-					return schedule.isFriday();
-				case Calendar.SATURDAY:
-					return schedule.isSaturday();				
-			}
-			
-			return false;
-			
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-			return false;
-		}
-	}
 	
-	/**
-	 * Check if the mail service for send email is activated or not
-	 * 
-	 * @return		true or false if it is activated or not
-	 */
-	private static boolean checkMailService () {
-		
-		try {
-			
-			if (ConfigAppValues.getMailServiceState() != null)
-				return ConfigAppValues.getMailServiceState();
-			else {
-				ClientDDBB clientDDBB = new ClientDDBB();
-				Settings settings = clientDDBB.getSelects().selectSettings();
-				if (settings != null) {
-					ConfigAppValues.setMailServiceState(settings.isMailService());
-					clientDDBB.close();
-					return ConfigAppValues.getMailServiceState();									
-				}
-				/* Mustn't be never this case because previously the settings object
-				 * must be created
-				 */				
-				else {
-					settings = new Settings(false);
-					clientDDBB.getInserts().insertSettings(settings);
-					clientDDBB.commit();
-					clientDDBB.close();
-					return false;
-				}
-					
-			}
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(e.toString(), e.getStackTrace()));
-			return false;
-		}
-	}
-	
-	/**
-	 * Check if the sms service for send sms is activated or not
-	 * 
-	 * @return		true or false depends of the state
-	 * @see			boolean
-	 */
-	private static boolean checkSmsService () {
-		
-		try {
-			if (ConfigAppValues.getSmsServiceState() != null)
-				return ConfigAppValues.getSmsServiceState();
-			else {
-				ClientDDBB clientDDBB = new ClientDDBB();
-				Settings settings = clientDDBB.getSelects().selectSettings();
-				if (settings != null) {
-					ConfigAppValues.setSmsServiceState(settings.isSmsService());
-					clientDDBB.close();
-					return ConfigAppValues.getSmsServiceState();
-				}else {
-					settings = new Settings(false);
-					clientDDBB.getInserts().insertSettings(settings);
-					clientDDBB.commit();
-					clientDDBB.close();
-					return false;
-				}				
-			}			
-						
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-			return false;
-		}
-	}
 	
 	
 	/**
 	 * Put the vibrator in mode off
 	 */
-	public static void vibrateOff () {
+	private void vibrateOff () {
 		
 		try {
 			
@@ -481,56 +364,44 @@ public class CallFilter {
 			vibrator.cancel();
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
 	}
 	
-	/**
-	 * Put the vibrator in mode On
-	 */
-	public static void vibrateOn () {
-		
-		try {
-			
-			String vibratorService = Context.VIBRATOR_SERVICE;
-			Vibrator vibrator = (Vibrator)ConfigAppValues.getContext().
-				getSystemService(vibratorService);
-			
-			vibrator.vibrate(1000);
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-		}
-	}
 	
 	/**
 	 * Send mail to the contact caller
 	 * @param incomingNumber
+	 * @param callLog
+	 * @param clientDDBB
 	 */
-	private static void sendMail (String incomingNumber, CallLog callLog) {
+	private void sendMail (String incomingNumber, CallLog callLog, ClientDDBB clientDDBB) {
 		
 		try {			
-			if (checkMailService()) {
-			
-				//Test for send mail
-				SendMail sendMail = new SendMail(incomingNumber);
-				int numShipments = sendMail.sendMail();
-				if (numShipments > 0) {
-					Log.d(CLASS_NAME, "Mail enviado a: " + incomingNumber);
-					Log.d(CLASS_NAME, "Num mail enviados: " + numShipments);
-				}
-				else
-					Log.d(CLASS_NAME, "Mail NO se ha enviado");
+			if (CheckSettingsOperations.checkMailService(clientDDBB)) {
+							
+				//------------------------------------------------------------//
 				
-				callLog.setNumSendMail(numShipments);
+				//Send mail using Threads
+				SendMail sendMail = new SendMail(incomingNumber, callLog);				
+				Thread threadMail = new Thread(sendMail);
+				threadMail.start();
+				threadMail.join();
+								
+				//------------------------------------------------------------//
+				
+				//------------------------------------------------------------//
+				//Send mail without use Threads
+				/*
+				SendMail sendMail = new SendMail(incomingNumber, callLog);
+				sendMail.sendMail();
+				*/				
 			}	
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -540,14 +411,16 @@ public class CallFilter {
 	 * Send SMS message to the contact caller
 	 * 
 	 * @param incomingNumber
+	 * @param callLog
+	 * @param clientDDBB
 	 */
-	private static void sendSMS (String incomingNumber, CallLog callLog) {
+	private void sendSMS (String incomingNumber, CallLog callLog, ClientDDBB clientDDBB) {
 		
 		try {
 			
-			if (checkSmsService()) {
+			if (CheckSettingsOperations.checkSmsService(clientDDBB)) {
 					
-				Log.d(CLASS_NAME, "antes de enviar el sms");				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "antes de enviar el sms");				
 				
 				//--  If u choose use Android Service for send SMS use this --//
 				/*
@@ -560,15 +433,24 @@ public class CallFilter {
 				*/
 				//------------------------------------------------------------//
 				
-				//-----	  If u choose Java Thread for send SMS use this  -----//
-				SendSMSThread sendSMS = new SendSMSThread(incomingNumber);
+				//-----	  If u choose Java Thread for send SMS use this  -----//				
+				SendSMSThread sendSMS = new SendSMSThread(incomingNumber, callLog);
 				sendSMS.start();
+				sendSMS.join();
 				//------------------------------------------------------------//
-															
+				
+				//------------------------------------------------------------//
+				//Use without using threads
+				/*
+				SendSMSThread sendSMS = new SendSMSThread(incomingNumber);
+				sendSMS.sendSms();
+				*/
+				//------------------------------------------------------------//
+				
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}
@@ -578,80 +460,41 @@ public class CallFilter {
 	 * Put the mobile in silence mode (audio and vibrate)
 	 * 
 	 */
-	public static void putRingerModeSilent () {
+	private void putRingerModeSilent () {
 		
 		
 		try {
-			Log.d(CLASS_NAME, "Poniendo el movil en modo silencio");
-									
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Poniendo el movil en modo silencio");
+													
 			AudioManager audioManager = 
 				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
-			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);																					
+			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
-		}
-		
-	}
-		
-	/**
-	 * Put the mobile in normal mode (audio and vibrate), important: normal mode
-	 * such the user defined previously  (before to put the mobile in silence)	 
-	 * 
-	 */
-	public static void putRingerModeNormal () {
-		
-		Log.d(CLASS_NAME, "Poniendo el movil en modo normal");
-		
-		AudioManager audioManager = 
-			(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
-		audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-	}
+		}		
+	}	
 	
-	
-	/**
-	 * Get what ringer mode is at the moment. 
-	 * 
-	 * @return			return RINGER_MODE_SILENT(0), RINGER_MODE_NORMAL(2), RINGER_MODE_VIBRATE(1)	  								
-	 * @see 			int	
-	 * @throws 			Exception
-	 */
-	public static int ringerMode () throws Exception {
+	private void putRingerModeNormal () {
 		
 		try {
 			
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Poniendo el movil en modo normal");
+				
 			AudioManager audioManager = 
 				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
-			
-			switch (audioManager.getRingerMode()) {
-			
-				case AudioManager.RINGER_MODE_SILENT:
-					Log.d(CLASS_NAME, "Ringer_Mode_Silent");					
-					break;
-				
-				case AudioManager.RINGER_MODE_NORMAL:
-					Log.d(CLASS_NAME, "Ringer_Mode_Normal");					
-					break;
-				
-				case AudioManager.RINGER_MODE_VIBRATE:
-					Log.d(CLASS_NAME, "Ringer_Mode_Vibrate");
-					break;
-					
-				default:
-					break;
-			}
-			
-			return audioManager.getRingerMode();
+							
+			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);											
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
-			throw new Exception();
-		}
-		
+		}		
 	}
+	
 		
 }

@@ -30,6 +30,7 @@ import com.db4o.query.Query;
 import es.cesar.quitesleep.interfaces.IDDBB;
 import es.cesar.quitesleep.staticValues.DDBBValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -77,7 +78,7 @@ public class Selects implements IDDBB {
 				return contactList;								
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return null;
@@ -108,7 +109,7 @@ public class Selects implements IDDBB {
 					return null;
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, e.toString());
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, e.toString());
 			return null;
 		}
 	}
@@ -143,7 +144,7 @@ public class Selects implements IDDBB {
 				
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, e.toString());
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, e.toString());
 			return null;
 		}
 	}
@@ -177,7 +178,7 @@ public class Selects implements IDDBB {
 				
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, e.toString());
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, e.toString());
 			return null;
 		}
 	}
@@ -205,7 +206,7 @@ public class Selects implements IDDBB {
 				return phonesList;
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return null;
@@ -234,7 +235,7 @@ public class Selects implements IDDBB {
 				return mailsList;
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return null;
@@ -259,7 +260,7 @@ public class Selects implements IDDBB {
 				return mailList;
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -291,7 +292,7 @@ public class Selects implements IDDBB {
 				return bannedList;								
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return null;
@@ -318,7 +319,7 @@ public class Selects implements IDDBB {
 				return contactList;				
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return null;
@@ -343,7 +344,7 @@ public class Selects implements IDDBB {
 				Query query = db.query();
 				query.constrain(Phone.class);
 				
-				Log.d(CLASS_NAME, "PhoneNumber: " + phoneNumber);
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "PhoneNumber: " + phoneNumber);
 				query.descend(DDBBValues.CONTACT_PHONE).constrain(phoneNumber).and(
 						query.descend(DDBBValues.CONTACT).descend(DDBBValues.BANNED).constrain(true));
 				
@@ -351,7 +352,7 @@ public class Selects implements IDDBB {
 				if (phoneBannedList != null && phoneBannedList.size() == 1) {
 				
 					Phone phone = phoneBannedList.get(0);
-					Log.d(CLASS_NAME, "Phone: " + phone);
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Phone: " + phone);
 					return phone.getContact();
 				}
 				else
@@ -359,7 +360,7 @@ public class Selects implements IDDBB {
 					
 			}									
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -391,7 +392,7 @@ public class Selects implements IDDBB {
 					return null;			
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -425,7 +426,7 @@ public class Selects implements IDDBB {
 					return null;
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -455,7 +456,7 @@ public class Selects implements IDDBB {
 					return null;
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return null;
@@ -482,7 +483,7 @@ public class Selects implements IDDBB {
 					return null;								
 			}			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -509,7 +510,7 @@ public class Selects implements IDDBB {
 					
 			}
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -530,7 +531,7 @@ public class Selects implements IDDBB {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return -1;

@@ -40,6 +40,8 @@ import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.dialogs.WarningDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -109,7 +111,7 @@ public class LogsTab extends ListActivity {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 							e.toString(), 
 							e.getStackTrace()));
 		}		
@@ -140,7 +142,7 @@ public class LogsTab extends ListActivity {
 			return null;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception();
@@ -203,7 +205,7 @@ public class LogsTab extends ListActivity {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}
@@ -220,7 +222,7 @@ public class LogsTab extends ListActivity {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -250,7 +252,7 @@ public class LogsTab extends ListActivity {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;			
@@ -297,7 +299,7 @@ public class LogsTab extends ListActivity {
 			if (arrayAdapter != null) {																
 				callLogListString = message.getData().getStringArrayList(
 						ConfigAppValues.REFRESH_CALL_LOG);
-				Log.d(CLASS_NAME, "callLoglistString: " + callLogListString);
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "callLoglistString: " + callLogListString);
 				
 				//set the array adapter
 				if (callLogListString != null) {
@@ -313,11 +315,11 @@ public class LogsTab extends ListActivity {
 					}
 				}									
 				//Show the toast message
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		ConfigAppValues.getContext(),
                 		ConfigAppValues.getContext().getString(
                 				R.string.menu_calllog_refresh_toast),
-                		Toast.LENGTH_SHORT).show();			
+                		Toast.LENGTH_SHORT);			
 			}
 			/* If the arrayAdapter previously doesn't have any call log, this
 			 * not been initialized, so initialize now.

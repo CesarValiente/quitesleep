@@ -32,6 +32,8 @@ import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * Custom alert dialog for setup the start time for control the contacts calls
@@ -120,7 +122,7 @@ public class StartTimeDialog {
 				startTimeLabel.setText(timeFormat.format(dateAndTime.getTime()));
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}
@@ -155,16 +157,16 @@ public class StartTimeDialog {
 			clientDDBB.commit();						
 			clientDDBB.close();
 			
-			Log.d(CLASS_NAME, "Schedule saved with the start time!!");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Schedule saved with the start time!!");
 			
-			Toast.makeText(
+			if (QSToast.RELEASE) QSToast.r(
             		activity,
             		activity.getString(
             				R.string.schedule_toast_startTime),
-            		Toast.LENGTH_SHORT).show();	
+            		Toast.LENGTH_SHORT);	
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Error(e.toString());

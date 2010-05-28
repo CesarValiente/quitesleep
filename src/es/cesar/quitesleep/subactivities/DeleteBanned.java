@@ -43,6 +43,8 @@ import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.dialogs.WarningDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -105,7 +107,7 @@ public class DeleteBanned extends ListActivity {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 							e.toString(), 
 							e.getStackTrace()));
 		}
@@ -141,7 +143,7 @@ public class DeleteBanned extends ListActivity {
 			return null;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception();
@@ -157,12 +159,12 @@ public class DeleteBanned extends ListActivity {
 		
 		try {
 			
-			Log.d(CLASS_NAME, "OnListItemClick");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "OnListItemClick");
 			
 			super.onListItemClick(listView, view, position, id);
 						
 			selectContactName = (String) this.getListAdapter().getItem(position);	
-			Log.d(CLASS_NAME, "Name: " + selectContactName);						
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Name: " + selectContactName);						
 			
 			/* If we like to use one subactivity for show better contact details
 			 * and edit what phone number and/or mail addresses are used for 
@@ -173,7 +175,7 @@ public class DeleteBanned extends ListActivity {
 			startActivityForResult(intentEditContact, ConfigAppValues.REQCODE_EDIT_CONTACT);
 									
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}		
@@ -186,7 +188,7 @@ public class DeleteBanned extends ListActivity {
 		
 		switch(requestCode) {
 			case ConfigAppValues.REQCODE_EDIT_CONTACT:
-				Log.d(CLASS_NAME, "Valor retornado: " + resultCode);
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Valor retornado: " + resultCode);
 				if (resultCode == Activity.RESULT_OK)
 					arrayAdapter.remove(selectContactName);
 				break;
@@ -209,7 +211,7 @@ public class DeleteBanned extends ListActivity {
 		
 		switch (id) {
 			case WARNING_DIALOG:
-				Log.d(CLASS_NAME, "Create the AlertDialog for 1st time");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create the AlertDialog for 1st time");
 				dialog = warningDialog.getAlertDialog();				
 				break;
 			default:
@@ -243,7 +245,7 @@ public class DeleteBanned extends ListActivity {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}
@@ -260,7 +262,7 @@ public class DeleteBanned extends ListActivity {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -287,7 +289,7 @@ public class DeleteBanned extends ListActivity {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;			
@@ -313,11 +315,11 @@ public class DeleteBanned extends ListActivity {
 				arrayAdapter.clear();
 				
 				//Show the toast message
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		ConfigAppValues.getContext(),
                 		numRemoveContacts + " " + ConfigAppValues.getContext().getString(
                 				R.string.menu_removeall_toast_removecount),
-                		Toast.LENGTH_SHORT).show();		
+                		Toast.LENGTH_SHORT);		
 			}
 		}
 	};

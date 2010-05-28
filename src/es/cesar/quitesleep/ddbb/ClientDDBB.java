@@ -27,6 +27,7 @@ import com.db4o.ObjectServer;
 
 import es.cesar.quitesleep.interfaces.IDDBB;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -80,7 +81,7 @@ public class ClientDDBB implements IDDBB{
 				
 			}						
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -104,7 +105,7 @@ public class ClientDDBB implements IDDBB{
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -134,7 +135,7 @@ public class ClientDDBB implements IDDBB{
 				
 			}						
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}

@@ -34,6 +34,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import android.util.Log;
+import es.cesar.quitesleep.ddbb.CallLog;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.ddbb.Mail;
@@ -41,6 +42,7 @@ import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.utils.ByteArrayDataSource;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -50,7 +52,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mostcodefrom http://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-android-ap
  *
  */
-public class SendMail extends Authenticator {	
+public class SendMail extends Authenticator implements Runnable {	
 	
 	private final String CLASS_NAME = getClass().getName();
 	
@@ -58,8 +60,9 @@ public class SendMail extends Authenticator {
 	private String passwd;	
 	private String subject;
 	private String body;
-	private String receiver;
+	private String incomingCallNumber;
 	private List<String> receiverMailList;		
+	private CallLog callLog;
 	
 	
 	//---------------		Getters & Setters		--------------------------//
@@ -91,11 +94,11 @@ public class SendMail extends Authenticator {
 		this.body = body;
 	}
 	
-	public String getReceiver() {
-		return receiver;
+	public String getIncomingCallNumber() {
+		return incomingCallNumber;
 	}
-	public void setReceiver(String receiver) {
-		this.receiver = receiver;
+	public void setIncomingCallNumber(String incomingCallNumber) {
+		this.incomingCallNumber = incomingCallNumber;
 	}
 	
 	public List<String> getReceiverMailList() {
@@ -104,9 +107,18 @@ public class SendMail extends Authenticator {
 	public void setReceiverMailList (List<String> receiverMailList) {
 		this.receiverMailList = receiverMailList;
 	}
+	
+	public CallLog getCallLog() {
+		return callLog;
+	}
+	public void setCallLog(CallLog callLog) {
+		this.callLog = callLog;
+	}
 	//------------------------------------------------------------------------//
 	
 	
+	
+
 	static {
 		Security.addProvider(new JSSEProvider());
 	}
@@ -118,34 +130,35 @@ public class SendMail extends Authenticator {
 	 * @param passwd
 	 * @param subject
 	 * @param body
-	 * @param receiver
+	 * @param incomingCallNumber
 	 */
 	public SendMail (
 			String user, 
 			String passwd, 
 			String subject, 
 			String body, 
-			String receiver) {
+			String incomingCallNumber) {
 		
 		this.user = user;
 		this.passwd = passwd;
 		this.subject = subject;
 		this.body = body;
-		this.receiver = receiver;
+		this.incomingCallNumber = incomingCallNumber;
 		
-		getReceiverMailList(receiver);
+		getReceiverMailList(incomingCallNumber);
 	}
 
 	
 	/**
 	 * Constructor empty
 	 */
-	public SendMail (String phoneNumber) {
+	public SendMail (String incomingCallNumber, CallLog callLog) {
 		
-		this.receiver = phoneNumber;
+		this.incomingCallNumber = incomingCallNumber;
+		this.callLog = callLog;
 		
 		getAllData();
-		getReceiverMailList(phoneNumber);
+		getReceiverMailList(incomingCallNumber);
 	}
 	
 	/**
@@ -167,7 +180,7 @@ public class SendMail extends Authenticator {
 			clientDDBB.close();
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -176,13 +189,13 @@ public class SendMail extends Authenticator {
 	/**
 	 * Function that obtains the mail asociated to the phone number passed
 	 * 
-	 * @param receiver
+	 * @param incomingCallNumber
 	 */
-	private void getReceiverMailList (String receiver){
+	private void getReceiverMailList (String incomingCallNumber){
 		
 		try {
 			ClientDDBB clientDDBB = new ClientDDBB();
-			Phone phone = clientDDBB.getSelects().selectPhoneForPhoneNumber(receiver);
+			Phone phone = clientDDBB.getSelects().selectPhoneForPhoneNumber(incomingCallNumber);
 			if (phone != null) {
 				Contact contact = phone.getContact();
 				List<Mail> mailList = 
@@ -229,7 +242,7 @@ public class SendMail extends Authenticator {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 			receiverMailList = null;
@@ -241,6 +254,12 @@ public class SendMail extends Authenticator {
 		  return new PasswordAuthentication(user, passwd);
 	}
 
+	
+	@Override
+	public void run () {
+		int numShipments = sendMail();
+		saveNumShipments(numShipments);		
+	}
 	
 	/**
 	 * Send an email to the receiver associated to the phone number who has been
@@ -285,10 +304,38 @@ public class SendMail extends Authenticator {
 			return 0;
 										
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return -1;
+		}
+	}
+	
+	/**
+	 * Save the CallLog object if the numShipments is greater than 0.
+	 * @param numShipments
+	 */
+	private void saveNumShipments (int numShipments) {
+		
+		try {
+			
+			if (numShipments > 0) {
+				/*
+				ClientDDBB clientDDBB = new ClientDDBB();
+				clientDDBB.getUpdates().insertCallLog(callLog);
+			
+				clientDDBB.commit();
+				clientDDBB.close();
+				*/
+				
+				//Use when join all threads finish
+				callLog.setNumSendMail(numShipments);				
+			}
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
 		}
 	}
 	

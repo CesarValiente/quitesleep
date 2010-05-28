@@ -19,6 +19,8 @@
 
 package es.cesar.quitesleep.smsmessages;
 
+import java.util.ArrayList;
+
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -30,6 +32,7 @@ import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -45,7 +48,7 @@ public class SendSMSService extends Service {
 	private final String CLASS_NAME = getClass().getName();
 	
 	private String smsText;
-	private String phoneReceiver;		
+	private String incomingCallNumber;		
 	
 	//--------------		Getters & Setters		--------------------------//
 	public String getSmsText() {
@@ -55,11 +58,11 @@ public class SendSMSService extends Service {
 		this.smsText = smsText;
 	}
 	
-	public String getPhoneReceiver() {
-		return phoneReceiver;
+	public String getIncomingCallNumber() {
+		return incomingCallNumber;
 	}
-	public void setPhoneReceiver(String phoneReceiver) {
-		this.phoneReceiver = phoneReceiver;
+	public void setIncomingCallNumber(String incomingCallNumber) {
+		this.incomingCallNumber = incomingCallNumber;
 	}
 	//------------------------------------------------------------------------//
 		
@@ -78,8 +81,9 @@ public class SendSMSService extends Service {
 	@Override
 	public int onStartCommand (Intent intent, int flags, int startId) {
 		
-		String receiver = intent.getExtras().getString(ConfigAppValues.RECEIVER);
-		SendSMSService sendSMS = new SendSMSService(receiver);
+		String incomingCallNumber = 
+			intent.getExtras().getString(ConfigAppValues.INCOMING_CALL_NUMBER);
+		SendSMSService sendSMS = new SendSMSService(incomingCallNumber);
 		sendSMS.sendSms();
 		
 		return Service.START_STICKY;
@@ -96,18 +100,18 @@ public class SendSMSService extends Service {
 	/**
 	 * Constructor with the phonenumber of the receiver sms
 	 */
-	public SendSMSService (String receiver) {
-		init(receiver);
+	public SendSMSService (String incomingCallNumber) {
+		init(incomingCallNumber);
 	}
 	
 
 	/**
 	 * Function that is called for onStartCommand Service method start
-	 * @param receiver
+	 * @param incomingCallNumber
 	 */
-	public void init (String receiver) {
+	public void init (String incomingCallNumber) {
 		
-		this.phoneReceiver = receiver;	
+		this.incomingCallNumber = incomingCallNumber;	
 		getAllData();
 	}
 			
@@ -127,7 +131,7 @@ public class SendSMSService extends Service {
 			clientDDBB.close();
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -144,7 +148,7 @@ public class SendSMSService extends Service {
 		
 		try {
 			ClientDDBB clientDDBB = new ClientDDBB();
-			Phone phone = clientDDBB.getSelects().selectPhoneForPhoneNumber(phoneReceiver);
+			Phone phone = clientDDBB.getSelects().selectPhoneForPhoneNumber(incomingCallNumber);
 			clientDDBB.close();
 			
 			if (phone != null) 			
@@ -153,7 +157,7 @@ public class SendSMSService extends Service {
 				return false;										
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;
@@ -191,16 +195,34 @@ public class SendSMSService extends Service {
 						0);								
 				
 				SmsManager smsManager = SmsManager.getDefault();																									
+								
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "SmsText: " + smsText);
+
+				/* In Nexus One there is a bug (how in htc tatoo) that sent sms
+				 * using sendTextMessage not found, so i try to send sms by 
+				 * cut into parts (if its necessary) and send using sendMultipartMessage
+				 */
+				ArrayList<String> multipartSmsText = smsManager.divideMessage(smsText);
+				int smsSize = multipartSmsText.size();
 				
+				//Create the arraylist PendingIntents for use it.
+				ArrayList<PendingIntent> sentPiList = 
+					new ArrayList<PendingIntent>(smsSize);
+				ArrayList<PendingIntent> deliverPiList = 
+					new ArrayList<PendingIntent>(smsSize);
 				
-				Log.d(CLASS_NAME, "SmsText: " + smsText);
-				//String test = "5556";
-				smsManager.sendTextMessage(
-						phoneReceiver, 
+				for (int i=0; i<smsSize; i++) {
+					sentPiList.add(sentPI);
+					deliverPiList.add(deliverPI);
+				}
+				
+				//Try to send the sms message
+				smsManager.sendMultipartTextMessage(
+						incomingCallNumber, 
 						null, 
-						smsText, 
-						sentPI, 
-						deliverPI);								
+						multipartSmsText, 
+						sentPiList, 
+						deliverPiList);								
 			}			
 			
 		}catch (Exception e) {

@@ -19,15 +19,20 @@
 
 package es.cesar.quitesleep.smsmessages;
 
+import java.util.ArrayList;
+
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.telephony.SmsManager;
-import android.util.Log;
+import es.cesar.quitesleep.ddbb.CallLog;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -43,7 +48,8 @@ public class SendSMSThread extends Thread {
 	private final String CLASS_NAME = getClass().getName();
 	
 	private String smsText;
-	private String phoneReceiver;		
+	private String incomingCallNumber;		
+	private CallLog callLog;
 	
 	//--------------		Getters & Setters		--------------------------//
 	public String getSmsText() {
@@ -53,30 +59,39 @@ public class SendSMSThread extends Thread {
 		this.smsText = smsText;
 	}
 	
-	public String getPhoneReceiver() {
-		return phoneReceiver;
+	public String getIncomingCallNumber() {
+		return incomingCallNumber;
 	}
-	public void setPhoneReceiver(String phoneReceiver) {
-		this.phoneReceiver = phoneReceiver;
+	public void setIncomingCallNumber(String incomingCallNumber) {
+		this.incomingCallNumber = incomingCallNumber;
+	}
+	
+	public CallLog getCallLog() {
+		return callLog;
+	}
+	public void setCallLog(CallLog callLog) {
+		this.callLog = callLog;
 	}
 	//------------------------------------------------------------------------//
+	
 	
 	
 	/**
 	 * Constructor with the phonenumber of the receiver sms
 	 */
-	public SendSMSThread (String receiver) {
-		init(receiver);
+	public SendSMSThread (String incomingCallNumber, CallLog callLog) {
+		init(incomingCallNumber, callLog);
 	}
 	
 
 	/**
 	 * Function that is called for the constructor
-	 * @param receiver
+	 * @param incomingCallNumber
 	 */
-	public void init (String receiver) {
+	public void init (String incomingCallNumber, CallLog callLog) {
 		
-		this.phoneReceiver = receiver;	
+		this.incomingCallNumber = incomingCallNumber;
+		this.callLog = callLog;
 		getAllData();
 	}
 			
@@ -96,7 +111,7 @@ public class SendSMSThread extends Thread {
 			clientDDBB.close();
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -113,7 +128,7 @@ public class SendSMSThread extends Thread {
 		
 		try {
 			ClientDDBB clientDDBB = new ClientDDBB();
-			Phone phone = clientDDBB.getSelects().selectPhoneForPhoneNumber(phoneReceiver);
+			Phone phone = clientDDBB.getSelects().selectPhoneForPhoneNumber(incomingCallNumber);
 			clientDDBB.close();
 			
 			if (phone != null) 			
@@ -122,7 +137,7 @@ public class SendSMSThread extends Thread {
 				return false;										
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;
@@ -165,25 +180,96 @@ public class SendSMSThread extends Thread {
 						0);							
 				
 				SmsManager smsManager = SmsManager.getDefault();																									
+								
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "SmsText: " + smsText);
+								
+				/* In Nexus One there is a bug (how in htc tatoo) that sent sms
+				 * using sendTextMessage not found, so i try to send sms by 
+				 * cut into parts (if its necessary) and send using sendMultipartMessage
+				 */
+				ArrayList<String> multipartSmsText = smsManager.divideMessage(smsText);
+				int multipartSize = multipartSmsText.size();
 				
+				//Create the arraylist PendingIntents for use it.
+				ArrayList<PendingIntent> sentPiList = 
+					new ArrayList<PendingIntent>(multipartSize);
+				ArrayList<PendingIntent> deliverPiList = 
+					new ArrayList<PendingIntent>(multipartSize);
 				
-				Log.d(CLASS_NAME, "SmsText: " + smsText);
-				//String test = "5556";
-				smsManager.sendTextMessage(
-						phoneReceiver, 
-						null, 
-						smsText, 
-						sentPI, 
-						deliverPI);							
+				for (int i=0; i<multipartSize; i++) {
+					sentPiList.add(sentPI);
+					deliverPiList.add(deliverPI);
+				}
+				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "MultipartSize: " + multipartSize);
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "MultpartMessage: " + multipartSmsText);
+				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Send sms to: " + incomingCallNumber);								
+				
+				String operator = getOperator();
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Operator: " + operator);
+				
+				smsManager.sendMultipartTextMessage(
+						incomingCallNumber, 
+						operator, 
+						multipartSmsText, 
+						sentPiList, 
+						deliverPiList);		
+				
+				/* In the smssettings.xml layout i specified only 160 character,
+				 * one message, so if the send have been done, setSendSms is true				 
+				 */
+				if (multipartSize > 0) {
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "MEssage send!!!");
+					callLog.setSendSms(true);
+				}
+					
 			}			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}
 	}
 	
+	private String getOperator () {
+		
+		try {
+			final Uri SMS_CONTENT_URI = Uri.parse("content://sms");
+			final String REPLY_PATH_PRESENT = "reply_path_present";
+			final String SERVICE_CENTER = "service_center";
+			final int COLUMN_REPLY_PATH_PRESENT = 0;
+			final int COLUMN_SERVICE_CENTER = 1;
+			
+			final String[] SERVICE_CENTER_PROJECTION =
+			    new String[] {REPLY_PATH_PRESENT, SERVICE_CENTER,};
+			
+			Cursor cursor =
+		        ConfigAppValues.getContext().getContentResolver().query(SMS_CONTENT_URI,
+		            SERVICE_CENTER_PROJECTION, "thread_id = " + 0, null, "date DESC");
+
+		      // cursor = SqliteWrapper.query(mContext, mContext.getContentResolver(),
+		      // Sms.CONTENT_URI, SERVICE_CENTER_PROJECTION,
+		      // "thread_id = " + threadId, null, "date DESC");
+
+		      if ((cursor == null) || !cursor.moveToFirst()) {
+		        return null;
+		      }
+
+		      boolean replyPathPresent = (1 == cursor.getInt(COLUMN_REPLY_PATH_PRESENT));
+		      
+		      if (cursor != null) 
+			        cursor.close();		      		      
+		      return replyPathPresent ? cursor.getString(COLUMN_SERVICE_CENTER) : null;
+		      		     		    		      		
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			return null;
+		}
+	}
 	
 	
 	

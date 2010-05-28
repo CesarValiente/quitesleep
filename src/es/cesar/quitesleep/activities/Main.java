@@ -33,6 +33,7 @@ import es.cesar.quitesleep.dialogs.SyncContactsDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.syncData.SyncContactsNew;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -62,7 +63,7 @@ public class Main extends TabActivity {
 			if (ConfigAppValues.getContext() == null)
 				ConfigAppValues.setContext(this);
 						
-			Log.i(CLASS_NAME, "SDK Version: " + String.valueOf(ConfigAppValues.getMinApiLevel()));					
+			if (QSLog.DEBUG_I)QSLog.i(CLASS_NAME, "SDK Version: " + String.valueOf(ConfigAppValues.getMinApiLevel()));					
 			
 			super.onCreate(savedInstanceState);
 			
@@ -122,7 +123,7 @@ public class Main extends TabActivity {
 			window.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.quitesleep);
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception();
@@ -146,14 +147,14 @@ public class Main extends TabActivity {
 			//Only if the db4o database is full contact data empty, we proceed
 			//with the synchronization, otherwise we don't anything
 			if (syncContacts.isTheFirstTime()) {
-				Log.d(CLASS_NAME, "Proceed with the synchronization for the first time");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Proceed with the synchronization for the first time");
 				syncDialog.showDialogFirstTime(this);
 				syncContacts.start();
 			}else
-				Log.d(CLASS_NAME, "The db4o database already contains data contacts");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "The db4o database already contains data contacts");
 											
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Error();
@@ -198,7 +199,7 @@ public class Main extends TabActivity {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception(e.toString());
@@ -236,7 +237,7 @@ public class Main extends TabActivity {
 			tabHost.addTab(tabSpec);
 
 		}catch (Exception e) {			
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception(e.toString());
@@ -273,7 +274,7 @@ public class Main extends TabActivity {
 			tabHost.addTab(tabSpec);
 
 		}catch (Exception e) {			
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Exception(e.toString());
@@ -309,7 +310,7 @@ public class Main extends TabActivity {
 			tabHost.addTab(tabSpec);
 
 		}catch (Exception e) {			
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Exception(e.toString());

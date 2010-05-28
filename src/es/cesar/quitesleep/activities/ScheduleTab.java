@@ -43,6 +43,8 @@ import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.subactivities.About;
 import es.cesar.quitesleep.subactivities.Help;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -183,11 +185,11 @@ public class ScheduleTab extends Activity implements OnClickListener {
 		
 		switch (id) {
 			case START_TIME_DIALOG:
-				Log.d(CLASS_NAME, "Create the StartTimeDialog for 1st time");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create the StartTimeDialog for 1st time");
 				dialog = startTimeDialog.getTimePickerDialog();				
 				break;
 			case END_TIME_DIALOG:
-				Log.d(CLASS_NAME, "Create the EndTimeDialog for 1st time");				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create the EndTimeDialog for 1st time");				
 				dialog = endTimeDialog.getTimePickerDialog();
 				break;
 			default:
@@ -219,7 +221,7 @@ public class ScheduleTab extends Activity implements OnClickListener {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}
@@ -229,7 +231,7 @@ public class ScheduleTab extends Activity implements OnClickListener {
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
 		
 		//TODO
-		Log.d(CLASS_NAME, "en onActiviryResult");	
+		if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "en onActiviryResult");	
 	}
 	
 	
@@ -244,7 +246,7 @@ public class ScheduleTab extends Activity implements OnClickListener {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -275,7 +277,7 @@ public class ScheduleTab extends Activity implements OnClickListener {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;			
@@ -311,27 +313,27 @@ public class ScheduleTab extends Activity implements OnClickListener {
 				clientDDBB.commit();
 				clientDDBB.close();
 				
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		this,
                 		this.getString(
                 				R.string.schedule_toast_daysweek_ok),
-                		Toast.LENGTH_SHORT).show();
+                		Toast.LENGTH_SHORT);
 				
 				return true;
 				
 			}else {
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		this,
                 		this.getString(
                 				R.string.schedule_toast_daysweek_ko),
-                		Toast.LENGTH_SHORT).show();
+                		Toast.LENGTH_SHORT);
 				
 				return false;
 			}
 				
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Error(e.toString());
@@ -368,7 +370,7 @@ public class ScheduleTab extends Activity implements OnClickListener {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}

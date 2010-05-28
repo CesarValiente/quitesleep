@@ -36,13 +36,7 @@ public interface IDDBB {
 	//For the sdcard & internal data app
 	public final String DDBB_DIR = "ddbb"; 
 	public final String DDBB_FILE = "quitesleep.db";
-	
-	
-	//Nombre de un usuario que tendrá derecho a utilizar la BBDD
-	public final String USER = "cesar";
-		
-	//Passwd del usuario anterior, necesario para poder tener acceso a la BBDD
-	public final String PASSWD = "cvg1980";
+			
 	
 	//Constante para especificar el nivel de profundidad de busqueda en un 
 	//objeto

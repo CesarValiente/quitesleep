@@ -31,6 +31,7 @@ import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.dialogs.AddAllDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -95,7 +96,7 @@ public class AddAllMenu extends Thread {
 			Schedule schedule = clientDDBB.getSelects().selectSchedule();
 			
 			if (schedule != null) { 								
-				Log.d(CLASS_NAME, "size list: " + arrayAdapter.getCount());
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "size list: " + arrayAdapter.getCount());
 								
 				//while (arrayAdapter.getCount()>0) {
 				for (int i=0; i<arrayAdapter.getCount(); i++) {
@@ -106,7 +107,7 @@ public class AddAllMenu extends Thread {
 					 */
  					String contactName = arrayAdapter.getItem(i);
 					
-					Log.d(CLASS_NAME, "añadiendo: " + contactName);
+ 					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "añadiendo: " + contactName);
 					
 					if (contactName != null && !contactName.equals("")) {					
 						Contact contact = 
@@ -128,7 +129,7 @@ public class AddAllMenu extends Thread {
 			clientDDBB.close();			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}finally {

@@ -19,13 +19,14 @@
 
 package es.cesar.quitesleep.receivers;
 
-import es.cesar.quitesleep.staticValues.ConfigAppValues;
-import es.cesar.quitesleep.utils.ExceptionUtils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
+import es.cesar.quitesleep.staticValues.ConfigAppValues;
+import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 
 /**
@@ -45,30 +46,11 @@ public class DeliveredActionSMSReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-		Log.d(CLASS_NAME, "The user have been receive the SMS message!!");
-		showNotificationToast("The user have been receive the SMS message!!");
-	}
-	
-	
-	/**
-	 * Show the notification toast
-	 * 
-	 * @param message
-	 */
-	private void showNotificationToast (String message) {
-		
-		try {			
-			//Show the toast message
-			Toast.makeText(
-            		ConfigAppValues.getContext(),
-            		message,
-            		Toast.LENGTH_SHORT).show();	
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-		}
-	}
+		if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "The user have been receive the SMS message!!");
+		if (QSToast.DEBUG) QSToast.d(
+        		ConfigAppValues.getContext(),
+        		"The user have been receive the SMS message!!",
+        		Toast.LENGTH_SHORT);;
+	}			
 
 }

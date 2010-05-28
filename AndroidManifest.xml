@@ -21,8 +21,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="es.cesar.quitesleep"
-      android:versionCode="1"
-      android:versionName="0.1">
+      android:versionCode="2"
+      android:versionName="Beta 1.1">
       
      <supports-screens 
      	android:smallScreens="true"
@@ -115,6 +115,11 @@
 		 <!--         
         	<service android:enabled="true" android:name=".smsmessages.SendSMSService" />
          -->                                 
+        
+        <!-- Service for manage the incoming calls -->                   
+       	<service android:enabled="true" android:name=".callServices.SilentModeCallService" />
+       	<service android:enabled="true" android:name=".callServices.NormalModeCallService" />
+             
                                  
         <!-- Receiver for SENT_SMS_ACTION BroadCast signal -->
       	<receiver 
@@ -146,6 +151,7 @@
     <!-- Uses permission for the application -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />        
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />

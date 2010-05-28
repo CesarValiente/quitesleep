@@ -30,6 +30,7 @@ import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.dialogs.RemoveAllDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -113,7 +114,7 @@ public class RemoveAllMenu extends Thread {
 			clientDDBB.close();
 																		
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));		
 		}finally {

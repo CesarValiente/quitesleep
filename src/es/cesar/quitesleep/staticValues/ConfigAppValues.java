@@ -19,6 +19,8 @@
 
 package es.cesar.quitesleep.staticValues;
 
+import java.util.concurrent.Semaphore;
+
 import android.content.Context;
 
 /**
@@ -76,9 +78,13 @@ public class ConfigAppValues {
 	private static Boolean mailServiceState 			= null;
 	private static Boolean smsServiceState 				= null;
 	
+	//Constant string for get the incomingCallNumber
+	public static String INCOMING_CALL_NUMBER = "INCOMING_CALL_NUMBER";
 	
-	public static String RECEIVER = "RECEIVER";
-	//public static String receiver;
+			
+	//For use as semaphores in a producer-consumer way
+	public static boolean processRingCall = false;
+	public static boolean processIdleCall = false;
 	
 	
 	

@@ -28,6 +28,8 @@ import android.util.Log;
 import android.widget.Toast;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 
 /**
@@ -50,44 +52,35 @@ public class SendActionSMSReceiver extends BroadcastReceiver{
 
 		switch (getResultCode()) {
 			case Activity.RESULT_OK:
-				Log.d(CLASS_NAME, "Successful transmission!!");
-				showNotificationToast("Successful transmission!!");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Successful transmission!!");
+				if (QSToast.DEBUG) QSToast.d(
+	            		ConfigAppValues.getContext(),
+	            		"Successful transmission!!",
+	            		Toast.LENGTH_SHORT);
 				break;
 			case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-				Log.d(CLASS_NAME, "Nonspecific Failure!!");
-				showNotificationToast("Nonspecific Failure!!");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Nonspecific Failure!!");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Intent extra: " 
+						+ intent.getExtras().getInt("errorCode"));
+				if (QSToast.DEBUG) QSToast.d(
+	            		ConfigAppValues.getContext(),
+	            		"Nonspecific Failure!!",
+	            		Toast.LENGTH_SHORT);
 				break;
 			case SmsManager.RESULT_ERROR_RADIO_OFF:
-				Log.d(CLASS_NAME, "Radio is turned Off!!");
-				showNotificationToast("Nonspecific Failure!!");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Radio is turned Off!!");
+				if (QSToast.DEBUG) QSToast.d(
+	            		ConfigAppValues.getContext(),
+	            		"Radio is turned Off!!",
+	            		Toast.LENGTH_SHORT);
 				break;
 			case SmsManager.RESULT_ERROR_NULL_PDU:
-				Log.d(CLASS_NAME, "PDU Failure");
-				showNotificationToast("PDU Failure");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "PDU Failure");
+				if (QSToast.DEBUG) QSToast.d(
+	            		ConfigAppValues.getContext(),
+	            		"PDU Failure",
+	            		Toast.LENGTH_SHORT);
 				break;
 		}					
-	}
-
-	
-	/**
-	 * Show the notification toast
-	 * 
-	 * @param message
-	 */
-	private void showNotificationToast (String message) {
-		
-		try {			
-			//Show the toast message
-			Toast.makeText(
-            		ConfigAppValues.getContext(),
-            		message,
-            		Toast.LENGTH_SHORT).show();	
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-		}
-	}
-
+	}		
 }

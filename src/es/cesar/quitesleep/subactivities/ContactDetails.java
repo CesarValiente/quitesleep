@@ -42,6 +42,8 @@ import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.operations.ContactOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -100,7 +102,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 									
 			if (contact != null && !contact.isBanned()) {
 				
-				Log.d(CLASS_NAME, "selectContactName: " + selectContactName);								
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "selectContactName: " + selectContactName);								
 				
 				createLayout();				
 				createHeader();
@@ -121,7 +123,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -143,7 +145,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			
 						
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -173,7 +175,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			
 						
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -213,7 +215,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			}
 							
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -253,7 +255,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -332,7 +334,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			linearLayout.addView(cancelButton);
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -365,7 +367,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -381,20 +383,20 @@ public class ContactDetails extends Activity implements OnClickListener {
 		try {
 			
 			if (result) 
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		this,
                 		this.getString(
                 				R.string.contactdetails_toast_added),
-                		Toast.LENGTH_SHORT).show();		 
+                		Toast.LENGTH_SHORT);		 
 			else
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		this,
                 		this.getString(
                 				R.string.contactdetails_toast_fail),
-                		Toast.LENGTH_SHORT).show();		 
+                		Toast.LENGTH_SHORT);		 
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}

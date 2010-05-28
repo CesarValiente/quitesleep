@@ -20,14 +20,20 @@
 package es.cesar.quitesleep.listeners;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
-import es.cesar.quitesleep.operations.CallFilter;
+import es.cesar.quitesleep.callServices.NormalModeCallService;
+import es.cesar.quitesleep.callServices.SilentModeCallService;
+import es.cesar.quitesleep.operations.CheckSettingsOperations;
+import es.cesar.quitesleep.operations.IncomingCallOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -87,7 +93,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}
@@ -100,27 +106,38 @@ public class MyPhoneStateListener extends PhoneStateListener {
 	private void processCallStateIdle () {
 		
 		try {
-			Log.d(CLASS_NAME, "IDLE");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "IDLE");
 			
-			if (CallFilter.ringerMode() == AudioManager.RINGER_MODE_SILENT && 
-					CallFilter.checkQuiteSleepServiceState()) {
+			ConfigAppValues.processRingCall = false;
+			
+			if (ringerMode() == AudioManager.RINGER_MODE_SILENT && 
+					CheckSettingsOperations.checkQuiteSleepServiceState() && 
+					!ConfigAppValues.processIdleCall) {																						
 				
 				/* Put one pause of 1 second for wait before put the
 				 * ringer mode  to normal again
 				 */						
-				Thread.sleep(1000);
+				//Thread.sleep(1000);						
+				ConfigAppValues.processIdleCall = true;
+
+				//--  If u choose use Android Service for process incoming call use this --//				
+				ConfigAppValues.getContext().startService(
+						new Intent(
+								ConfigAppValues.getContext(),
+								NormalModeCallService.class)); 				
+				//------------------------------------------------------------//							
+
 				
-				CallFilter.putRingerModeNormal();		
-				//CallFilter.vibrateOn();
-			
-				Toast.makeText(
+				if (QSToast.DEBUG) QSToast.d(
 						ConfigAppValues.getContext().getApplicationContext(),
 						"IDLE!!!!!!!!",
-						Toast.LENGTH_SHORT).show();
+						Toast.LENGTH_SHORT);
 			}					
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(e.toString(), e.getStackTrace()));
+			if (QSLog.DEBUG_E)QSLog.e(
+					CLASS_NAME, 
+					ExceptionUtils.exceptionTraceToString(e.toString(), e.getStackTrace()));
 			
 		}
 	}
@@ -131,14 +148,17 @@ public class MyPhoneStateListener extends PhoneStateListener {
 	private void processCallStateOffhook () {
 		
 		try {
-			Log.d(CLASS_NAME, "OFFHOOK");
-			Toast.makeText(
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "OFFHOOK");	
+			
+			ConfigAppValues.processRingCall = false;
+			
+			if (QSToast.DEBUG) QSToast.d(
             		ConfigAppValues.getContext().getApplicationContext(),
             		"OFFHOOK!!!!!!!!",
-            		Toast.LENGTH_SHORT).show();	
+            		Toast.LENGTH_SHORT);	
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -151,27 +171,85 @@ public class MyPhoneStateListener extends PhoneStateListener {
 	private void processCallStateRinging (String incomingNumber) {
 		
 		try {
-			Log.d(CLASS_NAME, "RINGING");					
+						
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "RINGING");					
 			
-			/* Put the device in silent mode if the incoming number is
+			/* Put the device in silent mode if the inc.oming number is
 			 * from contact banned and in schedule interval 
 			 */					
-			if (CallFilter.ringerMode() != AudioManager.RINGER_MODE_SILENT)  {
+			if (ringerMode() != AudioManager.RINGER_MODE_SILENT && 
+					CheckSettingsOperations.checkQuiteSleepServiceState() &&
+					!ConfigAppValues.processRingCall)  {				
+					
+				ConfigAppValues.processRingCall = true;
 				
-				CallFilter.silentIncomingCall(incomingNumber);					
+				//--  If u choose use Android Service for send SMS use this --//				
+				ConfigAppValues.getContext().startService(
+						new Intent(
+								ConfigAppValues.getContext(),
+								SilentModeCallService.class).putExtra(
+									ConfigAppValues.INCOMING_CALL_NUMBER, 
+									incomingNumber));
+				
+				//------------------------------------------------------------//
 										
-				Toast.makeText(
+				if (QSToast.DEBUG) QSToast.d(
 						ConfigAppValues.getContext().getApplicationContext(),
 						"RINGING!!!!!!!!",
-						Toast.LENGTH_SHORT).show();															
+						Toast.LENGTH_SHORT);															
 			}														
 	
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
+	}
+	
+	/**
+	 * Get what ringer mode is at the moment. 
+	 * 
+	 * @return			return RINGER_MODE_SILENT(0), RINGER_MODE_NORMAL(2), RINGER_MODE_VIBRATE(1)	  								
+	 * @see 			int	
+	 * @throws 			Exception
+	 */
+	private int ringerMode () throws Exception {
+		
+		try {
+			
+			AudioManager audioManager = 
+				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
+			
+			
+			//Only for traces
+			switch (audioManager.getRingerMode()) {
+			
+				case AudioManager.RINGER_MODE_SILENT:
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Ringer_Mode_Silent");					
+					break;
+				
+				case AudioManager.RINGER_MODE_NORMAL:
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Ringer_Mode_Normal");					
+					break;
+				
+				case AudioManager.RINGER_MODE_VIBRATE:
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Ringer_Mode_Vibrate");
+					break;
+					
+				default:
+					break;
+			}
+			
+			return audioManager.getRingerMode();
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			throw new Exception();
+		}
+		
 	}
 
 }

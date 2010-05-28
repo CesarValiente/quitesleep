@@ -36,6 +36,8 @@ import es.cesar.quitesleep.menus.RemoveCallLogMenu;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.syncData.SyncContactsRefresh;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -62,14 +64,14 @@ public class DialogOperations {
 			SyncContactsRefresh syncContacts = 
 				new SyncContactsRefresh(ConfigAppValues.getContext(), syncDialog);
 			
-			Log.d(CLASS_NAME, "Refreshing the database");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Refreshing the database");
 			
 			syncDialog.showDialogRefreshList(ConfigAppValues.getContext());
 			syncContacts.start();
 																								
 											
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Error();
@@ -107,7 +109,7 @@ public class DialogOperations {
 			}
 											
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Error();
@@ -165,33 +167,33 @@ public class DialogOperations {
 				
 				if (result) 
 					//All right, start the service was ok!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.smssettings_toast_start_service),
-	                		Toast.LENGTH_SHORT).show();
+	                		Toast.LENGTH_SHORT);
 				else
 					//An error has ocurred!!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.smssettings_toast_fail_service),
-	                		Toast.LENGTH_SHORT).show();								
+	                		Toast.LENGTH_SHORT);								
 			}else {																												
 				if (result)
 					//All right, stop the service was ok!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.smssettings_toast_stop_service),
-	                		Toast.LENGTH_SHORT).show();
+	                		Toast.LENGTH_SHORT);
 				else
 					//An error has ocurred!!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.smssettings_toast_fail_service),
-	                		Toast.LENGTH_SHORT).show();								
+	                		Toast.LENGTH_SHORT);								
 			}
 			
 			
@@ -216,38 +218,38 @@ public class DialogOperations {
 				
 				if (result) 
 					//All right, start the service was ok!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.mailsettings_toast_start_service),
-	                		Toast.LENGTH_SHORT).show();
+	                		Toast.LENGTH_SHORT);
 				else
 					//An error has ocurred!!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.mailsettings_toast_fail_service),
-	                		Toast.LENGTH_SHORT).show();								
+	                		Toast.LENGTH_SHORT);								
 			}else {																												
 				if (result)
 					//All right, stop the service was ok!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.mailsettings_toast_stop_service),
-	                		Toast.LENGTH_SHORT).show();
+	                		Toast.LENGTH_SHORT);
 				else
 					//An error has ocurred!!
-					Toast.makeText(
+					if (QSToast.RELEASE) QSToast.r(
 	                		context,
 	                		context.getString(
 	                				R.string.mailsettings_toast_fail_service),
-	                		Toast.LENGTH_SHORT).show();								
+	                		Toast.LENGTH_SHORT);								
 			}
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));		
 		}
@@ -287,7 +289,7 @@ public class DialogOperations {
 			}
 											
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			throw new Error();
@@ -313,7 +315,7 @@ public class DialogOperations {
 			refreshCallLogMenu.start();											
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}

@@ -30,6 +30,7 @@ import es.cesar.quitesleep.ddbb.Mail;
 import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -61,7 +62,7 @@ public class ContactOperations {
 				
 		try {
 			
-			Log.d(CLASS_NAME, "EN addContact");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "EN addContact");
 			
 			ClientDDBB clientDDBB = new ClientDDBB();
 			
@@ -76,7 +77,7 @@ public class ContactOperations {
 			Banned banned = new Banned(contact, schedule);
 			clientDDBB.getInserts().insertBanned(banned);
 			
-			Log.d(CLASS_NAME, "Updated Contact and Banned");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Updated Contact and Banned");
 			
 			//---------------		Update Phone	--------------------------//
 			List<Phone> phoneList = 
@@ -124,7 +125,7 @@ public class ContactOperations {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;
@@ -162,7 +163,7 @@ public class ContactOperations {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;
@@ -238,7 +239,7 @@ public class ContactOperations {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;

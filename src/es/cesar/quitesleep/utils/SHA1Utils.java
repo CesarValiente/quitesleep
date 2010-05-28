@@ -64,7 +64,10 @@ public class SHA1Utils {
 			return byteArrayToHexString(datos);
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, e.toString());
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, 
+					ExceptionUtils.exceptionTraceToString(
+							e.toString(), 
+							e.getStackTrace()));
 			return null;
 		}
 	}
@@ -96,7 +99,9 @@ public class SHA1Utils {
 			encryted = digest.digest();
 			
 		} catch (Exception e) { 
-			Log.e(CLASS_NAME, e.toString());			
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));			
 		}
 		return encryted;
 	}

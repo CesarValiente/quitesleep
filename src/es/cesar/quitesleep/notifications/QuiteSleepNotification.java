@@ -29,6 +29,7 @@ import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.activities.Main;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -75,9 +76,9 @@ public class QuiteSleepNotification {
 	public static void showNotification (Context context, boolean showNotification) {
 		
 		try {
-			Log.d(CLASS_NAME, "notifiactionId: " + notificationId);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "notifiactionId: " + notificationId);
 			
-			Log.d(CLASS_NAME, "showNotification: " + showNotification);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "showNotification: " + showNotification);
 			
 			if (showNotification) {
 				
@@ -116,14 +117,14 @@ public class QuiteSleepNotification {
 				notificationManager.notify(notificationId, notification);
 				
 			}else  if (notificationManager != null){
-				Log.d(CLASS_NAME, "Cancelando la notificacion");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Cancelando la notificacion");
 				notificationManager.cancel(notificationId);
 			}
 			
 							
 																		
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}

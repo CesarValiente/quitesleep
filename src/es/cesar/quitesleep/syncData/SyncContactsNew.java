@@ -33,6 +33,7 @@ import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.dialogs.SyncContactsDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 import es.cesar.quitesleep.utils.TokenizerUtils;
 
 /**
@@ -105,7 +106,7 @@ public class SyncContactsNew extends Thread {
 				return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception();
@@ -137,7 +138,7 @@ public class SyncContactsNew extends Thread {
 						null,
 						null);
 				
-				Log.d(CLASS_NAME, "Num contacts: " + contactCursor.getCount()); 
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Num contacts: " + contactCursor.getCount()); 
 				
 				//Whule startCursor has content
 				while (contactCursor.moveToNext()) {
@@ -152,11 +153,11 @@ public class SyncContactsNew extends Thread {
 						   ContactsContract.Contacts.HAS_PHONE_NUMBER)); 
 				   
 				   //-------	for debug only		-------------------//
-				   Log.d(CLASS_NAME, "Name: " + contactName + "\tId: " + 
+				   if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Name: " + contactName + "\tId: " + 
 						   contactId + "\thasPhone: " + hasPhone);
 				   
 				   boolean res = Boolean.parseBoolean(hasPhone);
-				   Log.d(CLASS_NAME, "boolean: " + res);
+				   if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "boolean: " + res);
 				   //---------------------------------------------------//
 				   
 				   //If the used contact has at least one phone number, we
@@ -188,7 +189,7 @@ public class SyncContactsNew extends Thread {
 								null,
 								null);
 					   
-					   Log.d(CLASS_NAME, "count: " + phonesCursor.getCount());
+					   if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "count: " + phonesCursor.getCount());
 					   
 					   List<String> phonesList = new ArrayList<String>(phonesCursor.getCount());
 					   
@@ -201,7 +202,7 @@ public class SyncContactsNew extends Thread {
 						   
 						   phonesList.add(phoneNumber);
 						   
-						   Log.d(CLASS_NAME, "phone: " + phoneNumber);
+						   if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "phone: " + phoneNumber);
 					   } 
 					   //close the phones cursor
 					   phonesCursor.close();
@@ -228,7 +229,7 @@ public class SyncContactsNew extends Thread {
 									   mailCursor.getColumnIndex( 
 											   ContactsContract.CommonDataKinds.Email.DATA));
 							   						   
-							   Log.d(CLASS_NAME, "email: " + emailAddress);
+							   if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "email: " + emailAddress);
 							   mailsList.add(emailAddress);						   
 						   }
 						   						   
@@ -258,7 +259,7 @@ public class SyncContactsNew extends Thread {
 			//this.sleep(5000);
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			//return -1;
@@ -301,7 +302,7 @@ public class SyncContactsNew extends Thread {
 			return numPhones;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return -1;
@@ -333,7 +334,7 @@ public class SyncContactsNew extends Thread {
 			return numMails;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return -1;
@@ -362,7 +363,7 @@ public class SyncContactsNew extends Thread {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return false;

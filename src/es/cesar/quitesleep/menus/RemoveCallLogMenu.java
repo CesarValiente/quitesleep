@@ -28,6 +28,7 @@ import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.dialogs.CallLogDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -93,7 +94,7 @@ public class RemoveCallLogMenu extends Thread {
 			clientDDBB.close();
 																		
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));		
 		}finally {

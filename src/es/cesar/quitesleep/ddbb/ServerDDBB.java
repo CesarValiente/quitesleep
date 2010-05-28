@@ -29,6 +29,7 @@ import com.db4o.cs.config.ServerConfiguration;
 import es.cesar.quitesleep.interfaces.IDDBB;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 
 /**
@@ -60,7 +61,7 @@ public class ServerDDBB implements IDDBB {
 		
 		try
 		{														
-			Log.i(CLASS_NAME, "Before to open the DDBB");
+			if (QSLog.DEBUG_I)QSLog.i(CLASS_NAME, "Before to open the DDBB");
 			
 			
 			ServerConfiguration configuration = 
@@ -73,11 +74,11 @@ public class ServerDDBB implements IDDBB {
 					configuration, getDDBBFile(DDBB_FILE), 0);												
 			
 			if (server == null)
-				Log.e(CLASS_NAME, "Server Null!!!!");
+				if (QSLog.DEBUG_W)QSLog.w(CLASS_NAME, "Server Null!!!!");
 						
 																							
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -113,14 +114,14 @@ public class ServerDDBB implements IDDBB {
 	public static void checkServer () {
 	
 		if (SINGLETON == null)
-			Log.w(CLASS_NAME, "Singleton Nul!!!");
+			if (QSLog.DEBUG_W)QSLog.w(CLASS_NAME, "Singleton Nul!!!");
 		else
-			Log.w(CLASS_NAME, "Singleton Not Null!!!");
+			if (QSLog.DEBUG_W)QSLog.w(CLASS_NAME, "Singleton Not Null!!!");
 		
 		if (server == null) 
-			Log.w(CLASS_NAME, "Server Null!!!");
+			if (QSLog.DEBUG_W)QSLog.w(CLASS_NAME, "Server Null!!!");
 		else
-			Log.w(CLASS_NAME, "Server Not Null!!!");			
+			if (QSLog.DEBUG_W)QSLog.w(CLASS_NAME, "Server Not Null!!!");			
 	}
 	
 	
@@ -128,8 +129,7 @@ public class ServerDDBB implements IDDBB {
 	 * Destructor class function
 	 */
 	protected void finalize () {
-		if (server != null)
-		{
+		if (server != null) {
 			server.close();
 			server = null;
 		}
@@ -149,7 +149,7 @@ public class ServerDDBB implements IDDBB {
 						getDDBBFile(DDBB_FILE + ".old")); 
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 		}
@@ -168,9 +168,9 @@ public class ServerDDBB implements IDDBB {
 				
 		//ConfigAppValues.getContext();
 		if (ConfigAppValues.getContext() != null)
-			Log.d(CLASS_NAME, "getContext != null");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "getContext != null");
 		else
-			Log.d(CLASS_NAME, "getContext == null");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "getContext == null");
 		
 		return ConfigAppValues.getContext().getDir(
 				DDBB_DIR, 

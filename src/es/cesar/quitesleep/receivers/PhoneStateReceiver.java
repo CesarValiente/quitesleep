@@ -19,11 +19,14 @@
 
 package es.cesar.quitesleep.receivers;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -33,9 +36,10 @@ import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.listeners.MyPhoneStateListener;
 import es.cesar.quitesleep.notifications.QuiteSleepNotification;
-import es.cesar.quitesleep.operations.CallFilter;
+import es.cesar.quitesleep.operations.IncomingCallOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
 
 /**
  * 
@@ -62,7 +66,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive (Context context, Intent intent) {
 				
-		Log.d(CLASS_NAME, "BroadcastReceive. Tipo: " + intent.getAction());
+		if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "BroadcastReceive. Tipo: " + intent.getAction());
 		
 		//-------------		LISTEN FOR BOOT COMPLETED		------------------//
 		if (intent.getAction().equals(BOOT_COMPLETED)) {
@@ -77,7 +81,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		
 		//-----------		LISTEN FOR INCOMING SMS		----------------------//
 		else if (intent.getAction().equals(SMS_RECEIVED)) {
-			listenIncomingSMS(context, intent);
+			//listenIncomingSMS(context, intent);
 		}
 			
 	}
@@ -93,7 +97,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	private void listenBootCompleted (Context context) {
 		
 		try {
-			Log.d(CLASS_NAME, "en Boot_Completed!!");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "en Boot_Completed!!");
 			
 			if (ConfigAppValues.getContext() == null)
 				ConfigAppValues.setContext(context);									
@@ -101,7 +105,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			if (ConfigAppValues.getQuiteSleepServiceState() != null) {
 							
 				if (ConfigAppValues.getQuiteSleepServiceState()) {
-					Log.d(CLASS_NAME, "Show notification x ConfigAppValues: " + ConfigAppValues.getQuiteSleepServiceState());
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Show notification x ConfigAppValues: " + ConfigAppValues.getQuiteSleepServiceState());
 					QuiteSleepNotification.showNotification(context, true);
 				}
 			}
@@ -112,7 +116,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 				if (settings != null) {
 					ConfigAppValues.setQuiteSleepServiceState(settings.isQuiteSleepServiceState());
 					if (settings.isQuiteSleepServiceState()) {
-						Log.d(CLASS_NAME, "Show notification x Settings: " + settings.isQuiteSleepServiceState());
+						if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Show notification x Settings: " + settings.isQuiteSleepServiceState());
 						QuiteSleepNotification.showNotification(context, true);
 					}
 				}
@@ -126,7 +130,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 		}
@@ -137,7 +141,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	 * Listen for incoming calls and use the listener for.
 	 * @param context
 	 */
-	private void listenIncomingCalls (Context context) { 
+	private synchronized void listenIncomingCalls (Context context) { 
 		
 		try {							
 			
@@ -145,11 +149,9 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			TelephonyManager telephony = 
 				(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
 			telephony.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-			
-			
-			
+																					
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}		
@@ -162,11 +164,12 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	 * @param context
 	 * @param intent
 	 */
+	/*
 	private void listenIncomingSMS (Context context, Intent intent) {
 		
 		try {
 			
-			Log.d(CLASS_NAME, "SMS RECEIVED!!!!!");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "SMS RECEIVED!!!!!");
 			
 			SmsManager sms = SmsManager.getDefault();
 			
@@ -181,26 +184,19 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 					String messageText = message.getMessageBody();
 					String phoneSender = message.getOriginatingAddress();
 					
-					Log.d(CLASS_NAME, "SMS Msg: " + messageText);
-					Log.d(CLASS_NAME, "SMS From: " + phoneSender);										
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "SMS Msg: " + messageText);
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "SMS From: " + phoneSender);										
 					
-					if (CallFilter.ringerMode() != AudioManager.RINGER_MODE_SILENT)  
-						CallFilter.silentIncomingCall(phoneSender);
-					
-					
-					/*
-					if (msg.toLowerCase().startsWith(QUERY_STRING)) {
-						String out = msg.substring(QUERY_STRING.length());
-						sms.sendTextMessage(to, null, out, null, null);
-					}
-					*/
+					if (IncomingCallOperations.ringerMode() != AudioManager.RINGER_MODE_SILENT)  
+						IncomingCallOperations.silentIncomingCall(phoneSender);														
 				}
 			}
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}
 	}
+	*/
 }

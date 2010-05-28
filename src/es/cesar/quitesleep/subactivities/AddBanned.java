@@ -43,6 +43,8 @@ import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.dialogs.WarningDialog;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -116,7 +118,7 @@ public class AddBanned extends ListActivity {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 							e.toString(), 
 							e.getStackTrace()));
 		}
@@ -147,7 +149,7 @@ public class AddBanned extends ListActivity {
 			return null;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			throw new Exception();
@@ -163,12 +165,12 @@ public class AddBanned extends ListActivity {
 		
 		try {
 			
-			Log.d(CLASS_NAME, "OnListItemClick");
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "OnListItemClick");
 			
 			super.onListItemClick(listView, view, position, id);
 			
 			selectContactName = (String) this.getListAdapter().getItem(position);				
-			Log.d(CLASS_NAME, "Name: " + selectContactName);								
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Name: " + selectContactName);								
 			
 			/* If we like to use one subactivity for show better contact details
 			 * and select what phone number and/or mail addresses are used for 
@@ -180,7 +182,7 @@ public class AddBanned extends ListActivity {
 						
 									
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}		
@@ -194,7 +196,7 @@ public class AddBanned extends ListActivity {
 		
 		switch(requestCode) {
 			case ConfigAppValues.REQCODE_CONTACT_DETAILS:
-				Log.d(CLASS_NAME, "Valor retornado: " + resultCode);
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Valor retornado: " + resultCode);
 				if (resultCode == Activity.RESULT_OK)
 					arrayAdapter.remove(selectContactName);
 				break;
@@ -218,7 +220,7 @@ public class AddBanned extends ListActivity {
 		
 		switch (id) {
 			case WARNING_DIALOG:
-				Log.d(CLASS_NAME, "Create the WarningDialog for 1st time");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create the WarningDialog for 1st time");
 				dialog = warningDialog.getAlertDialog();				
 				break;
 			default:
@@ -252,7 +254,7 @@ public class AddBanned extends ListActivity {
 			
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));			
 		}
@@ -270,7 +272,7 @@ public class AddBanned extends ListActivity {
 			return true;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;
@@ -297,7 +299,7 @@ public class AddBanned extends ListActivity {
 			return false;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
 					e.getStackTrace()));
 			return false;			
@@ -322,11 +324,11 @@ public class AddBanned extends ListActivity {
 				arrayAdapter.clear();
 				
 				//Show the toast message
-				Toast.makeText(
+				if (QSToast.RELEASE) QSToast.r(
                 		ConfigAppValues.getContext(),
                 		numBanned + " " + ConfigAppValues.getContext().getString(
                 				R.string.menu_addall_toast_insertscount),
-                		Toast.LENGTH_SHORT).show();		
+                		Toast.LENGTH_SHORT);		
 			}
 		}
 	};

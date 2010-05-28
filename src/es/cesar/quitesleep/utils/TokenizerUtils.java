@@ -83,7 +83,7 @@ public class TokenizerUtils {
 			return null;
 			
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
@@ -114,28 +114,28 @@ public class TokenizerUtils {
 				 */
 				StringTokenizer tokenizer = new StringTokenizer(time, delim);
 			
-				Log.d(CLASS_NAME, "count tokens: " + tokenizer.countTokens());
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "count tokens: " + tokenizer.countTokens());
 				if (tokenizer.countTokens() == 2) {
 				
 					String hourString = tokenizer.nextToken();					
 					String minStrig = tokenizer.nextToken();
 					
-					Log.d(CLASS_NAME, "hourString: " + hourString + "\tminString: " + minStrig);
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "hourString: " + hourString + "\tminString: " + minStrig);
 					
 					int hour = Integer.valueOf(hourString);
 					String completeNewTime = String.valueOf(hour + increase) + ":" + minStrig;
 							
-					Log.d(CLASS_NAME, "new time: " + completeNewTime);
+					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "new time: " + completeNewTime);
 					return completeNewTime;
 				}				
 			} else {
-				Log.d(CLASS_NAME, "time == null");
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "time == null");
 				return null;
 			}
 			return null;
 									
 		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
 			return null;
