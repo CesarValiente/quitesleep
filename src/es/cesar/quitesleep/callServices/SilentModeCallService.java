@@ -71,7 +71,8 @@ public class SilentModeCallService extends Service {
 		//Stop the service by self way		
 		stopSelf();
 		
-		return Service.START_STICKY;
+		//before i used start_sticky
+		return Service.START_NOT_STICKY;
 	}
 	//------------------------------------------------------------------------//
 	

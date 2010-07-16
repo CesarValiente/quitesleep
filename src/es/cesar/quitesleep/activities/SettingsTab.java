@@ -35,7 +35,7 @@ import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.notifications.QuiteSleepNotification;
-import es.cesar.quitesleep.operations.StartStopServices;
+import es.cesar.quitesleep.operations.StartStopServicesOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.subactivities.About;
 import es.cesar.quitesleep.subactivities.Help;
@@ -214,7 +214,7 @@ public class SettingsTab extends Activity implements OnClickListener {
 		
 		try {
 			
-			boolean result = StartStopServices.startStopQuiteSleepService(
+			boolean result = StartStopServicesOperations.startStopQuiteSleepService(
 					serviceToggleButton.isChecked());
 			
 			if (serviceToggleButton.isChecked()) {			

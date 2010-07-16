@@ -66,7 +66,7 @@ private final String CLASS_NAME = getClass().getName();
 		
 		stopSelf();
 		
-		return Service.START_STICKY;
+		return Service.START_NOT_STICKY;
 	}
 	//------------------------------------------------------------------------//
 	

@@ -95,14 +95,16 @@ public class ContactDetails extends Activity implements OnClickListener {
 			/* Get the contactName passed from the parent activity to this, and
 			 * use for get a Contact object refferenced to this name.
 			 */
-			selectContactName = getIntent().getExtras().getString(ConfigAppValues.CONTACT_NAME);
+			selectContactName = getIntent().getExtras().getString(
+					ConfigAppValues.CONTACT_NAME);
 			
 			ClientDDBB clientDDBB = new ClientDDBB();
 			Contact contact = clientDDBB.getSelects().selectContactForName(selectContactName);
 									
 			if (contact != null && !contact.isBanned()) {
 				
-				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "selectContactName: " + selectContactName);								
+				if (QSLog.DEBUG_D)QSLog.d(
+						CLASS_NAME, "selectContactName: " + selectContactName);								
 				
 				createLayout();				
 				createHeader();

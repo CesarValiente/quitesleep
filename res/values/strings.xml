@@ -7,7 +7,7 @@
 
     QuiteSleep is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     QuiteSleep is distributed in the hope that it will be useful,
@@ -137,14 +137,15 @@
     without them, I could never have started and finished this wonderful adventure that has been the achievement of these studies.
     \nYou can write me in my personal email cesar.valiente@gmail.com for any questions or doubts or comment you want to do.
     \n\nQuiteSleep is completely FLOSS (Free Libre Open Source Software) and is distributed under
-    GNU GPLv2 license, which you can distribute it, modify it, copy it and use it as you wish.
+    GNU GPLv3 license, which you can distribute it, modify it, copy it and use it as you wish.
     QuiteSleep has a site in in GoogleCode where you can get the source code, which is
     http://code.google.com/p/quitesleep/ as well as a discussion group on GoogleGroups in 
     http://groups.google.com/group/QuiteSleep.
     \n\nI hope that QuiteSleep will be useful for you, is a full version, but like all software, improved.
     If you want to make any opinion such as you like, you don\'t like, it works bad, it works well, which is plenty, missing, bugs, etc..
     feel completely free to do in the group before commented, and if you are interested in the project and want to collaborate, in the project site you will can do.
-    \n\nThank you very much for using QuiteSleep!!</string>
+    \n\nThank you very much for using QuiteSleep!!
+    \n\n Update 07/16/2010: Translate into simplified Chinese and traditional Chinse thanks to http://goapk.com</string>
     <string name="information.help.title">Help</string>
     <string name="information.help.content">Sorry I\'m working in translate the Spanish help into English, as soon as i can, i will update QuiteSleep with this feature.
     \n\nBut don\'t worry QuiteSleep is very easy to use, you will not have any problem, believe me!</string>

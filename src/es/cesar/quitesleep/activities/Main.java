@@ -63,7 +63,8 @@ public class Main extends TabActivity {
 			if (ConfigAppValues.getContext() == null)
 				ConfigAppValues.setContext(this);
 						
-			if (QSLog.DEBUG_I)QSLog.i(CLASS_NAME, "SDK Version: " + String.valueOf(ConfigAppValues.getMinApiLevel()));					
+			if (QSLog.DEBUG_I)QSLog.i(CLASS_NAME, "SDK Version: " + 
+					String.valueOf(ConfigAppValues.getMinApiLevel()));					
 			
 			super.onCreate(savedInstanceState);
 			
@@ -144,7 +145,7 @@ public class Main extends TabActivity {
 			SyncContactsNew syncContacts = 
 				new SyncContactsNew(this, syncDialog);
 			
-			//Only if the db4o database is full contact data empty, we proceed
+			//Only if the db4o database is empty, we proceed
 			//with the synchronization, otherwise we don't anything
 			if (syncContacts.isTheFirstTime()) {
 				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Proceed with the synchronization for the first time");

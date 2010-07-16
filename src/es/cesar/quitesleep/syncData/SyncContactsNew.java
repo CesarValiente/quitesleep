@@ -25,7 +25,6 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import android.util.Log;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.ddbb.Mail;
@@ -133,10 +132,10 @@ public class SyncContactsNew extends Thread {
 				//get all contacts from de ddbb
 				Cursor contactCursor = context.getContentResolver().query(
 						ContactsContract.Contacts.CONTENT_URI, 
-						null,
-						null,
-						null,
-						null);
+						null,		// Which columns to return.
+						null,		// WHERE clause.
+						null,		// WHERE clause value substitution
+						null);		// Sort order.
 				
 				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Num contacts: " + contactCursor.getCount()); 
 				
@@ -164,10 +163,6 @@ public class SyncContactsNew extends Thread {
 				   //insert it in the db4o ddbb, else not insert.
 				   if (hasPhone.equals("1")) { 
 					   
-					   /* TODO: de momento al usarlo solo para hacer la sincronización
-					    * al inicio, voy a obviar futuras sincronizaciones para ver primero
-					    * si funciona todo correctamente.
-					    */
 					   //Create the db4o contact object.
 					   Contact contact = new Contact(contactId, contactName);		
 					   

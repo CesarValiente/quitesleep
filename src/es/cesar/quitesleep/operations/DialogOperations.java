@@ -161,7 +161,7 @@ public class DialogOperations {
 		
 		try {
 			
-			boolean result = StartStopServices.startStopSmsService(isChecked);
+			boolean result = StartStopServicesOperations.startStopSmsService(isChecked);
 			
 			if (isChecked) {
 				
@@ -212,7 +212,7 @@ public class DialogOperations {
 		
 		try {
 			
-			boolean result = StartStopServices.startStopMailService(isChecked);
+			boolean result = StartStopServicesOperations.startStopMailService(isChecked);
 			
 			if (isChecked) {
 				

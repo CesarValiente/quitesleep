@@ -7,7 +7,7 @@
 
     QuiteSleep is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     QuiteSleep is distributed in the hope that it will be useful,
@@ -139,7 +139,7 @@
     \nPuedes escribirme a mi mail personal cesar.valiente@gmail.com para cualquier consulta, duda o 
     comentario que quieras hacer.
     \n\nQuiteSleep es totalmente FLOSS (Free Libre Open Source Software) y se distribuye bajo
-    licencia GNU GPLv2, con lo que puedes distribuirlo, modificarlo, copiarlo y usarlo como desees.
+    licencia GNU GPLv3, con lo que puedes distribuirlo, modificarlo, copiarlo y usarlo como desees.
     QuiteSleep posee un sitio en GoogleCode en el que puedes obtener el código fuente, el cuál es
     http://code.google.com/p/quitesleep/,  así como un grupo de discusión en GoogleGroups en 
     http://groups.google.com/group/QuiteSleep. 
@@ -148,7 +148,8 @@
     que funciona bien, que le sobra, que le falta, errores, etc.. siéntete complétamente libre de hacerlo 
     en el grupo antes mencionado, y si te interesa el proyecto y quieres colaborar, 
     en el sitio del proyecto podrás hacerlo.
-    \n\nMuchas gracias por usar QuiteSleep!!!!</string>       	
+    \n\nMuchas gracias por usar QuiteSleep!!!!
+    \n\nActualización 16/07/2010: Traducción al Chino simplificado y Chino tradicional cortesía de http://goapk.com</string>       	
    	<string name="information.help.title">Ayuda</string>
    	<string name="information.help.content">Usar QuiteSleep es muy facil, una vez instalada la
    	aplicación podrás ver como esta consta de cuatro pestañas, a continuación voy a ir explicando

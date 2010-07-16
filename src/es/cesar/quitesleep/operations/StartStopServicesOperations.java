@@ -19,7 +19,6 @@
 
 package es.cesar.quitesleep.operations;
 
-import android.util.Log;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
@@ -32,7 +31,7 @@ import es.cesar.quitesleep.utils.QSLog;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class StartStopServices {
+public class StartStopServicesOperations {
 	
 	private static final String CLASS_NAME = "es.cesar.quitesleep.operations.StartStopService";
 	
