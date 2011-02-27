@@ -20,16 +20,17 @@
 package es.cesar.quitesleep.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -39,8 +40,8 @@ import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.dialogs.EndTimeDialog;
 import es.cesar.quitesleep.dialogs.StartTimeDialog;
+import es.cesar.quitesleep.interfaces.IDialogs;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
-import es.cesar.quitesleep.subactivities.About;
 import es.cesar.quitesleep.subactivities.Help;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
@@ -55,8 +56,10 @@ import es.cesar.quitesleep.utils.QSToast;
 public class ScheduleTab extends Activity implements OnClickListener {		
 	
 	private final String CLASS_NAME = getClass().getName();
-	private final int START_TIME_DIALOG = 0;
-	private final int END_TIME_DIALOG = 1;
+	private final int START_TIME_DIALOG 	= 0;
+	private final int END_TIME_DIALOG 		= 1;
+	private final int ABOUT_DIALOG 			= 2;
+	private final int HELP_DIALOG			= 3;
 	
 	//Ids for the button widgets
 	private final int startTimeButtonId = R.id.schedule_button_startTime;
@@ -192,11 +195,45 @@ public class ScheduleTab extends Activity implements OnClickListener {
 				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create the EndTimeDialog for 1st time");				
 				dialog = endTimeDialog.getTimePickerDialog();
 				break;
+			case ABOUT_DIALOG:
+				dialog = showWebviewDialog(IDialogs.ABOUT_URI);
+				break;	
+			case HELP_DIALOG:
+				dialog = showWebviewDialog(IDialogs.HELP_SCHEDULE_URI);
+				break;	
 			default:
 				dialog = null;
 		}
 		
 		return dialog;	
+	}
+	
+	/**
+	 * Create the webview dialog using the file (uri) specified to show the information.
+	 * 
+	 * @return
+	 */
+	public Dialog showWebviewDialog(String uri) {
+		
+		try {
+			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+              WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
+              webView.getSettings().setJavaScriptEnabled(true);              
+              
+              webView.loadUrl(uri);
+
+              return new AlertDialog.Builder(this)
+                  .setCustomTitle(null)
+                  .setPositiveButton(android.R.string.ok, null)
+                  .setView(contentView)
+                  .create();
+              
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return null;
+		}
 	}
 	
 	/**
@@ -264,12 +301,10 @@ public class ScheduleTab extends Activity implements OnClickListener {
 			
 			switch (item.getItemId()) {
 				case aboutMenuId:
-					Intent intentAbout = new Intent(this, About.class);
-					startActivityForResult(intentAbout, ConfigAppValues.LAUNCH_ABOUT);
+					showDialog(ABOUT_DIALOG);
 					break;
 				case helpMenuId:
-					Intent intentHelp = new Intent(this, Help.class);
-					startActivityForResult(intentHelp, ConfigAppValues.LAUNCH_ABOUT);
+					showDialog(HELP_DIALOG);
 					break;
 				default:
 					break;

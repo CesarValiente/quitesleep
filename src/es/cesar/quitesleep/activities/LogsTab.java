@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.os.Bundle;
@@ -32,12 +33,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.ddbb.CallLog;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.dialogs.WarningDialog;
+import es.cesar.quitesleep.interfaces.IDialogs;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
@@ -49,16 +53,18 @@ import es.cesar.quitesleep.utils.QSToast;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class LogsTab extends ListActivity {
+public class LogsTab extends ListActivity implements IDialogs {
 
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
 	final private int WARNING_REMOVE_DIALOG 	= 	0;
 	final private int WARNING_REFRESH_DIALOG 	= 	1;
+	final private int HELP_DIALOG 		= 2;
 
 	//Widgets Ids
 	private final int removeCallLogMenuId = R.id.menu_calllog_remove;
 	private final int refreshCallLogMenuId = R.id.menu_calllog_refresh;
+	private final int helpCallLogMenuId = R.id.menu_information_help;
 	
 	//Widgets
 	private WarningDialog warningRemoveDialog;
@@ -169,11 +175,42 @@ public class LogsTab extends ListActivity {
 			case WARNING_REFRESH_DIALOG:				
 				dialog = warningRefreshDialog.getAlertDialog();				
 				break;
+			case HELP_DIALOG:
+				dialog = showWebviewDialog(IDialogs.HELP_LOGS_URI);
+				break;
 			default:
 				dialog = null;
 		}
 		
 		return dialog;	
+	}
+	
+	/**
+	 * Create the webview dialog using the file (uri) specified to show the information.
+	 * 
+	 * @return
+	 */
+	public Dialog showWebviewDialog(String uri) {
+		
+		try {
+			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+              WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
+              webView.getSettings().setJavaScriptEnabled(true);              
+              
+              webView.loadUrl(uri);
+
+              return new AlertDialog.Builder(this)
+                  .setCustomTitle(null)
+                  .setPositiveButton(android.R.string.ok, null)
+                  .setView(contentView)
+                  .create();
+              
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return null;
+		}
 	}
 	
 	/**
@@ -201,9 +238,7 @@ public class LogsTab extends ListActivity {
 					
 				default:
 					break;
-			}
-			
-			
+			}						
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
@@ -245,6 +280,9 @@ public class LogsTab extends ListActivity {
 					break;					
 				case refreshCallLogMenuId:
 					showDialog(WARNING_REFRESH_DIALOG);
+					break;
+				case helpCallLogMenuId:
+					showDialog(HELP_DIALOG);
 					break;
 				default:
 					break;

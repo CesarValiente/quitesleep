@@ -6,8 +6,7 @@
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/additionnal.jar"/>
 	<classpathentry kind="lib" path="lib/db4o-7.12.132.14217-core-java5.jar"/>
-	<classpathentry kind="lib" path="lib/db4o-7.12.132.14217-cs-java5.jar"/>
-	<classpathentry kind="lib" path="lib/db4o-7.12.132.14217-cs.optional-java5.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/db4o-7.12.132.14217-cs-java5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

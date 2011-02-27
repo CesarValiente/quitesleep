@@ -19,24 +19,21 @@
 
 package es.cesar.quitesleep.receivers;
 
-import android.app.ActivityManager;
+import java.lang.reflect.Method;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.Vibrator;
 import android.telephony.PhoneStateListener;
-import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
-import android.util.Log;
+
+import com.android.internal.telephony.ITelephony;
+
+import es.cesar.quitesleep.ddbb.BlockCallsConf;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Settings;
 import es.cesar.quitesleep.listeners.MyPhoneStateListener;
 import es.cesar.quitesleep.notifications.QuiteSleepNotification;
-import es.cesar.quitesleep.operations.IncomingCallOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
@@ -70,13 +67,14 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		
 		//-------------		LISTEN FOR BOOT COMPLETED		------------------//
 		if (intent.getAction().equals(BOOT_COMPLETED)) {
-			listenBootCompleted(context);
+			listenBootCompleted(context);			
 		}		
 		
 		//----------		LISTEN FOR INCOMING CALLS		------------------//		
-		else if (intent.getAction().equals(PHONE_STATE)) {
-			listenIncomingCalls(context);
-			
+		else if (intent.getAction().equals(PHONE_STATE)) {					
+
+			//ITelephony telephonyService = createITelephonyImp();
+			listenIncomingCalls(context);			
 		}
 		
 		//-----------		LISTEN FOR INCOMING SMS		----------------------//
@@ -107,6 +105,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 				if (ConfigAppValues.getQuiteSleepServiceState()) {
 					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Show notification x ConfigAppValues: " + ConfigAppValues.getQuiteSleepServiceState());
 					QuiteSleepNotification.showNotification(context, true);
+					getBlockCallsConf(null);
 				}
 			}
 			else {
@@ -118,6 +117,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 					if (settings.isQuiteSleepServiceState()) {
 						if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Show notification x Settings: " + settings.isQuiteSleepServiceState());
 						QuiteSleepNotification.showNotification(context, true);
+						getBlockCallsConf(clientDDBB);
 					}
 				}
 				else {
@@ -141,22 +141,50 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	 * Listen for incoming calls and use the listener for.
 	 * @param context
 	 */
-	private synchronized void listenIncomingCalls (Context context) { 
+	private synchronized void listenIncomingCalls (
+			Context context) { 
 		
-		try {							
-			
-			MyPhoneStateListener phoneListener = new MyPhoneStateListener(context);
+		try {																
+			MyPhoneStateListener phoneListener = new MyPhoneStateListener(
+					context);
 			TelephonyManager telephony = 
 				(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-			telephony.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-																					
+			telephony.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);																 
+			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));			
 		}		
 	}
+		
 	
+	/**
+	 * This function gets the blockCallsConf object from the ddbb.
+	 * @param clientDDBB
+	 */
+	private void getBlockCallsConf (ClientDDBB clientDDBB) {
+		
+		try {
+		
+			boolean flagDDBB = false;
+			if (clientDDBB == null) {
+				clientDDBB = new ClientDDBB();
+				flagDDBB = true;
+			}
+			
+			BlockCallsConf blockCallsConf = clientDDBB.getSelects().selectBlockCallConf();			
+			ConfigAppValues.setBlockCallsConf(blockCallsConf);
+							
+			if (flagDDBB)
+				clientDDBB.close();
+						
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+		}
+	}
 	
 	/**
 	 * Listen the incoming SMS.
@@ -198,5 +226,6 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 					e.getStackTrace()));			
 		}
 	}
-	*/
+	*/					
+	
 }

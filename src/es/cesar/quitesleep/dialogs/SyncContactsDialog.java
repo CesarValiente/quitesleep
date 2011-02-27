@@ -21,6 +21,7 @@ package es.cesar.quitesleep.dialogs;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Handler;
 import es.cesar.quitesleep.R;
 
 /**
@@ -38,7 +39,7 @@ public class SyncContactsDialog {
 	final int REFRESH_LIST = R.string.synccontactsdialog_message_refresh_label;
 	
 	private ProgressDialog progressDialog;
-	private String messageDialog = "";
+	private String messageDialog = "";	
 	
 	
 	//--------	Getters & Setters	--------------------------------------//
@@ -55,29 +56,30 @@ public class SyncContactsDialog {
 	public void setMessageDialog (String messageDialog) {
 		this.messageDialog = messageDialog;
 	}
+	
 	//--------------------------------------------------------------------//
 	
 	/**
 	 * Constructor without parameters. 
 	 */
 	public SyncContactsDialog () {
-			
+					
 	}
 	
 	
 	/**
-	 * Show the dialog with the first time synchronization message		
+	 * Show message regarding first synchronization		
 	 * @param context
 	 */
 	public void showDialogFirstTime (Context context) {
 	
-		messageDialog = context.getString(FIRST_TIME_SYNC);
+		messageDialog = context.getString(FIRST_TIME_SYNC);		
 		showDialog(context);
 	}
-	
-	
+		
 	/**
-	 * Show the dialog with the any time synchronization message
+	 * Show message regarding any synchronization.
+	 * At the moment (24/02/2010) is not used.
 	 * @param context
 	 */
 	public void showDialogAnyTime (Context context) {
@@ -85,12 +87,17 @@ public class SyncContactsDialog {
 		messageDialog = context.getString(ANY_TIME_SYNC);
 		showDialog(context);
 	}
-	
-	
+		
+	/**
+	 * Show message regarding refreshing synchronization.
+	 * 
+	 * @param context
+	 */
 	public void showDialogRefreshList (Context context) {
 		messageDialog = context.getString(REFRESH_LIST);
 		showDialog(context);
 	}
+	
 	
 	/**
 	 * Show the dialog with other synchronization message that we like
@@ -107,9 +114,10 @@ public class SyncContactsDialog {
 	 * Show the synchronization message
 	 * @param context
 	 */
-	private void showDialog (Context context) {
+	private void showDialog (Context context) {		
 		
 		progressDialog = ProgressDialog.show(context, "", messageDialog, true);
+		
 	}
 	
 	/**

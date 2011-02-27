@@ -27,6 +27,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -69,8 +70,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 	private String selectContactName;
 		
 	//Ids for button widgets
-	private final int addContactButtonId 	= 	1;
-	private final int cancelButtonId 		= 	2;		
+	private final int addContactButtonId 	= 	1;		
 	
 	//Ids for colors
 	private final int backgroundColor 		=	R.color.black;
@@ -80,10 +80,18 @@ public class ContactDetails extends Activity implements OnClickListener {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);						
-		
-		initDynamicLayout();												
+		try{
+			super.onCreate(savedInstanceState);
+			
+			initDynamicLayout();
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+		}
 	}
+	
 	
 	/**
 	 * Create and initialize the dynamic layout and put some widgets on it
@@ -312,7 +320,7 @@ public class ContactDetails extends Activity implements OnClickListener {
 	private void addButtons () {
 		
 		try {			
-			addDividerBlack();
+			addDividerBlue();
 						
 			Button addContactButton = new Button(this);
 			addContactButton.setText(R.string.contactdetails_button_addcontact);
@@ -323,17 +331,23 @@ public class ContactDetails extends Activity implements OnClickListener {
 			
 			linearLayout.addView(addContactButton);
 			
-			addDividerBlue();
 			
+			
+			/* When I used cancel button, I leave this to remember how build
+			 * this type of button. 
+			 */
+			/*
 			Button cancelButton = new Button(this);
 			cancelButton.setText(R.string.contactdetails_button_cancel);
 			cancelButton.setId(cancelButtonId);
 			cancelButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.back, 0, 0, 0);
 			cancelButton.setId(cancelButtonId);
 			cancelButton.setOnClickListener(this);
-						
 			
 			linearLayout.addView(cancelButton);
+			*/			
+			
+			
 			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)Log.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
@@ -358,11 +372,14 @@ public class ContactDetails extends Activity implements OnClickListener {
 					setResult(Activity.RESULT_OK);
 					finish();
 					break;
-					
+				
+				/*The same reason to comment the build cancel button.
+				 * 
 				case cancelButtonId:
 					setResult(Activity.RESULT_CANCELED);
 					finish();
 					break;
+				*/	
 					
 				default:
 					break;

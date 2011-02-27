@@ -24,13 +24,19 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
+import es.cesar.quitesleep.ddbb.BlockCallsConf;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.ddbb.Mail;
+import es.cesar.quitesleep.ddbb.MuteOrHangUp;
 import es.cesar.quitesleep.ddbb.Phone;
 import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.dialogs.SyncContactsDialog;
+import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
 import es.cesar.quitesleep.utils.TokenizerUtils;
@@ -44,10 +50,13 @@ import es.cesar.quitesleep.utils.TokenizerUtils;
 public class SyncContactsNew extends Thread {
 	
 	final private String CLASS_NAME = getClass().getName(); 
-		
+	
+	final private String NUM_CONTACTS = "NUM_CONTACTS";
+	
 	private final Context context;
 	private int insertContact = 0;
 	private SyncContactsDialog syncDialog;	
+	private Handler handler;
 		
 	
 	//--------------		Getters & Setters		-------------------------//
@@ -64,6 +73,13 @@ public class SyncContactsNew extends Thread {
 	public void setSyncDialog(SyncContactsDialog syncDialog) {
 		this.syncDialog = syncDialog;
 	}		
+	
+	public Handler getHandler () {
+		return handler;
+	}	
+	public void setHandler (Handler handler) {
+		this.handler = handler;
+	}
 	//----------------------------------------------------------------------//
 
 	/**
@@ -73,54 +89,74 @@ public class SyncContactsNew extends Thread {
 	 * 
 	 * @param context
 	 * @param syncDialog
+	 * @param handler
 	 */
 	public SyncContactsNew (
 			Context context, 
-			SyncContactsDialog syncDialog) {
+			SyncContactsDialog syncDialog,
+			Handler handler) {
 		
 		this.context = context;
-		this.syncDialog = syncDialog;		
+		this.syncDialog = syncDialog;
+		this.handler = handler;
+	}	
+	
+	/**
+	 * Start the thread with the specified operations
+	 */
+	public void run () {
+		
+		createEssentialObjects();
+		contactsSync();
 	}
 	
 	
 	/**
-	 * This funcion check if the db4o database is full contacts empty, so indicate
-	 * that is the first time too run the application.
-	 * 
-	 * @return				True or false if the db4o is contact empty or not
-	 * @see					boolean
-	 * @throws 				Exception
+	 * This function creates the essential objects in the ddbb before to begin
+	 * with the contacts synchronization.
 	 */
-	public boolean isTheFirstTime () throws Exception{
+	private void createEssentialObjects () {
 		
 		try {
-			
+	
 			ClientDDBB clientDDBB = new ClientDDBB();
-			List<Contact> contactList = clientDDBB.getSelects().selectAllContacts();
-			clientDDBB.close();
 			
-			if (contactList != null && contactList.size()>0)
-				return false;
-			else
-				return true;
+			//MuteOrHangup object initialization
+			if (clientDDBB.getSelects().getNumberOfMuteOrHangup() == 0) {
+				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Inicializando mute or hangup");
+				MuteOrHangUp muteOrHangUp = new MuteOrHangUp();
+				clientDDBB.getInserts().insertMuteOrHangUp(muteOrHangUp);
+				ConfigAppValues.setMuteOrHangup(false);
+			}
+			
+			//BlockCallsConf object initialization
+			if (clientDDBB.getSelects().getNumberOfBlockCallsConf() == 0) {
+				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Inicializando blockcallsconf");
+				BlockCallsConf blockCallsConf = new BlockCallsConf();
+				clientDDBB.getInserts().insertBlockCallsConf(blockCallsConf);
+				ConfigAppValues.setBlockCallsConf(blockCallsConf);				
+			}
+			
+			clientDDBB.commit();			
+			clientDDBB.close();						
 			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
+					e.toString(),
 					e.getStackTrace()));
-			throw new Exception();
 		}
 	}
 	
 	/**
 	 * Synchronize the SQLite data contacts, with at least one phone number,
 	 * with the DB4O database.
-	 * 
-	 * @param 			context
+	 *  
 	 * @see				insertsContacts after run and finish this function for
 	 * 					check how many contacts are synchronized.
 	 */
-	public void run () {
+	private void contactsSync () {
 		
 		try {
 			
@@ -139,7 +175,7 @@ public class SyncContactsNew extends Thread {
 				
 				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Num contacts: " + contactCursor.getCount()); 
 				
-				//Whule startCursor has content
+				//While startCursor has content
 				while (contactCursor.moveToNext()) {
 					
 					String contactName = contactCursor.getString(contactCursor.getColumnIndex(
@@ -262,6 +298,13 @@ public class SyncContactsNew extends Thread {
 		}finally {
 			//Hide and dismiss de synchronization dialog
 			syncDialog.stopDialog(context);			
+			
+			//Create and send the numBanned message to the handler in gui main thread
+			Message message = handler.obtainMessage();
+            Bundle bundle = new Bundle();
+            bundle.putInt(NUM_CONTACTS, insertContact);
+            message.setData(bundle);
+            handler.sendMessage(message);
 		}
 	}
 	

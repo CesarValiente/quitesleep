@@ -19,7 +19,6 @@
 
 package es.cesar.quitesleep.utils;
 
-import android.util.Log;
 
 /**
  * 

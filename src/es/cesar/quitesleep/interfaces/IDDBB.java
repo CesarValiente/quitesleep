@@ -29,7 +29,7 @@ import android.os.Environment;
  */
 public interface IDDBB {
 		
-	//For the sdcard io
+	//For the sdcard I/O
 	public final String SDCARD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 	public final String QUITESLEEP_PATH = "quitesleep";
 	
@@ -38,10 +38,10 @@ public interface IDDBB {
 	public final String DDBB_FILE = "quitesleep.db";
 			
 	
-	//Constante para especificar el nivel de profundidad de busqueda en un 
-	//objeto
+	//Specify the deep down in the objects search on db4o
 	public final int DEEP = 3;
 	
+	//Global semaphore for all ddbb functions
 	public static final String SEMAPHORE = "SEMAPHORE";		
 	
 }

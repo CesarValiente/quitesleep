@@ -43,7 +43,7 @@ public class WarningDialog {
 
 	private final String CLASS_NAME = getClass().getName();
 			
-	private int alertDialogImage = R.drawable.dialog_warning;
+	private int alertDialogImage;
 	
 	private AlertDialog alertDialog;
 	private int operationType;
@@ -120,43 +120,55 @@ public class WarningDialog {
 	}
 	//------------------------------------------------------------------------//
 	
-	
-	
-	
-	
-	
+					
 	/**
-	 * Get the title and message for each type of operation
+	 * Set title, message and dialog icon, for each type of operation
 	 */
-	private void getLabelsOperationType () {
+	private void setLabelsOperationType () {
 		
-		try {
-			
-			title = R.string.warningdialog_caution_label;
+		try {						
 			
 			switch (operationType) {
 			
 				case ConfigAppValues.WARNING_ADD_ALL_CONTACTS:
-					message = R.string.warningdialog_contactOperations_label;
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
+					message = R.string.warningdialog_contactOperations_label;				
 					break;
 				case ConfigAppValues.WARNING_REMOVE_ALL_CONTACTS:
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
 					message = R.string.warningdialog_contactOperations_label;
 					break;
 				case ConfigAppValues.WARNING_SYNC_CONTACTS:
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
 					message = R.string.warningdialog_synccontact_label;
 					break;
 				case ConfigAppValues.WARNING_SMS_ACTION:
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
 					message = R.string.warningdialog_sms_label;
 					break;
 				case ConfigAppValues.WARNING_MAIL_ACTION:
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
 					message = R.string.warningdialog_mail_label;
 					break;
 				case ConfigAppValues.WARNING_REMOVE_ALL_CALL_LOGS:
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
 					message = R.string.warningdialog_calllog_remove_label;
 					break;
 				case ConfigAppValues.WARNING_REFRESH_CALL_LOG:
+					alertDialogImage = R.drawable.dialog_warning;
+					title = R.string.warningdialog_caution_label;
 					message = R.string.warningdialog_calllog_refresh_label;
 					break;
+				case ConfigAppValues.WARNING_FIRST_TIME:
+					alertDialogImage = R.drawable.quitesleep_statusbar;
+					title = R.string.warningdialog_firstime_title;
+					message = R.string.warningdialog_firstime_message;
 				default:
 					break;
 			}
@@ -169,7 +181,8 @@ public class WarningDialog {
 	}
 	
 	/**
-	 * 
+	 * This function perform the call to the appropriate operation dependos on
+	 * the operation specified in the operationType attribute.
 	 */
 	private void callOperationType () {
 		
@@ -183,8 +196,8 @@ public class WarningDialog {
 				case ConfigAppValues.WARNING_REMOVE_ALL_CONTACTS:		
 					DialogOperations.removeAllContacts(context, arrayAdapter, handler);
 					break;
-				case ConfigAppValues.WARNING_SYNC_CONTACTS:
-					DialogOperations.syncContactsRefresh();
+				case ConfigAppValues.WARNING_SYNC_CONTACTS:				
+					DialogOperations.syncContactsRefresh(context);
 					break;
 				case ConfigAppValues.WARNING_SMS_ACTION:
 					DialogOperations.checkSmsService(context, toggleButtonIsChecked);
@@ -198,6 +211,8 @@ public class WarningDialog {
 				case ConfigAppValues.WARNING_REFRESH_CALL_LOG:
 					DialogOperations.refreshAllCallLogs(context, arrayAdapter, handler);
 					break;
+				case ConfigAppValues.WARNING_FIRST_TIME:
+					DialogOperations.synchronizeFirstTime(context, handler);
 				default:
 					break;
 			}
@@ -213,59 +228,68 @@ public class WarningDialog {
 	 * Constructor with the basic parameter
 	 * @param activity
 	 */
-	public WarningDialog (final Activity activity, int operationType) {
+	public WarningDialog (final Activity activity, final int operationType) {
 				
-		this.operationType 	= 		operationType;		
+		/* set the operation type and the new context for this warning dialog and to
+		 * use after in other operations (like progressDialogs where we find errors about
+		 * the previously killed activity.
+		 * With this, it runs well ;-) 
+		 */
+		this.operationType = operationType;				
+		this.context = activity;
 		
-		getLabelsOperationType();
+		setLabelsOperationType();
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 								
 		builder.setIcon(alertDialogImage);
-		builder.setTitle(title)
-				.setMessage(message);				
+		builder.setTitle(title).setMessage(message);				
 				
-				if ((operationType != ConfigAppValues.WARNING_SMS_ACTION) &&
-						(operationType != ConfigAppValues.WARNING_MAIL_ACTION))  {
-					
-					builder.setCancelable(false);
-					
-					builder.setPositiveButton(
-		    		   R.string.warningdialog_yes_label, 
-		    		   new DialogInterface.OnClickListener() {
+		if ((operationType != ConfigAppValues.WARNING_SMS_ACTION) &&
+				(operationType != ConfigAppValues.WARNING_MAIL_ACTION))  {
+			
+			builder.setCancelable(false);
+			
+			builder.setPositiveButton(
+    		   R.string.warningdialog_yes_label, 
+    		   new DialogInterface.OnClickListener() {
+    			   
+    			   public void onClick(DialogInterface dialog, int id) {
+    				   Log.d(CLASS_NAME, "YES");		            		                		              
+                		
+    				   callOperationType();		                		                           
+    			   }
+    		   });
+			builder.setNegativeButton(
+    		   R.string.warningdialog_no_label, 
+    		   new DialogInterface.OnClickListener() {
+    			   
+    			   public void onClick(DialogInterface dialog, int id) {
+        	   
+    				   Log.d(CLASS_NAME, "NO");
+               
+    				   dialog.cancel();		
+    				   
+    				   if (operationType == ConfigAppValues.WARNING_FIRST_TIME)
+    					   activity.finish();
+    				   
+    				   //no debemos hacer nada extra.
+    			   }
+    		   });		
+			
+		}else {
+			builder.setNeutralButton(
+				R.string.warningdialog_ok_label, 
+				new DialogInterface.OnClickListener() {
 		    			   
-		    			   public void onClick(DialogInterface dialog, int id) {
-		    				   Log.d(CLASS_NAME, "YES");		            		                		              
-		                		
-		    				   callOperationType();		                		                           
-		    			   }
-		    		   });
-					builder.setNegativeButton(
-		    		   R.string.warningdialog_no_label, 
-		    		   new DialogInterface.OnClickListener() {
-		    			   
-		    			   public void onClick(DialogInterface dialog, int id) {
-		        	   
-		    				   Log.d(CLASS_NAME, "NO");
-		               
-		    				   dialog.cancel();		               
-		    				   //no debemos hacer nada extra.
-		    			   }
-		    		   });		
-					
-				}else {
-					builder.setNeutralButton(
-						R.string.warningdialog_ok_label, 
-						new DialogInterface.OnClickListener() {
-				    			   
-							public void onClick(DialogInterface dialog, int id) {
-								
-								Log.d(CLASS_NAME, "OK");
-								callOperationType();		               
-								
-				    		}
-						});							
-				}
+					public void onClick(DialogInterface dialog, int id) {
+						
+						Log.d(CLASS_NAME, "OK");
+						callOperationType();		               
+						
+		    		}
+				});							
+		}
 		
 		alertDialog = builder.create();		
 	}

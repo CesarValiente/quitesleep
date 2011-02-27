@@ -123,24 +123,7 @@
   			android:drawableLeft="@drawable/start_service"
   			android:id="@+id/mailsettings.togglebutton.mailservice"
   			android:textOn="@string/mailsettings.togglebutton.stop_mail"
-  			android:textOff="@string/mailsettings.togglebutton.start_mail"/>
-			
-		<View
-			android:id="@+id/mailsettings.divider3"
-			android:layout_width="fill_parent"		
-			android:layout_height="3dip"		
-			android:layout_below="@id/mailsettings.togglebutton.mailservice"
-			android:background="@drawable/gradient_blue"
-			android:layout_marginTop="5dp"		
-			android:layout_marginBottom="5dp" />
-			
-		<Button  	  
-  			android:layout_width="fill_parent"
-  			android:layout_height="wrap_content"
-  			android:layout_below="@id/mailsettings.divider3"
-  			android:drawableLeft="@drawable/back"
-  			android:text="@string/mailsettings.button.cancel"
-		  	android:id="@+id/mailsettings.button.cancel" />
+  			android:textOff="@string/mailsettings.togglebutton.start_mail"/>					
 		
     </RelativeLayout>
 </ScrollView>

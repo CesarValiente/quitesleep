@@ -79,27 +79,8 @@
   			android:drawableLeft="@drawable/start_service"
   			android:id="@+id/smssettings.togglebutton.smsservice"
   			android:textOn="@string/smssettings.togglebutton.stop_sms"
-  			android:textOff="@string/smssettings.togglebutton.start_sms"/>
-			
-						
-		<View
-			android:id="@+id/smssettings.divider3"
-			android:layout_width="fill_parent"		
-			android:layout_height="3dip"		
-			android:layout_below="@id/smssettings.togglebutton.smsservice"
-			android:background="@drawable/gradient_blue"
-			android:layout_marginTop="5dp"		
-			android:layout_marginBottom="5dp" />
-			
-		<Button  	  
-  			android:layout_width="fill_parent"
-  			android:layout_height="wrap_content"
-  			android:layout_below="@id/smssettings.divider3"
-  			android:drawableLeft="@drawable/back"
-  			android:text="@string/smssettings.button.cancel"
-		  	android:id="@+id/smssettings.button.cancel" />
-  		
-	
+  			android:textOff="@string/smssettings.togglebutton.start_sms"/>										
+  			
 	</RelativeLayout>
 </ScrollView>
 

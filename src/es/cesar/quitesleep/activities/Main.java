@@ -20,20 +20,30 @@
 package es.cesar.quitesleep.activities;
 
 
+import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TabHost;
+import android.widget.Toast;
 import android.widget.TabHost.TabSpec;
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.ddbb.BlockCallsConf;
+import es.cesar.quitesleep.ddbb.ClientDDBB;
+import es.cesar.quitesleep.ddbb.MuteOrHangUp;
 import es.cesar.quitesleep.dialogs.SyncContactsDialog;
+import es.cesar.quitesleep.dialogs.WarningDialog;
+import es.cesar.quitesleep.interfaces.IDialogs;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.syncData.SyncContactsNew;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
+import es.cesar.quitesleep.utils.QSToast;
 
 /**
  * 
@@ -49,6 +59,11 @@ import es.cesar.quitesleep.utils.QSLog;
 public class Main extends TabActivity {
 	
 	final String CLASS_NAME = getClass().getName();
+	
+	final private int FIRST_TIME_DIALOG 	=	1;
+	
+	
+	private WarningDialog firstTimeDialog;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -70,9 +85,17 @@ public class Main extends TabActivity {
 			
 			//Create the app top bar
 			createAppBar();
-					
+			
+			//If is the first time QuiteSleep is running, then performs sync operations.
+			if (isTheFirstTime()) {
+				//We instantiate firstTimeDialog 
+				firstTimeDialog = new WarningDialog(this, ConfigAppValues.WARNING_FIRST_TIME);
+						
+				showDialog(FIRST_TIME_DIALOG);
+			}
+			
 			//Sync the databases if the db4o database is empty (first time run the app)
-			syncDatabases();				
+			//syncDatabases();				
 			
 			//Resource object to get Drawables
 			Resources resources = getResources();
@@ -131,36 +154,83 @@ public class Main extends TabActivity {
 		}
 	}
 	
+	
 	/**
-	 * Sync the contacts data between SQLite and DB4O databases the first time
-	 * if the db4o database is empty.
-	 * It is done used one thread for it.
+	 * Create the activity dialogs used for it
+	 * 
+	 * @param id
+	 * @return the dialog for the option specified
+	 * @see Dialog
 	 */
-	private void syncDatabases () {
+	@Override
+	protected Dialog onCreateDialog (int id) {
 		
-		try {
-			
-			SyncContactsDialog syncDialog = new SyncContactsDialog();		
-			
-			SyncContactsNew syncContacts = 
-				new SyncContactsNew(this, syncDialog);
-			
-			//Only if the db4o database is empty, we proceed
-			//with the synchronization, otherwise we don't anything
-			if (syncContacts.isTheFirstTime()) {
-				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Proceed with the synchronization for the first time");
-				syncDialog.showDialogFirstTime(this);
-				syncContacts.start();
-			}else
-				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "The db4o database already contains data contacts");
-											
+		Dialog dialog;
+		
+		switch (id) {		
+			case FIRST_TIME_DIALOG:
+				dialog = firstTimeDialog.getAlertDialog();
+				break;
+			default:
+				dialog = null;
+		}
+		
+		return dialog;	
+	}
+	
+	/**
+	 * This function prepares the dialog with the passed parameters.
+	 */
+	protected void onPrepareDialog (int idDialog, Dialog dialog) {
+		
+		try {		
+			switch (idDialog) {
+				case FIRST_TIME_DIALOG:
+					firstTimeDialog.setContext(this);					
+					firstTimeDialog.setHandler(handler);										
+					break;
+					
+				default:
+					break;
+			}						
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
-					e.getStackTrace()));
-			throw new Error();
+					e.getStackTrace()));			
 		}
 	}
+	
+	/**
+	 * This funcion check if the db4o database is full contacts empty, so indicate
+	 * that is the first time too run the application.
+	 * 
+	 * @return				True or false if the db4o is contact empty or not
+	 * @see					boolean
+	 * @throws 				Exception
+	 */
+	private boolean isTheFirstTime () throws Exception{
+		
+		try {
+			
+			ClientDDBB clientDDBB = new ClientDDBB();
+		
+			int numContacts = clientDDBB.getSelects().getNumberOfContacts();
+			clientDDBB.close();
+			
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "NumContacts: " + numContacts);
+			
+			if (numContacts == 0)
+				return true;
+			else 
+				return false;
+								
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			throw new Exception();
+		}
+	}	
 	
 	/**
 	 * Create the Contacts Tab
@@ -317,5 +387,22 @@ public class Main extends TabActivity {
 			throw new Exception(e.toString());
 		}
 	}	
+	
+
+	/**
+	 * This handler manages the action regarding to check if the user click yes 
+	 * over the confirm action that realize the first database synchronization
+	 * or not.
+	 */
+	public final Handler handler = new Handler() {
+		public void handleMessage(Message message) {
+											
+			final String NUM_CONTACTS = "NUM_CONTACTS";
+			
+			int numContacts = message.getData().getInt(NUM_CONTACTS);
+			
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Num contacts sync 1st time: " + numContacts);								
+		}
+	};
 
 }

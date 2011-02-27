@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,40 +55,69 @@ public class SmsSettings extends Activity implements OnClickListener {
 	//Ids for widgets
 	final int smsEditTextId = R.id.smssettings_edittext_savesms;
 	final int saveSmsButtonId = R.id.smssettings_button_savesms;	
-	final int smsServiceToggleButtonId = R.id.smssettings_togglebutton_smsservice;
-	final int cancelButtonId = R.id.smssettings_button_cancel;
+	final int smsServiceToggleButtonId = R.id.smssettings_togglebutton_smsservice;	
 	
 	//Widgets
 	private EditText smsEditText;
 	private Button saveSmsButton;
-	private ToggleButton smsServiceToggleButton;
-	private Button cancelButton;
+	private ToggleButton smsServiceToggleButton;	
 	private WarningDialog warningDialog;
 	
 	
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.smssettings);
+		try {
+					
+			super.onCreate(savedInstanceState);
+			
+			createAppBar();
+			
+			setContentView(R.layout.smssettings);
+						
+			smsEditText = (EditText)findViewById(smsEditTextId);
+			saveSmsButton = (Button)findViewById(saveSmsButtonId);
+			smsServiceToggleButton = (ToggleButton)findViewById(smsServiceToggleButtonId);		
+			
+			saveSmsButton.setOnClickListener(this);
+			smsServiceToggleButton.setOnClickListener(this);			
+			
+			warningDialog = new WarningDialog(
+					this, 
+					ConfigAppValues.WARNING_SMS_ACTION);				
+			
+			//Put in the widgets the prevoious data saved into ddbb.
+			getDefaultValues();
 		
-		
-		smsEditText = (EditText)findViewById(smsEditTextId);
-		saveSmsButton = (Button)findViewById(saveSmsButtonId);
-		smsServiceToggleButton = (ToggleButton)findViewById(smsServiceToggleButtonId);
-		cancelButton = (Button)findViewById(cancelButtonId);
-		
-		saveSmsButton.setOnClickListener(this);
-		smsServiceToggleButton.setOnClickListener(this);
-		cancelButton.setOnClickListener(this);
-		
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_SMS_ACTION);				
-		
-		//Put in the widgets the prevoious data saved into ddbb.
-		getDefaultValues();
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+		}
 	}
 	
+	
+	/**
+	 * Create the Application Title Bar in top of the activity
+	 * 
+	 * @throws Exception
+	 */
+	private void createAppBar () throws Exception {
+		
+		try {
+			
+			//Put an app icon to the upper left of the screen
+			Window window = getWindow();
+			window.requestFeature(Window.FEATURE_LEFT_ICON);
+			setContentView(R.layout.smssettings);
+			window.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.quitesleep);
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			throw new Exception();
+		}
+	}
 	
 	@Override
 	public void onClick (View view) {
@@ -107,12 +137,7 @@ public class SmsSettings extends Activity implements OnClickListener {
 					DialogOperations.checkSmsService(
 							this, 
 							smsServiceToggleButton.isChecked());												
-				break;
-				
-			case cancelButtonId:
-				setResult(Activity.RESULT_CANCELED);
-				finish();
-				break;
+				break;							
 				
 			default:
 				break;

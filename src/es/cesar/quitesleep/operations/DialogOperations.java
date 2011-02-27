@@ -19,6 +19,7 @@
 
 package es.cesar.quitesleep.operations;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -34,6 +35,7 @@ import es.cesar.quitesleep.menus.RefreshCallLogMenu;
 import es.cesar.quitesleep.menus.RemoveAllMenu;
 import es.cesar.quitesleep.menus.RemoveCallLogMenu;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
+import es.cesar.quitesleep.syncData.SyncContactsNew;
 import es.cesar.quitesleep.syncData.SyncContactsRefresh;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
@@ -53,23 +55,21 @@ public class DialogOperations {
 	/**
 	 * Sync the contacts data between SQLite and DB4O databases the first time
 	 * if the db4o database is empty.
-	 * It is done used one thread for it.
+	 * It is done using a thread for it.
 	 */
-	public static void syncContactsRefresh () {
+	public static void syncContactsRefresh (Context context) {
 		
-		try {
-			
+		try {										
 			SyncContactsDialog syncDialog = new SyncContactsDialog();		
 			
 			SyncContactsRefresh syncContacts = 
 				new SyncContactsRefresh(ConfigAppValues.getContext(), syncDialog);
 			
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Refreshing the database");
-			
-			syncDialog.showDialogRefreshList(ConfigAppValues.getContext());
+					
+			syncDialog.showDialogRefreshList(context);
 			syncContacts.start();
-																								
-											
+																																	
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(),
@@ -314,6 +314,34 @@ public class DialogOperations {
 			callLogDialog.showDialog(context, ConfigAppValues.WARNING_REFRESH_CALL_LOG);
 			refreshCallLogMenu.start();											
 			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+		}
+	}	
+	
+	/**
+	 * This function prepare the synchronization process and the objects creation.
+	 * @param context
+	 * @param handler
+	 */
+	public static void synchronizeFirstTime (Context context, Handler handler) {
+		
+		try {
+			
+			SyncContactsDialog syncDialog = new SyncContactsDialog();
+			
+			SyncContactsNew syncContactsNew = new SyncContactsNew(
+					context, 
+					syncDialog, 
+					handler);
+						
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Proceed with the synchronization for the first time");								
+				
+			syncDialog.showDialogFirstTime(context);
+			syncContactsNew.start();
+							
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 

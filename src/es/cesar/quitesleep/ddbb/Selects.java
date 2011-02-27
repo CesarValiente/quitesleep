@@ -55,6 +55,83 @@ public class Selects implements IDDBB {
 	}
 	
 	/**
+	 * This function gets the number of the contacts objects in the ddbb.
+	 * 
+	 * @return
+	 */
+	public int getNumberOfContacts () {
+		
+		try {			
+			synchronized (SEMAPHORE) {
+				
+				StoredClass sc = db.ext().storedClass(Contact.class);
+				
+				if (sc != null)
+					return sc.getIDs().length;
+				else
+					return 0;
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return -1;
+		}
+	}
+	
+	/**
+	 * This function gets the number of the MuteOrHangUp objects in the ddbb.
+	 * At most, should only be one object
+	 * 
+	 * @return
+	 */
+	public int getNumberOfMuteOrHangup () {
+		
+		try {			
+			synchronized (SEMAPHORE) {
+				
+				StoredClass sc = db.ext().storedClass(MuteOrHangUp.class);
+				
+				if (sc != null)
+					return sc.getIDs().length;
+				else
+					return 0;
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return -1;
+		}
+	}
+	
+	/**
+	 * This function gets the number of the BlockCallsConf objects in the ddbb.
+	 * At most, should only be one object
+	 * 
+	 * @return
+	 */
+	public int getNumberOfBlockCallsConf () {
+		
+		try {			
+			synchronized (SEMAPHORE) {
+				
+				StoredClass sc = db.ext().storedClass(BlockCallsConf.class);
+				
+				if (sc != null)
+					return sc.getIDs().length;
+				else
+					return 0;
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return -1;
+		}
+	}
+	
+	/**
 	 * Select all Contact objects from the DDBB and return it.
 	 * 
 	 * @return		All Contact objects from the DDBB
@@ -464,6 +541,9 @@ public class Selects implements IDDBB {
 	}
 	
 	/**
+	 * Select the Phone object that contains the phoneNumber passed throw the param
+	 * value. Returns null if exists more than one object, or there isn't nothing 
+	 * in the ddbb.
 	 * 
 	 * @param phoneNumber
 	 * @return
@@ -491,6 +571,7 @@ public class Selects implements IDDBB {
 	}		
 		
 	/**
+	 * Select all CallLog objects from the ddbb
 	 * 
 	 * @return
 	 */
@@ -518,8 +599,9 @@ public class Selects implements IDDBB {
 	}
 
 	/**
+	 * Return an integer counts the number of CallLog objects in the ddbb.
 	 * 
-	 * @return
+	 * @return int
 	 */
 	public int countCallLog () {
 		
@@ -535,6 +617,61 @@ public class Selects implements IDDBB {
 					e.toString(), 
 					e.getStackTrace()));
 			return -1;
+		}
+	}
+	
+	/**
+	 * Select the BlockCallsConfig object in the ddbb, only must return one object.
+	 * If there are more than one, then returns null.
+	 * 
+	 * @return {@link BlockCallsConf}
+	 */
+	public BlockCallsConf selectBlockCallConf () {
+		
+		try {
+			synchronized (SEMAPHORE) {
+			
+				Query query = db.query();
+				query.constrain(BlockCallsConf.class);
+				
+				List<BlockCallsConf> listBlockCallsConf = query.execute();
+				if (listBlockCallsConf != null && listBlockCallsConf.size() == 1)
+					return listBlockCallsConf.get(0);
+				else
+					return null;
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * This function gets a MuteOrHangUp object from the ddbb.
+	 * @return
+	 */
+	public MuteOrHangUp selectMuteOrHangUp () {
+		
+		try {			
+			synchronized (SEMAPHORE) {
+				Query query = db.query();
+				query.constrain(MuteOrHangUp.class);
+				
+				List<MuteOrHangUp> listMuteOrHangup = query.execute();
+				if (listMuteOrHangup != null && listMuteOrHangup.size() == 1)
+					return listMuteOrHangup.get(0);
+				else
+					return null;
+				
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			return null;
 		}
 	}
 }

@@ -19,10 +19,24 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
+<!-- Previous QuiteSleep versions 1.0 and 1.1, QuiteSleep with new functionality in
+	 manage calls start on 2.0 -->
+	 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="es.cesar.quitesleep"
-      android:versionCode="2"
-      android:versionName="Beta 1.1">
+      android:versionCode="5"
+      android:versionName="2.0"
+      android:installLocation="auto">
+      
+      <!-- If you want use the external storage functionality, uncomment the next
+      specification, and adding it into manifest node.
+      For QuiteSleep is not recommended use this functionallity since this app
+      makes use of the ACTION_BOOT_COMPLETE and when an user use his mobile with a computer
+      making use of the usb port, this action inhabilite the correct functionality 
+      od this broadcast message and reception
+      More info in: http://developer.android.com/intl/de/guide/appendix/install-location.html-->
+      
+     <!-- android:installLocation="auto" -->	
       
      <supports-screens 
      	android:smallScreens="true"
@@ -36,7 +50,7 @@
       
       	<!-- Main Activity which launch the app with the TabWidgets -->
       	<!-- if we don't have the up bar with the small app-ico and so
-                  we obtain more space foe the tabs we put these line indicate this 
+                  we obtain more space for the tabs we put these line indicate this 
                     android:theme="@android:style/Theme.NoTitleBar"                    
              Orientation by sensor use: 
                     android:screenOrientation="sensor"
@@ -71,6 +85,9 @@
         <!-- Sub Activity that manage the ViewContacts process -->
         <activity android:name=".subactivities.DeleteBanned" />
         
+        <!-- Sub Activity for manage other incoming calls -->
+        <activity android:name=".subactivities.BlockCallsConfScreen" />
+        
         <!-- Sub Activity that manage all sms settings, text, and activation -->
         <activity 
         	android:name=".subactivities.SmsSettings" 
@@ -94,7 +111,8 @@
         <activity android:name=".subactivities.About" />
         <activity android:name=".subactivities.Help" />               
          
-         
+        <!-- ................................................................ -->
+        
         <!-- BroadCastReceiver for BootCompleted, IncomingCalls and SMSReceived broadcast messages -->
         <receiver 
         	android:name=".receivers.PhoneStateReceiver">
@@ -108,18 +126,13 @@
          <!--  Important Note for Send SMS: I've implement two ways for send sms,
          		a) Use Java Threads
          		b) Use Android Services  
-         		you can choose one of them use. At the moment i choose Java Thread. 
+         		you can choose one of them use. At the moment I choose Java Thread. 
          		If you like choose Android Service, please uncomment the next service
          		tag. 
          -->                     
 		 <!--         
         	<service android:enabled="true" android:name=".smsmessages.SendSMSService" />
-         -->                                 
-        
-        <!-- Service for manage the incoming calls -->                   
-       	<service android:enabled="true" android:name=".callServices.SilentModeCallService" />
-       	<service android:enabled="true" android:name=".callServices.NormalModeCallService" />
-             
+         -->                                                 
                                  
         <!-- Receiver for SENT_SMS_ACTION BroadCast signal -->
       	<receiver 
@@ -137,36 +150,44 @@
         	</intent-filter>        	        
         </receiver>            
         
-                
+        <!-- ................................................................ -->
+        
+         <!-- Service for manage the incoming calls -->                   
+       	<service android:enabled="true" android:name=".callServices.SilentModeCallService" />
+       	<service android:enabled="true" android:name=".callServices.NormalModeCallService" />
+                                  
     </application>
     
     <!-- Android 1.5 == api sdk version 3 -->
     <!-- Android 2.0 == api sdk version 5 -->
     <!-- Android 2.1 == api sdk version 7 -->
+    <!-- Android 2.2 (Froyo) == api sdk version 8 -->
+    <!-- Android 2.3 (Gingerbread) == api sdk version 9 -->
     <uses-sdk 
     	android:minSdkVersion="5"
-    	android:targetSdkVersion="5"
+    	android:targetSdkVersion="8"
     	 />
     
     <!-- Uses permission for the application -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />        
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />    
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />    
+        
+    <!-- <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> -->
     
-    
+    <permission 
+    	android:name="es.cesar.quitesleep.permission.SENT_SMS_ACTION"        
+       android:protectionLevel="dangerous" />
      <permission 
-     	android:name="es.cesar.quitesleep.permission.SENT_SMS_ACTION"        
-        android:protectionLevel="dangerous" />
-      <permission 
-     	android:name="es.cesar.quitesleep.permission.DELIVERED_SMS_ACTION"        
-        android:protectionLevel="dangerous" />
-    
-    
+    	android:name="es.cesar.quitesleep.permission.DELIVERED_SMS_ACTION"        
+       android:protectionLevel="dangerous" />                  
+             
 </manifest>
 
  

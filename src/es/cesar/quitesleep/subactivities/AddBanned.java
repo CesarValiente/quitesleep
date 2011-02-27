@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -81,14 +82,22 @@ public class AddBanned extends ListActivity {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+		try {
+			super.onCreate(savedInstanceState);	
 		
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_ADD_ALL_CONTACTS);						
+			warningDialog = new WarningDialog(
+					this, 
+					ConfigAppValues.WARNING_ADD_ALL_CONTACTS);						
 		
-		getAllContactList();				
+			getAllContactList();
+		
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+		}
 	}
+	
 	
 	
 	/**

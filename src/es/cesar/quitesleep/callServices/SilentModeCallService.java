@@ -50,6 +50,7 @@ public class SilentModeCallService extends Service {
 	
 	@Override
 	public int onStartCommand (Intent intent, int flags, int startId) {
+		
 		/*
 		if ((flags & START_FLAG_RETRY) == 0) {
 			//TODO If it's a restart, do something
@@ -65,7 +66,7 @@ public class SilentModeCallService extends Service {
 		//If i use threads
 		incomingCallOperations.start();
 		
-		//I i don't use threads
+		//If i don't use threads
 		//incomingCallOperations.silentIncomingCall();
 		
 		//Stop the service by self way		

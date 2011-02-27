@@ -24,12 +24,10 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.Toast;
 import es.cesar.quitesleep.callServices.NormalModeCallService;
 import es.cesar.quitesleep.callServices.SilentModeCallService;
 import es.cesar.quitesleep.operations.CheckSettingsOperations;
-import es.cesar.quitesleep.operations.IncomingCallOperations;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
@@ -44,19 +42,19 @@ import es.cesar.quitesleep.utils.QSToast;
 public class MyPhoneStateListener extends PhoneStateListener {
 	
 	private final String CLASS_NAME = getClass().getName();
-		
-	
+			
 	/**
 	 * Constructor with the context parameter for use if the application
 	 * not run and is the BOOT_COMPLETED BroadcastReceiver that is launch
 	 * this.
 	 * @param context
+	 * @param ITelephony
 	 */
 	public MyPhoneStateListener (Context context) {
 		
 		super();
 		if (ConfigAppValues.getContext() == null)
-			ConfigAppValues.setContext(context);			
+			ConfigAppValues.setContext(context);		
 	}
 	
 	
@@ -67,24 +65,27 @@ public class MyPhoneStateListener extends PhoneStateListener {
 	 */
 	public void onCallStateChanged (int state, String incomingNumber) {
 		
-		try {														
+		try {										
+			
 			switch (state) {					
 			
 				//-------------		CALL_STATE_IDLE		----------------------//
-				case TelephonyManager.CALL_STATE_IDLE:					
-																
+				//Device call state: No activity. 
+				case TelephonyManager.CALL_STATE_IDLE:																				
 					processCallStateIdle();												
 					break;
 				
 				//-----------------		CALL_STATE_OFFHOOK		--------------//
-				case TelephonyManager.CALL_STATE_OFFHOOK:
-					
+				//Device call state: Off-hook. At least one call exists that is 
+				//dialing, active, or on hold, and no calls are ringing or waiting. 
+				case TelephonyManager.CALL_STATE_OFFHOOK:					
 					processCallStateOffhook();
 					break;
 				
 				//-----------------		CALL_STATE_RINGING		--------------//
-				case TelephonyManager.CALL_STATE_RINGING:
-							
+				//Device call state: Ringing. A new call arrived and is ringing 
+				//or waiting. In the latter case, another call is already active. 
+				case TelephonyManager.CALL_STATE_RINGING:							
 					processCallStateRinging(incomingNumber);
 					break;
 					
@@ -120,7 +121,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 				//Thread.sleep(1000);						
 				ConfigAppValues.processIdleCall = true;
 
-				//--  If u choose use Android Service for process incoming call use this --//				
+				//--  If you choose use Android Service for process incoming call use this --//				
 				ConfigAppValues.getContext().startService(
 						new Intent(
 								ConfigAppValues.getContext(),
@@ -174,7 +175,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 						
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "RINGING");					
 			
-			/* Put the device in silent mode if the inc.oming number is
+			/* Put the device in silent mode if the incoming number is
 			 * from contact banned and in schedule interval 
 			 */					
 			if (ringerMode() != AudioManager.RINGER_MODE_SILENT && 
@@ -183,13 +184,14 @@ public class MyPhoneStateListener extends PhoneStateListener {
 					
 				ConfigAppValues.processRingCall = true;
 				
-				//--  If u choose use Android Service for send SMS use this --//				
+				
+				// Process to control the incoming call and kill it if proceed.				
 				ConfigAppValues.getContext().startService(
 						new Intent(
 								ConfigAppValues.getContext(),
 								SilentModeCallService.class).putExtra(
 									ConfigAppValues.INCOMING_CALL_NUMBER, 
-									incomingNumber));
+									incomingNumber));											
 				
 				//------------------------------------------------------------//
 										

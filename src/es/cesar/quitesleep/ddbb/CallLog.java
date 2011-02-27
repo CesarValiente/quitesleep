@@ -132,8 +132,12 @@ public class CallLog extends Id {
 	@Override	
 	public String toString () {
 		
-		return contact.getContactName() + "\t(" + phoneNumber + ")" + "\n" + 
-			timeCall + "\t\tSms: " + (sendSms ? 1:0) + "\tEmail: " + numSendMail; 
+		if (contact != null)
+			return contact.getContactName() + "\t(" + phoneNumber + ")" + "\n" + 
+				timeCall + "\t\tSms: " + (sendSms ? 1:0) + "\tEmail: " + numSendMail;
+		else
+			return "Unknown" + "\t(" + phoneNumber + ")" + "\n" + 
+			timeCall + "\t\tSms: " + (sendSms ? 1:0) + "\tEmail: " + numSendMail;
 	}
 	
 	

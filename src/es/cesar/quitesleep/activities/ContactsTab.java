@@ -20,23 +20,23 @@
 package es.cesar.quitesleep.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.Button;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.dialogs.WarningDialog;
+import es.cesar.quitesleep.interfaces.IDialogs;
 import es.cesar.quitesleep.staticValues.ConfigAppValues;
-import es.cesar.quitesleep.subactivities.About;
 import es.cesar.quitesleep.subactivities.AddBanned;
 import es.cesar.quitesleep.subactivities.DeleteBanned;
-import es.cesar.quitesleep.subactivities.Help;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
 
@@ -46,22 +46,25 @@ import es.cesar.quitesleep.utils.QSLog;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class ContactsTab extends Activity implements OnClickListener {
+public class ContactsTab extends Activity implements OnClickListener, IDialogs {
 	
 	final private String CLASS_NAME = getClass().getName();	
-	final private int WARNING_DIALOG = 1;
+	final private int SYNCHRONIZE_DIALOG 	= 1;
+	final private int ABOUT_DIALOG 			= 2; 
+	final private int HELP_DIALOG 			= 3;	
 	
 	//Ids for the button widgets
 	private final int addBannedId = R.id.contacts_button_addBanned;
-	private final int deleteBannedId = R.id.contacts_button_deleteBanned;	
-	private final int syncContactsID = R.id.contacts_button_syncContacts;
+	private final int deleteBannedId = R.id.contacts_button_deleteBanned;
+	private final int syncContactsId = R.id.contacts_button_syncContacts;
 	
 	//Ids for option menu
 	final int aboutMenuId = R.id.menu_information_about;
 	final int helpMenuId = R.id.menu_information_help;
 
-	//Ids for warning dialog
-	private WarningDialog warningDialog;
+	//IDs dialogs
+	private WarningDialog synchronizeDialog;	
+	
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {			
@@ -74,20 +77,20 @@ public class ContactsTab extends Activity implements OnClickListener {
 						
 			//Instanciate all buttons
 			Button addBannedButton = (Button)findViewById(addBannedId);
-			Button deleteBannedButton = (Button)findViewById(deleteBannedId);
-			Button syncContactsButton = (Button)findViewById(syncContactsID);
+			Button deleteBannedButton = (Button)findViewById(deleteBannedId);			
+			Button syncContactsButton = (Button)findViewById(syncContactsId);
 									
 			//Define the buttons listener
 			addBannedButton.setOnClickListener(this);
-			deleteBannedButton.setOnClickListener(this);
+			deleteBannedButton.setOnClickListener(this);			
 			syncContactsButton.setOnClickListener(this);
 			
-			warningDialog = new WarningDialog(this, ConfigAppValues.WARNING_SYNC_CONTACTS);	
-
+			synchronizeDialog = new WarningDialog(this, ConfigAppValues.WARNING_SYNC_CONTACTS);				
 								
 		}catch (Exception e) {
-			e.printStackTrace();
-			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, e.toString());			
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));			
 		}		
 	}
 	
@@ -103,19 +106,16 @@ public class ContactsTab extends Activity implements OnClickListener {
 		
 		
 		switch (viewId) {
-			case addBannedId:
-				
+			case addBannedId:				
 				Intent intentAddContacts = new Intent(this, AddBanned.class);											
 				startActivityForResult(intentAddContacts, ConfigAppValues.REQCODE_ADD_BANNED);
-				break;
-				
+				break;			
 			case deleteBannedId:
 				Intent intentViewContacts = new Intent(this, DeleteBanned.class);
 				startActivityForResult(intentViewContacts, ConfigAppValues.REQCODE_DELETE_BANNED);
-				break;
-				
-			case syncContactsID:
-				showDialog(WARNING_DIALOG);
+				break;									
+			case syncContactsId:
+				showDialog(SYNCHRONIZE_DIALOG);
 				break;
 		}						
 	}
@@ -133,10 +133,17 @@ public class ContactsTab extends Activity implements OnClickListener {
 		Dialog dialog;
 		
 		switch (id) {
-			case WARNING_DIALOG:
+			case SYNCHRONIZE_DIALOG:
 				if (QSLog.DEBUG_D) QSLog.d(CLASS_NAME, "Create the WarningDialog for 1st time");
-				dialog = warningDialog.getAlertDialog();	
+				dialog = synchronizeDialog.getAlertDialog();
 				break;
+			case ABOUT_DIALOG:
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Create about dialog for 1st time");
+				dialog = showWebviewDialog(IDialogs.ABOUT_URI);
+				break;	
+			case HELP_DIALOG:
+				dialog = showWebviewDialog(IDialogs.HELP_CONTACT_URI);
+				break;		
 			default:
 				dialog = null;
 		}
@@ -144,6 +151,33 @@ public class ContactsTab extends Activity implements OnClickListener {
 		return dialog;	
 	}
 	
+	/**
+	 * Create the webview dialog using the file (uri) specified to show the information.
+	 * 
+	 * @return
+	 */
+	public Dialog showWebviewDialog(String uri) {
+		
+		try {
+			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+              WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
+              webView.getSettings().setJavaScriptEnabled(true);              
+              
+              webView.loadUrl(uri);
+
+              return new AlertDialog.Builder(this)
+                  .setCustomTitle(null)
+                  .setPositiveButton(android.R.string.ok, null)
+                  .setView(contentView)
+                  .create();
+              
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return null;
+		}
+	}
 	
 	
 	@Override
@@ -180,13 +214,11 @@ public class ContactsTab extends Activity implements OnClickListener {
 		try {
 			
 			switch (item.getItemId()) {
-				case aboutMenuId:
-					Intent intentAbout = new Intent(this, About.class);
-					startActivityForResult(intentAbout, ConfigAppValues.LAUNCH_ABOUT);
+				case aboutMenuId:				
+					showDialog(ABOUT_DIALOG);
 					break;
 				case helpMenuId:
-					Intent intentHelp = new Intent(this, Help.class);
-					startActivityForResult(intentHelp, ConfigAppValues.LAUNCH_ABOUT);
+					showDialog(HELP_DIALOG);
 					break;
 				default:
 					break;

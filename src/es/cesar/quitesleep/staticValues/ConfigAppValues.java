@@ -21,6 +21,8 @@ package es.cesar.quitesleep.staticValues;
 
 import java.util.concurrent.Semaphore;
 
+import es.cesar.quitesleep.ddbb.BlockCallsConf;
+
 import android.content.Context;
 
 /**
@@ -43,6 +45,7 @@ public class ConfigAppValues {
 	public static final int REQCODE_SYNC_CONTACTS		=	5;
 	public static final int REQCODE_CONTACT_DETAILS 	=	6;
 	public static final int REQCODE_EDIT_CONTACT 		=	7;
+	public static final int REQCODE_BLOCK_OTHER_CALLS 	=	8;
 	public static final int reqTest						=	100;
 	//------------------------------------------------------------------------//
 	
@@ -54,16 +57,14 @@ public class ConfigAppValues {
 	public static final int WARNING_MAIL_ACTION				=		5;
 	public static final int WARNING_REMOVE_ALL_CALL_LOGS 	=		6;
 	public static final int WARNING_REFRESH_CALL_LOG		=		7;
+	public static final int WARNING_FIRST_TIME				=		8;
 	//------------------------------------------------------------------------//
 	
 	//----------		Codes for informaton through intents		----------//
 	public static final String NUM_REMOVE_CONTACTS = "NUM_REMOVE_CONTACTS";
 	public static final String NUM_REMOVE_CALL_LOGS = "NUM_REMOVE_CALL_LOGS";
 	public static final String REFRESH_CALL_LOG	= "REFRESH_CALL_LOG";
-	
-	//------------	Other response codes		------------------------------//
-	public static final int LAUNCH_ABOUT 					=		1;
-	public static final int LAUNCH_HELP						=		2;
+		
 	
 	//Min Api level used in this app
 	private static int minApiLevel = 1;
@@ -71,12 +72,15 @@ public class ConfigAppValues {
 	//General context used in this app
 	private static Context context = null;
 	
-	/* Used for check without need to use the ddbb if the service 
+	/* Used for check without to need to use the ddbb if the service 
 	 * QuiteSleep must be running or not.
 	 */	
 	private static Boolean quiteSleepServiceState 		= null;
 	private static Boolean mailServiceState 			= null;
 	private static Boolean smsServiceState 				= null;
+	private static BlockCallsConf blockCallsConf 		= null;		
+	private static Boolean muteOrHangup 				= null;	//mute = false, hangup = true	
+																	
 	
 	//Constant string for get the incomingCallNumber
 	public static String INCOMING_CALL_NUMBER = "INCOMING_CALL_NUMBER";
@@ -86,6 +90,7 @@ public class ConfigAppValues {
 	public static boolean processRingCall = false;
 	public static boolean processIdleCall = false;
 	
+	//Variables used for the system's cache
 	
 	
 	//----------	Getters & Setters	-----------------------------------//
@@ -123,6 +128,22 @@ public class ConfigAppValues {
 	public static void setSmsServiceState(Boolean smsServiceState) {
 		ConfigAppValues.smsServiceState = smsServiceState;
 	}					
+	
+	public static BlockCallsConf getBlockCallsConf () {
+		return blockCallsConf;
+	}
+	
+	public static void setBlockCallsConf (BlockCallsConf blockCallsConf) {
+		ConfigAppValues.blockCallsConf = blockCallsConf;
+	}
+	
+	public static Boolean getMuteOrHangup () {
+		return muteOrHangup;
+	}
+	
+	public static void setMuteOrHangup (boolean muteOrHangup) {
+		ConfigAppValues.muteOrHangup = muteOrHangup;
+	}
 	//------------------------------------------------------------------------//
 	
 	

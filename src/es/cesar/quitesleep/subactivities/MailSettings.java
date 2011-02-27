@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,8 +58,7 @@ public class MailSettings extends Activity implements OnClickListener {
 	private final int subjectEditTextId = R.id.mailsettings_edittext_subject;
 	private final int bodyEditTextId = R.id.mailsettings_edittext_body;
 	private final int saveMailButtonId = R.id.mailsettings_button_savemail;	
-	private final int mailServiceToggleButtonId = R.id.mailsettings_togglebutton_mailservice;
-	private final int cancelButtonId = R.id.mailsettings_button_cancel;
+	private final int mailServiceToggleButtonId = R.id.mailsettings_togglebutton_mailservice;	
 	
 	//Widgets
 	private EditText userEditText;
@@ -66,8 +66,7 @@ public class MailSettings extends Activity implements OnClickListener {
 	private EditText subjectEditText;
 	private EditText bodyEditText;
 	private Button saveMailButton;
-	private ToggleButton mailServiceToggleButton;
-	private Button cancelButton;
+	private ToggleButton mailServiceToggleButton;	
 	private WarningDialog warningDialog;
 	
 	
@@ -75,29 +74,61 @@ public class MailSettings extends Activity implements OnClickListener {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mailsettings);
+		try {
+					
+			super.onCreate(savedInstanceState);
+			
+			createAppBar();
+			
+			setContentView(R.layout.mailsettings);
+			
+			//Set the widgets elements
+			userEditText = (EditText)findViewById(userEditTextId);
+			passwdEditText = (EditText)findViewById(passwdEditTextId);
+			subjectEditText = (EditText)findViewById(subjectEditTextId);
+			bodyEditText = (EditText)findViewById(bodyEditTextId);
+			saveMailButton = (Button)findViewById(saveMailButtonId);
+			mailServiceToggleButton = (ToggleButton)findViewById(mailServiceToggleButtonId);			
+			
+			//Set OnClickListener events
+			saveMailButton.setOnClickListener(this);	
+			mailServiceToggleButton.setOnClickListener(this);
 		
-		//Set the widgets elements
-		userEditText = (EditText)findViewById(userEditTextId);
-		passwdEditText = (EditText)findViewById(passwdEditTextId);
-		subjectEditText = (EditText)findViewById(subjectEditTextId);
-		bodyEditText = (EditText)findViewById(bodyEditTextId);
-		saveMailButton = (Button)findViewById(saveMailButtonId);
-		mailServiceToggleButton = (ToggleButton)findViewById(mailServiceToggleButtonId);
-		cancelButton = (Button)findViewById(cancelButtonId);
+			warningDialog = new WarningDialog(
+					this, 
+					ConfigAppValues.WARNING_MAIL_ACTION);
+			
+			//Put in the widgets the prevoious data saved into ddbb.
+			getDefaultValues();
 		
-		//Set OnClickListener events
-		saveMailButton.setOnClickListener(this);	
-		mailServiceToggleButton.setOnClickListener(this);
-		cancelButton.setOnClickListener(this);
+		}catch(Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+		}
+	}
 	
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_MAIL_ACTION);
+	/**
+	 * Create the Application Title Bar in top of the activity
+	 * 
+	 * @throws Exception
+	 */
+	private void createAppBar () throws Exception {
 		
-		//Put in the widgets the prevoious data saved into ddbb.
-		getDefaultValues();
+		try {
+			
+			//Put an app icon to the upper left of the screen
+			Window window = getWindow();
+			window.requestFeature(Window.FEATURE_LEFT_ICON);
+			setContentView(R.layout.mailsettings);
+			window.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.quitesleep);
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			throw new Exception();
+		}
 	}
 	
 	
@@ -118,12 +149,7 @@ public class MailSettings extends Activity implements OnClickListener {
 					DialogOperations.checkMailService(
 							this,
 							mailServiceToggleButton.isChecked());
-				break;
-				
-			case cancelButtonId:
-				setResult(Activity.RESULT_CANCELED);
-				finish();
-				break;
+				break;						
 				
 			default:
 				break;

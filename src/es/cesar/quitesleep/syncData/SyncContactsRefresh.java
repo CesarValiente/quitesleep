@@ -129,7 +129,7 @@ public class SyncContactsRefresh extends Thread {
 	 */
 	public void run () {
 		
-		try {
+		try {				
 			
 			if (deleteAll())				
 				syncContacts();

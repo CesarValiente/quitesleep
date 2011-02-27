@@ -203,5 +203,48 @@ public class Inserts implements IDDBB{
 			return false;
 		}
 	}
+	
+	
+	/**
+	 * Function which inserts the BlockCallsConf passed as parameter.
+	 * @param blockCallsConf
+	 * @return
+	 */
+	public boolean insertBlockCallsConf (BlockCallsConf blockCallsConf) {
+		
+		try {
+			synchronized (SEMAPHORE) {
+				db.store(blockCallsConf);
+				return true;			
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(),
+					e.getStackTrace()));
+			return false;
+		}
+	}
+	
+	/**
+	 * This function inserts a MuteOrHangUp in the ddbb.
+	 * 
+	 * @param muteOrHangup
+	 * @return
+	 */
+	public boolean insertMuteOrHangUp (MuteOrHangUp muteOrHangup) {
+		
+		try {
+			synchronized (SEMAPHORE) {
+				
+				db.store(muteOrHangup);
+				return true;
+			}
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));
+			return false;
+		}
+	}
 
 }

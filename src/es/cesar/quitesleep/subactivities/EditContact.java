@@ -27,6 +27,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -70,8 +71,7 @@ public class EditContact extends Activity implements OnClickListener {
 		
 	//Ids for button widgets
 	private final int removeContactButtonId 	= 	1;
-	private final int editContactButtonId		=	2;
-	private final int cancelButtonId 			= 	3;		
+	private final int editContactButtonId		=	2;		
 	
 	//Ids for colors
 	private final int backgroundColor 		=	R.color.black;
@@ -82,10 +82,17 @@ public class EditContact extends Activity implements OnClickListener {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);						
-		
-		initDynamicLayout();												
+		try {
+			super.onCreate(savedInstanceState);						
+					
+			initDynamicLayout();
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), e.getStackTrace()));
+		}
 	}
+	
 	
 	/**
 	 * Create and initialize the dynamic layout and put some widgets on it
@@ -311,7 +318,7 @@ public class EditContact extends Activity implements OnClickListener {
 		
 		try {
 			
-			addDividerBlack();
+			addDividerBlue();
 			
 			Button editButton = new Button(this);
 			editButton.setText(R.string.editcontact_button_edit);
@@ -322,7 +329,7 @@ public class EditContact extends Activity implements OnClickListener {
 									
 			linearLayout.addView(editButton);
 			
-			addDividerBlue();
+			addDividerBlack();
 						
 			Button removeContactButton = new Button(this);
 			removeContactButton.setText(R.string.editcontact_button_remove);
@@ -331,18 +338,8 @@ public class EditContact extends Activity implements OnClickListener {
 			removeContactButton.setId(removeContactButtonId);
 			removeContactButton.setOnClickListener(this);
 			
-			linearLayout.addView(removeContactButton);
-			
-			addDividerBlue();
-			
-			Button cancelButton = new Button(this);
-			cancelButton.setText(R.string.contactdetails_button_cancel);
-			cancelButton.setId(cancelButtonId);
-			cancelButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.back, 0, 0, 0);
-			cancelButton.setId(cancelButtonId);
-			cancelButton.setOnClickListener(this);
-									
-			linearLayout.addView(cancelButton);						
+			linearLayout.addView(removeContactButton);						
+											
 			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
@@ -373,12 +370,7 @@ public class EditContact extends Activity implements OnClickListener {
 					showRemoveToast(result);				
 					setResult(Activity.RESULT_OK);
 					finish();
-					break;
-					
-				case cancelButtonId:
-					setResult(Activity.RESULT_CANCELED);
-					finish();
-					break;
+					break;									
 					
 				default:
 					break;

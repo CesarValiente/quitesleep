@@ -30,7 +30,7 @@ import android.util.Log;
 
 /**
  * 
- * @author Cesar Valiente Gordo y Eduardo Coca Sola
+ * @author Cesar Valiente Gordo
  * @mail cesar.valiente@gmail.com
  *
  */
@@ -57,6 +57,13 @@ public class SHA1Utils {
 		}
 	}	
 	
+	/**
+	 * This function converts a string without conding into a String encoded
+	 * into a SHA1
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static String generateSHA1toString (String str) {
 		try
 		{
@@ -72,6 +79,12 @@ public class SHA1Utils {
 		}
 	}
 	
+	/**
+	 * This function converts an InputStream into a SHA1 String
+	 * 
+	 * @param is
+	 * @return
+	 */
 	public static String generateSHA1toString (InputStream is) {
 		try {
 			return InputStreamUtils.byteToString(generateSHA1(InputStreamUtils.InputStreamTOByte(is)));
@@ -80,7 +93,11 @@ public class SHA1Utils {
 		}
 	}
 
-	// Genera SHA-1 de un File
+	/**
+	 * This function generates a SHA1 byte[] from a file
+	 * @param file
+	 * @return
+	 */
 	public static byte[] generateSHA1 (File file) {
 		try {
 			return generateSHA1(new FileInputStream (file));
@@ -89,7 +106,11 @@ public class SHA1Utils {
 		}
 	}	
 
-	// Genera SHA-1 de un byte[]
+	/**
+	 * This function generates a SHA1 byte[] from another byte[].
+	 * @param bytes
+	 * @return
+	 */
 	public static byte[] generateSHA1 (byte[] bytes) {
 		byte[] encryted = null;
 		try {
@@ -108,7 +129,12 @@ public class SHA1Utils {
 	
 	
 
-	// Codifica un byte[] en hexadecimal
+	/**
+	 * This function encodes byte[] into a hex
+	 * 
+	 * @param b
+	 * @return
+	 */
 	public static String byteArrayToHexString(byte[] b){
 		if (b==null) return null;
 		
@@ -123,7 +149,11 @@ public class SHA1Utils {
 		return sb.toString().toUpperCase();
 	}
 
-	// Codifica String hexadecimal en byte[]
+	/**
+	 * This function encodes a Hex String into a byte[]
+	 * @param s
+	 * @return
+	 */
 	public static byte[] hexStringToByteArray(String s) {
 		if (s==null) return null;
 		
@@ -136,12 +166,22 @@ public class SHA1Utils {
 		return b;
 	}
 	
-	// Compara dos byte[] elemento a elemento
+	/**
+	 * This function compares two bytes[]
+	 * @param b1
+	 * @param b2
+	 * @return
+	 */
 	public static boolean compareByteArrays (byte[] b1, byte[] b2) {
 		return b1!=null && b2!=null && Arrays.equals(b1, b2) ;
 	}
 
-	// Compara dos String
+	/**
+	 * This function compares two Strings.
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
 	public static boolean compareHexString (String s1, String s2) {
 		return s1!=null && s2!=null && s1.equalsIgnoreCase(s2);
 	}

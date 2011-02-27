@@ -19,14 +19,19 @@
 
 package es.cesar.quitesleep.operations;
 
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.android.internal.telephony.ITelephony;
+
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Vibrator;
+import android.telephony.TelephonyManager;
+import es.cesar.quitesleep.beans.BCBean;
 import es.cesar.quitesleep.ddbb.CallLog;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
@@ -47,8 +52,7 @@ import es.cesar.quitesleep.utils.TokenizerUtils;
  */
 public class IncomingCallOperations extends Thread {
 	
-	private static final String CLASS_NAME = "es.cesar.quitesleep.utils.operations.IncomingCallOperations"; 
-		
+	private static final String CLASS_NAME = "es.cesar.quitesleep.utils.operations.IncomingCallOperations"; 	
 	
 	private String incomingCallNumber;
 	
@@ -70,114 +74,81 @@ public class IncomingCallOperations extends Thread {
 		
 		this.incomingCallNumber = incomingCallNumber;		
 	}
-	
-	
+		
 
 	@Override
-	public void run () {
-		
-		silentIncomingCall();
+	public void run () {		
+		silentIncomingCall();		
 	}
 	
 	/**
-	 * Function that check if the incoming call number is from a banned contact,
-	 * if is true, put the mobile to silent mode (sound and vibrate), if is
-	 * false do nothing.
-	 * 
-	 * UPDATE 05-05-2010: now, we puts always the phone in silent mode when incoming
-	 * call, but, then, quitesleep check if the contact is banned and if is in the
-	 * schedule time, if is true, creates a new CallLog object, and we don't nothing
-	 * with the phone mode, so it was put in silent mode at beginning.
-	 * But if the incoming phone not is from a banned contact and/or if not
-	 * is in the schedule time, put the mobile phone in normal mode.
-	 * I have done this, because, is the only manner i get, that the phone never ring
-	 * one sec when an incoming call from a banned contact arrives and the only way
-	 * to put the mobile phone with vibrator off, one time the mobile phone is in normal
-	 * mode the ring is too on.
-	 * The inconvenience is that whatever incoming call the first tone the mobile 
-	 * phone silence it, not is the perfect way but is the only and the best way 
-	 * that i have reached with >Android 2.0 at day.  
+	 * This function is encharged to check if the incoming call is between interval
+	 * and if it, then call to subfuctions to performs the block action and send
+	 * sms and/or mail if is appropriate.
 	 * 
 	 */
-	public void silentIncomingCall () {
+	public synchronized void silentIncomingCall () {
 		
-		try {
-			
-			/* Put the mobile phone in silent mode (sound+vibration)
-			 * Here i put this for silent all incoming call for salomonic decision
-			 * that silent all calls for later if the contact is banned let this 
-			 * silent mode and if the contact isn't banned put in normal mode.
-			 * I use this because sometimes a ring second sound when an incoming call.			
-			 */			
-			//putRingerModeSilent();
+		try {								
 			
 			ClientDDBB clientDDBB = new ClientDDBB();
 			
+			QSLog.d(CLASS_NAME, "IncomingNuber: " + incomingCallNumber);			
+						
 			String phoneNumberWhithoutDashes = 
 				TokenizerUtils.tokenizerPhoneNumber(incomingCallNumber, null);
 			
-			Contact contactBanned = 
-				clientDDBB.getSelects().selectBannedContactForPhoneNumber(
-						phoneNumberWhithoutDashes);								
+			QSLog.d(CLASS_NAME, "IncomingNumberFormated: " + phoneNumberWhithoutDashes);
+				
+			//create the CallLog object for log calls.
+			CallLog callLog = new CallLog();
 			
-			//If the contact is in the banned list
-			if (contactBanned != null) {								
-				
-				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Contact: " + contactBanned.getContactName() + 
-						"\t isBanned: " + contactBanned.isBanned());								
-				
-				//create the CallLog object for log calls.
-				CallLog callLog = new CallLog();
-				
-				//check if the call is in the interval time
-				boolean isInInterval = checkSchedule(callLog, clientDDBB);
-				
-				if (isInInterval) {
+			//check if the call is in the interval time
+			boolean isInInterval = checkSchedule(callLog, clientDDBB);
 			
-					//Put the mobile phone in silent mode (sound+vibration)
-					putRingerModeSilent();
-					
-					/* Check if the mail service is running, if it is true
-					 * create a SendMail object for try to send one or more 
-					 * email to the contact with the incoming number
-					 */
+			if (isInInterval) {
+		
+				//Put the mobile phone in silent mode (sound+vibration)
+				//putRingerModeSilent();
+				
+				//End call using the ITelephony implementation					
+				//telephonyService.endCall();
+				
+				BCBean bcBean = processBlockedActionType(
+						clientDDBB, 					
+						phoneNumberWhithoutDashes);
+				
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "BloquedContactBean: " + bcBean);
+				
+				
+				/* Check if the mail service is running, if it is true
+				 * create a SendMail object for try to send one or more 
+				 * email to the contact with the incoming number
+				 */
+				if (bcBean != null)
 					sendMail(incomingCallNumber, callLog, clientDDBB);
-					
-					/* Check if the sms service is running, if it is true
-					 * create a SendSMS object for try to send a SMS to 
-					 * the contact with the incoming number
-					 */
-					sendSMS(incomingCallNumber, callLog, clientDDBB);																		
-					
-					//get the nomOrder for the new CallLog
-					int numOrder = clientDDBB.getSelects().countCallLog();				
-					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "CallLog numOrder: " + numOrder);
-					
-					//Set the parameters and save it
-					callLog.setPhoneNumber(phoneNumberWhithoutDashes);
-					callLog.setContact(contactBanned);
-					callLog.setNumOrder(numOrder+1);
-					
-					clientDDBB.getInserts().insertCallLog(callLog);
-					clientDDBB.commit();
-					clientDDBB.close();
-					
-					
-					
-				}
-				//If the call isn't in the interval time
-				else {
-					if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "No está en el intervalo");
-					//putRingerModeNormal();
-					clientDDBB.close();
-				}							
+				
+				/* Check if the sms service is running, if it is true
+				 * create a SendSMS object for try to send a SMS to 
+				 * the contact with the incoming number
+				 */
+				if (bcBean != null)
+					sendSMS(incomingCallNumber, callLog, clientDDBB);	
+				
+				if (bcBean != null)
+					//Save the callLog object in the ddbb if is appropriate.
+					saveCallLog(
+						clientDDBB, 
+						callLog, 
+						incomingCallNumber, 
+						bcBean.getUsedContact());
 			}
-			//If the incoming call number isn't of the any banned contact
-			else {
-				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "ContactBanned == NULL!!!!");
-				//putRingerModeNormal();
-				clientDDBB.close();
-			}
+			//If the call isn't in the interval range
+			else 
+				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "No está en el intervalo");
+			
+			//close the ddbb.
+			clientDDBB.close();
 																											
 			
 		}catch (Exception e) {
@@ -187,8 +158,64 @@ public class IncomingCallOperations extends Thread {
 		}
 	}
 	
-
 	
+	/**
+	 * This function call to subfuctions that performs different block actions over
+	 * incoming calls.
+	 * 
+	 * @param clientDDBB
+	 * @param incomingNumber
+	 * @return
+	 */
+	private BCBean processBlockedActionType (
+			ClientDDBB clientDDBB, 			
+			String incomingNumber) {
+		
+		try {						
+			
+			BCBean bcBean = null;			
+			
+			if (ConfigAppValues.getBlockCallsConf() != null) {				
+											
+				 switch (ConfigAppValues.getBlockCallsConf().whatIsInUse()) {
+				 	case 0:
+				 		//null
+				 		break;
+				 	case 1:
+				 		//BLOCK_ALL
+				 		bcBean = BlockTypes.blockAll(
+				 				clientDDBB, 
+				 				incomingNumber);
+				 		break;
+				 	case 2:
+				 		//BLOCK_BLOCKED_CONTACTS
+				 		bcBean = BlockTypes.blockBloquedContacts(
+				 				clientDDBB,  
+				 				incomingNumber);				 		
+				 		break;				 	
+				 	case 3:
+				 		//BLOCK_UNKNOWN				 		
+				 		bcBean = BlockTypes.blockUnknown(
+				 				clientDDBB, 
+				 				incomingNumber);				 		
+				 		break;
+				 	case 4:
+				 		//BLOCK_UNKNOWN_AND_BLOCKED_CONTACTS				 		
+				 		bcBean = BlockTypes.blockUnknownAndBlockedContacts(
+				 				clientDDBB, 				 				
+				 				incomingNumber);				 		
+				 		break;				 					
+				 }				 				 
+			}	
+			return bcBean;
+			
+		}catch (Exception e) {
+			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
+					e.toString(), 
+					e.getStackTrace()));	
+			return null;
+		}		
+	}	
 	
 	
 	/**
@@ -202,15 +229,15 @@ public class IncomingCallOperations extends Thread {
 		
 		try {						
 			
-				//ClientDDBB clientDDBB = new ClientDDBB();
-				Schedule schedule = clientDDBB.getSelects().selectSchedule();
-				//clientDDBB.close();
+			//ClientDDBB clientDDBB = new ClientDDBB();
+			Schedule schedule = clientDDBB.getSelects().selectSchedule();
+			//clientDDBB.close();
+			
+			if (schedule != null && CheckSettingsOperations.checkDayWeek(schedule)) {
 				
-				if (schedule != null && CheckSettingsOperations.checkDayWeek(schedule)) {
-					
-					return isInInterval(callLog, schedule);								
-				}
-				return false;			
+				return isInInterval(callLog, schedule);								
+			}
+			return false;			
 			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
@@ -347,28 +374,7 @@ public class IncomingCallOperations extends Thread {
 		}
 	}
 	
-	
-	
-	
-	/**
-	 * Put the vibrator in mode off
-	 */
-	private void vibrateOff () {
-		
-		try {
-			
-			String vibratorService = Context.VIBRATOR_SERVICE;
-			Vibrator vibrator = (Vibrator)ConfigAppValues.getContext().
-				getSystemService(vibratorService);
-						
-			vibrator.cancel();
-			
-		}catch (Exception e) {
-			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-		}
-	}
+				
 	
 	
 	/**
@@ -456,45 +462,38 @@ public class IncomingCallOperations extends Thread {
 		}
 	}
 	
-	/**
-	 * Put the mobile in silence mode (audio and vibrate)
-	 * 
-	 */
-	private void putRingerModeSilent () {
-		
+
+	private void saveCallLog (
+			ClientDDBB clientDDBB, 
+			CallLog callLog, 
+			String incomingNumber,
+			Contact contactBanned) {
 		
 		try {
-			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Poniendo el movil en modo silencio");
-													
-			AudioManager audioManager = 
-				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
-			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			
+			//Set the parameters and save it
+			callLog.setPhoneNumber(incomingNumber);
+			callLog.setContact(contactBanned);
+			
+			//get the nomOrder for the new CallLog
+			int numOrder = clientDDBB.getSelects().countCallLog();				
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "CallLog numOrder: " + numOrder);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "usedContact: " + contactBanned);
+			
+			callLog.setNumOrder(numOrder+1);
+			
+			clientDDBB.getInserts().insertCallLog(callLog);
+			clientDDBB.commit();
+			
+			//we close clientDDBB in the caller function (top of the class)
 			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
 					e.toString(), 
 					e.getStackTrace()));
-		}		
-	}	
-	
-	private void putRingerModeNormal () {
-		
-		try {
-			
-			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Poniendo el movil en modo normal");
-				
-			AudioManager audioManager = 
-				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
-							
-			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);											
-			
-		}catch (Exception e) {
-			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
-					e.toString(), 
-					e.getStackTrace()));
-		}		
+		}
 	}
 	
-		
+	
+	
 }

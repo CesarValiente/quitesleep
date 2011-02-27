@@ -27,7 +27,7 @@ import java.io.InputStream;
 
 /**
  * 
- * @author Cesar Valiente Gordo y Eduardo Coca Sola
+ * @author Cesar Valiente Gordo
  * @mail cesar.valiente@gmail.com
  *
  */
@@ -42,7 +42,7 @@ public class InputStreamUtils {
 	 * @return String
 	 * @throws Exception
 	 * 
-	 * Funci�n que pasa de InputStream a String
+	 * This function converts an InputStream to a String
 	 **************************************************************************/
 	
 	public static String InputStreamTOString (InputStream in) throws Exception {
@@ -60,6 +60,7 @@ public class InputStreamUtils {
 	}
 	
 	/**
+	 * This function converts an InputStream in a predefined encoding to a String.
 	 * 
 	 * @param in
 	 * @param encoding
@@ -86,7 +87,7 @@ public class InputStreamUtils {
 	 * @return InputStream
 	 * @throws Exception
 	 * 
-	 * Funci�n que pasa de String a InputStream
+	 * This function converts a String to a InputStream
 	 **************************************************************************/
 	
 	public static InputStream StringTOInputStream (String in) throws Exception {
@@ -103,7 +104,7 @@ public class InputStreamUtils {
 	 * @return byte[]
 	 * @throws IOException
 	 * 
-	 * Funci�n que pasa convierte un InputStream a un array de bytes (byte[])	 
+	 * This function converts an InputStream to a byte[]	 
 	 **************************************************************************/
 	
 	public static byte[] InputStreamTOByte (InputStream in) throws IOException {
@@ -120,7 +121,13 @@ public class InputStreamUtils {
 		
 	}
 		
-	//TODO revisar este metodo
+	/**
+	 * This function converts a byte[] into a InputStream
+	 * 
+	 * @param in
+	 * @return
+	 * @throws Exception
+	 */
 	public static InputStream byteTOInputStream (byte[] in) throws Exception {
 		
 		ByteArrayInputStream resultado = new ByteArrayInputStream(in);
@@ -128,6 +135,13 @@ public class InputStreamUtils {
 		return resultado;		
 	}
 	
+	/**
+	 * This function converts byte[] into a String
+	 * 
+	 * @param in
+	 * @return
+	 * @throws Exception
+	 */
 	public static String byteToString (byte[] in) throws Exception {
 		
 		InputStream ins = byteTOInputStream(in);
