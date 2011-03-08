@@ -41,8 +41,6 @@ import es.cesar.quitesleep.ddbb.Schedule;
 import es.cesar.quitesleep.dialogs.EndTimeDialog;
 import es.cesar.quitesleep.dialogs.StartTimeDialog;
 import es.cesar.quitesleep.interfaces.IDialogs;
-import es.cesar.quitesleep.staticValues.ConfigAppValues;
-import es.cesar.quitesleep.subactivities.Help;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
 import es.cesar.quitesleep.utils.QSToast;

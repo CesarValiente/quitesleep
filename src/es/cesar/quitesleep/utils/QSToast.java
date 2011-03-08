@@ -37,7 +37,7 @@ public class QSToast {
 
 	private final static String CLASS_NAME = "es.cesar.quitelseep.utils.QSToast";
 	
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final boolean RELEASE = true;
 	
 	

@@ -29,10 +29,10 @@ import android.util.Log;
  */
 public class QSLog {	
 
-  public static final boolean DEBUG_V = true;
-  public static final boolean DEBUG_D = true;
-  public static final boolean DEBUG_I = true;
-  public static final boolean DEBUG_W = true;
+  public static final boolean DEBUG_V = false;
+  public static final boolean DEBUG_D = false;
+  public static final boolean DEBUG_I = false;
+  public static final boolean DEBUG_W = false;
   public static final boolean DEBUG_E = true;
   
   

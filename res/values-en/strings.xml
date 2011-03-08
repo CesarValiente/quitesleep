@@ -39,11 +39,11 @@
     <string name="schedule.tab.label">Schedule</string>
     <string name="schedule.button.setDate">Set date</string>
     <string name="schedule.button.startTime">Start time</string>
-    <string name="schedule.button.endTime">End hour</string>
+    <string name="schedule.button.endTime">End time</string>
     <string name="schedule.button.daysweek">Confirm days of week</string>
     <string name="schedule.toast.startTime">Start hour set</string>
     <string name="schedule.toast.endTime">End hour set</string>
-    <string name="schedule.toast.daysweek.ok">Days the week set</string>
+    <string name="schedule.toast.daysweek.ok">Days of week set</string>
     <string name="schedule.toast.daysweek.ko">Ooops!!!Days of week couldn\'t be set.. have you set start and end time?</string>
     <string name="schedule.separator.startTime">Choose start time</string>
     <string name="schedule.separator.endTime">Choose end time</string>
@@ -125,10 +125,10 @@
     
     
     <!-- @@@@@@@@@@@@	ConfigOtherCalls	@@@@@@@@@@@@@@@ -->
-    <string name="configothercalls.separator.blockall">Block ALL incoming calls</string>   
-    <string name="configothercalls.separator.block_blocked_contacts">Block blocked contacts</string>   
-    <string name="configothercalls.separator.blockunknown">Block unknown calls</string>        
-    <string name="configothercalls.separator.block_unknwown_and_blocked_contacts">Block unknown and blocked contacts</string>       
+    <string name="configothercalls.separator.blockall">Blocking ALL incoming calls</string>   
+    <string name="configothercalls.separator.block_blocked_contacts">Blocking blocked contacts</string>   
+    <string name="configothercalls.separator.blockunknown">Blocking unknown calls</string>        
+    <string name="configothercalls.separator.block_unknwown_and_blocked_contacts">Blocking unknown and blocked contacts</string>       
     
     
     
@@ -177,7 +177,7 @@
 	<string name="warningdialog.calllog.remove.label">This will remove Call Log information. Are you sure?</string>    
 	<string name="warningdialog.calllog.refresh.label">This will update Call Log information. Are you sure?</string>
 	<string name="warningdialog.firstime.title">Welcome to QuiteSleep!!!</string>
-	<string name="warningdialog.firstime.message">This is the 1st time QuiteSleep is running, now it will synchronize the contacts with the internal database. Do you proceed now?</string>
+	<string name="warningdialog.firstime.message">This is the 1st time QuiteSleep is running, now it will synchronize contacts with the internal database. Do you proceed now?</string>
 
 
     
