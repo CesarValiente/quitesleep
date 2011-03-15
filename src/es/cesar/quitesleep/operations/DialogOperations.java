@@ -53,8 +53,8 @@ public class DialogOperations {
 		
 
 	/**
-	 * Sync the contacts data between SQLite and DB4O databases the first time
-	 * if the db4o database is empty.
+	 * Sync contacts data between SQLite and DB4O databases when user push the
+	 * sync button any time. 
 	 * It is done using a thread for it.
 	 */
 	public static void syncContactsRefresh (Context context) {
@@ -63,7 +63,7 @@ public class DialogOperations {
 			SyncContactsDialog syncDialog = new SyncContactsDialog();		
 			
 			SyncContactsRefresh syncContacts = 
-				new SyncContactsRefresh(ConfigAppValues.getContext(), syncDialog);
+				new SyncContactsRefresh(context, syncDialog);
 			
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Refreshing the database");
 					
@@ -322,7 +322,8 @@ public class DialogOperations {
 	}	
 	
 	/**
-	 * This function prepare the synchronization process and the objects creation.
+	 * This function synchronize the db4o database with SQLite database at first
+	 * time when QuiteSleep is launched
 	 * @param context
 	 * @param handler
 	 */
