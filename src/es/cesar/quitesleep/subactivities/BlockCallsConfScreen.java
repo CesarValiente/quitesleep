@@ -220,7 +220,7 @@ public class BlockCallsConfScreen extends Activity implements OnClickListener {
 		clientDDBB.commit();
 		clientDDBB.close();
 			
-		QSLog.d(CLASS_NAME, "Grabada la opcion: " + ConfigAppValues.getBlockCallsConf().whatIsInUse());
+		QSLog.d(CLASS_NAME, "Saved block option number: " + ConfigAppValues.getBlockCallsConf().whatIsInUse());
 	}
 	
 }

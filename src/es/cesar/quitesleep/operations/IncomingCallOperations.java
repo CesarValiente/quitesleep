@@ -32,6 +32,7 @@ import android.media.AudioManager;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import es.cesar.quitesleep.beans.BCBean;
+import es.cesar.quitesleep.ddbb.BlockCallsConf;
 import es.cesar.quitesleep.ddbb.CallLog;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
@@ -175,38 +176,42 @@ public class IncomingCallOperations extends Thread {
 			
 			BCBean bcBean = null;			
 			
-			if (ConfigAppValues.getBlockCallsConf() != null) {				
-											
-				 switch (ConfigAppValues.getBlockCallsConf().whatIsInUse()) {
-				 	case 0:
-				 		//null
-				 		break;
-				 	case 1:
-				 		//BLOCK_ALL
-				 		bcBean = BlockTypes.blockAll(
-				 				clientDDBB, 
-				 				incomingNumber);
-				 		break;
-				 	case 2:
-				 		//BLOCK_BLOCKED_CONTACTS
-				 		bcBean = BlockTypes.blockBloquedContacts(
-				 				clientDDBB,  
-				 				incomingNumber);				 		
-				 		break;				 	
-				 	case 3:
-				 		//BLOCK_UNKNOWN				 		
-				 		bcBean = BlockTypes.blockUnknown(
-				 				clientDDBB, 
-				 				incomingNumber);				 		
-				 		break;
-				 	case 4:
-				 		//BLOCK_UNKNOWN_AND_BLOCKED_CONTACTS				 		
-				 		bcBean = BlockTypes.blockUnknownAndBlockedContacts(
-				 				clientDDBB, 				 				
-				 				incomingNumber);				 		
-				 		break;				 					
-				 }				 				 
-			}	
+			if (ConfigAppValues.getBlockCallsConf() == null) {	
+			
+				BlockCallsConf blockCallsConf = clientDDBB.getSelects().selectBlockCallConf();
+				if (blockCallsConf != null) 
+					ConfigAppValues.setBlockCallsConf(blockCallsConf);									
+			}							
+			
+			 switch (ConfigAppValues.getBlockCallsConf().whatIsInUse()) {
+			 	case 0:
+			 		//null
+			 		break;
+			 	case 1:
+			 		//BLOCK_ALL
+			 		bcBean = BlockTypes.blockAll(
+			 				clientDDBB, 
+			 				incomingNumber);
+			 		break;
+			 	case 2:
+			 		//BLOCK_BLOCKED_CONTACTS
+			 		bcBean = BlockTypes.blockBloquedContacts(
+			 				clientDDBB,  
+			 				incomingNumber);				 		
+			 		break;				 	
+			 	case 3:
+			 		//BLOCK_UNKNOWN				 		
+			 		bcBean = BlockTypes.blockUnknown(
+			 				clientDDBB, 
+			 				incomingNumber);				 		
+			 		break;
+			 	case 4:
+			 		//BLOCK_UNKNOWN_AND_BLOCKED_CONTACTS				 		
+			 		bcBean = BlockTypes.blockUnknownAndBlockedContacts(
+			 				clientDDBB, 				 				
+			 				incomingNumber);				 		
+			 		break;				 					
+			 }				 				 			
 			return bcBean;
 			
 		}catch (Exception e) {
@@ -280,7 +285,7 @@ public class IncomingCallOperations extends Thread {
 			
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "start: " + start + "\ttimeStart: " + timeStart);
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "end: " + end + "\ttimeEnd: " + timeEnd);
-			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "now: " + now + "\timeNow: " + timeNow);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "now: " + now + "\ttimeNow: " + timeNow);
 			
 			
 			String dayCompleteString = "24:00";
@@ -338,7 +343,7 @@ public class IncomingCallOperations extends Thread {
 			}else
 				isInInterval = false;
 																		
-			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Está en el intervalo: " + isInInterval);
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Incoming call in the interval?: " + isInInterval);
 			
 			return isInInterval;
 			

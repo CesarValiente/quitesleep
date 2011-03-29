@@ -25,6 +25,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 
@@ -65,7 +66,7 @@ public class BlockTypes {
 	}
 	
 	/**
-	 * This function perform the block action that proceed, muting or hang up.
+	 * This function performs the block action that proceed, muting or hang up.
 	 */
 	private static void muteOrHangupAction () {
 		
@@ -121,6 +122,8 @@ public class BlockTypes {
 		
 		try {						
 				
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Option 1 - Blocking all incoming calls");
+			
 			Contact usedContact = clientDDBB.getSelects().
 				selectContactForPhoneNumber(incomingNumber);
 			
@@ -151,6 +154,7 @@ public class BlockTypes {
 			String incomingNumber) {
 		
 		try {
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Option 2 - Blocking only blocked contacts");
 			
 			Contact usedContact = clientDDBB.getSelects().
 				selectBannedContactForPhoneNumber(incomingNumber);
@@ -191,6 +195,8 @@ public class BlockTypes {
 		
 		try {
 		
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Option 3 - Blocking unknwon contacts");
+			
 			Contact usedContact = clientDDBB.getSelects().
 				selectContactForPhoneNumber(incomingNumber);
 			
@@ -223,7 +229,8 @@ public class BlockTypes {
 			String incomingNumber) { 
 		
 		try {
-		
+			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Option 4 - Blocking unknwown and blocked contacts");
+			
 			Contact usedContact = clientDDBB.getSelects().
 				selectContactForPhoneNumber(incomingNumber);
 			

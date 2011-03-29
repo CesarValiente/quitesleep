@@ -24,8 +24,8 @@
 	 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="es.cesar.quitesleep"
-      android:versionCode="8"
-      android:versionName="2.0.2"
+      android:versionCode="9"
+      android:versionName="2.0.3"
       android:installLocation="auto">
       
       <!-- If you want use the external storage functionality, uncomment the next
@@ -175,7 +175,10 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> 
+    
+    <!-- This permission is used to do the hang up action, whitout this, doesn't run well -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />   
         
     <!-- <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" /> 

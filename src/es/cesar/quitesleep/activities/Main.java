@@ -92,10 +92,7 @@ public class Main extends TabActivity {
 				firstTimeDialog = new WarningDialog(this, ConfigAppValues.WARNING_FIRST_TIME);
 						
 				showDialog(FIRST_TIME_DIALOG);
-			}
-			
-			//Sync the databases if the db4o database is empty (first time run the app)
-			//syncDatabases();				
+			}							
 			
 			//Resource object to get Drawables
 			Resources resources = getResources();
