@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--  
- 	Copyright 2010 Cesar Valiente Gordo
+ 	Copyright 2011 Cesar Valiente Gordo
  
  	This file is part of QuiteSleep.
 
@@ -19,23 +19,15 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:orientation="vertical" >
-  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-   
-  <TextView 
-  		android:layout_width="wrap_content"
-  		android:layout_height="wrap_content"
-  		android:id="@+id/addBanned_textview_name"  		
-  		android:textSize="25dip"
-	  	android:textStyle="bold"   		  		   	  	
-	  	android:text="name" />
-	  
- 
-</RelativeLayout>
+	<ListView 
+	    android:id="@+id/contact_list_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="@color/black"
+	    android:cacheColorHint="@android:color/transparent" />
 
-
+</LinearLayout>

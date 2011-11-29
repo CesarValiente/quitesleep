@@ -24,21 +24,20 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.adapters.ContactListAdapter;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.ddbb.Contact;
 import es.cesar.quitesleep.dialogs.WarningDialog;
@@ -57,7 +56,7 @@ import es.cesar.quitesleep.utils.QSToast;
  * Class for AddContacts to the banned user list
  * 
  */
-public class AddBanned extends ListActivity {
+public class AddBanned extends Activity implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -68,7 +67,8 @@ public class AddBanned extends ListActivity {
 	
 	//Widgets
 	private WarningDialog warningDialog;
-	private ArrayAdapter<String> arrayAdapter;	
+	private ContactListAdapter<String> myOwnAdapter;
+	private ListView listView;
 	
 	//Auxiliar attributes
 	private String selectContactName;
@@ -83,13 +83,19 @@ public class AddBanned extends ListActivity {
 	public void onCreate (Bundle savedInstanceState) {
 
 		try {
-			super.onCreate(savedInstanceState);	
+			super.onCreate(savedInstanceState);
+			
+			setContentView(R.layout.contact_list);
 		
+			listView = (ListView)findViewById(R.id.contact_list_view);
+			
 			warningDialog = new WarningDialog(
 					this, 
 					ConfigAppValues.WARNING_ADD_ALL_CONTACTS);						
-		
+					
 			getAllContactList();
+			
+			listView.setOnItemClickListener(this);
 		
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E) QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
@@ -111,16 +117,18 @@ public class AddBanned extends ListActivity {
 			ClientDDBB clientDDBB = new ClientDDBB();
 			
 			List<Contact> contactList = clientDDBB.getSelects().selectAllNotBannedContacts();
-			List<String> contactListString = convertContactList(contactList);
+			List<String> contactListString = convertContactList(contactList);						
 			
 			if (contactListString != null) {
-				arrayAdapter = new ArrayAdapter<String>(
-					this, 
-					R.layout.addbanned,
-					R.id.addBanned_textview_name,
-					contactListString);
+				myOwnAdapter = new ContactListAdapter<String>(
+					getApplicationContext(), 
+					R.layout.list_item,
+					contactListString, 
+					this);
 			
-				setListAdapter(arrayAdapter);														
+				listView.setAdapter(myOwnAdapter);
+				
+				listView.setFastScrollEnabled(true);
 			}
 			
 			clientDDBB.close();
@@ -166,19 +174,17 @@ public class AddBanned extends ListActivity {
 	}
 	
 	@Override
-	protected void onListItemClick (
-			ListView listView,
-    		View view,
-    		int position,
-    		long id){
+	public void onItemClick(
+			AdapterView<?> parent, 
+			View view,
+			int position, 
+			long id) {
 		
 		try {
 			
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "OnListItemClick");
-			
-			super.onListItemClick(listView, view, position, id);
-			
-			selectContactName = (String) this.getListAdapter().getItem(position);				
+						
+			selectContactName = (String) myOwnAdapter.getItem(position);				
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Name: " + selectContactName);								
 			
 			/* If we like to use one subactivity for show better contact details
@@ -207,7 +213,7 @@ public class AddBanned extends ListActivity {
 			case ConfigAppValues.REQCODE_CONTACT_DETAILS:
 				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Valor retornado: " + resultCode);
 				if (resultCode == Activity.RESULT_OK)
-					arrayAdapter.remove(selectContactName);
+					myOwnAdapter.remove(selectContactName);
 				break;
 			default:
 				break;
@@ -253,7 +259,7 @@ public class AddBanned extends ListActivity {
 			switch (idDialog) {
 				case WARNING_DIALOG:
 					warningDialog.setContext(this);
-					warningDialog.setArrayAdapter(arrayAdapter);
+					warningDialog.setArrayAdapter(myOwnAdapter);
 					warningDialog.setHandler(handler);										
 					break;
 					
@@ -324,13 +330,13 @@ public class AddBanned extends ListActivity {
 			
 			final String NUM_BANNED = "NUM_BANNED";
 			
-			if (arrayAdapter != null && arrayAdapter.getCount()>0) {
+			if (myOwnAdapter != null && myOwnAdapter.getCount()>0) {
 				
 				//int count = arrayAdapter.getCount();
 				int numBanned = message.getData().getInt(NUM_BANNED);
 				
 				//clear the arrayAdapter
-				arrayAdapter.clear();
+				myOwnAdapter.clear();
 				
 				//Show the toast message
 				if (QSToast.RELEASE) QSToast.r(
@@ -341,6 +347,8 @@ public class AddBanned extends ListActivity {
 			}
 		}
 	};
+	
+	
 	
 }
  

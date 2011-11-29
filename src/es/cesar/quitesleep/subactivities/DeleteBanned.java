@@ -24,21 +24,21 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.adapters.ContactListAdapter;
 import es.cesar.quitesleep.ddbb.Banned;
 import es.cesar.quitesleep.ddbb.ClientDDBB;
 import es.cesar.quitesleep.dialogs.WarningDialog;
@@ -53,7 +53,7 @@ import es.cesar.quitesleep.utils.QSToast;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class DeleteBanned extends ListActivity {
+public class DeleteBanned extends Activity implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -64,7 +64,8 @@ public class DeleteBanned extends ListActivity {
 	
 	//Widgets
 	private WarningDialog warningDialog;		
-	private ArrayAdapter<String> arrayAdapter;	
+	private ContactListAdapter<String> myOwnAdapter;
+	private ListView listView;
 	
 	//Attributes
 	private String selectContactName;		
@@ -76,11 +77,17 @@ public class DeleteBanned extends ListActivity {
 		try {
 			super.onCreate(savedInstanceState);						
 			
+			setContentView(R.layout.contact_list);
+
+			listView = (ListView)findViewById(R.id.contact_list_view);
+			
 			warningDialog = new WarningDialog(
 					this, 
 					ConfigAppValues.WARNING_REMOVE_ALL_CONTACTS);
 		
 			getAllContactList();
+			
+			listView.setOnItemClickListener(this);
 			
 		}catch (Exception e) {
 			if (QSLog.DEBUG_E)QSLog.e(CLASS_NAME, ExceptionUtils.exceptionTraceToString(
@@ -103,13 +110,15 @@ public class DeleteBanned extends ListActivity {
 			List<String> contactListString = convertContactList(contactList);
 			
 			if (contactListString != null) {
-				arrayAdapter = new ArrayAdapter<String>(
-					this, 
-					R.layout.deletebanned,
-					R.id.deleteBanned_textview_name,
-					contactListString);
+				myOwnAdapter = new ContactListAdapter<String>(
+					getApplicationContext(), 
+					R.layout.list_item,					
+					contactListString, 
+					this);
 			
-				setListAdapter(arrayAdapter);																							
+				listView.setAdapter(myOwnAdapter);
+				
+				listView.setFastScrollEnabled(true);																							
 			}
 			
 			clientDDBB.close();
@@ -160,19 +169,17 @@ public class DeleteBanned extends ListActivity {
 	}
 	
 	@Override
-	protected void onListItemClick (
-			ListView listView,
-    		View view,
-    		int position,
-    		long id){
+	public void onItemClick(
+			AdapterView<?> parent, 
+			View view,
+			int position, 
+			long id) {
 		
 		try {
 			
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "OnListItemClick");
-			
-			super.onListItemClick(listView, view, position, id);
-						
-			selectContactName = (String) this.getListAdapter().getItem(position);	
+									
+			selectContactName = (String) myOwnAdapter.getItem(position);	
 			if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Name: " + selectContactName);						
 			
 			/* If we like to use one subactivity for show better contact details
@@ -199,7 +206,7 @@ public class DeleteBanned extends ListActivity {
 			case ConfigAppValues.REQCODE_EDIT_CONTACT:
 				if (QSLog.DEBUG_D)QSLog.d(CLASS_NAME, "Valor retornado: " + resultCode);
 				if (resultCode == Activity.RESULT_OK)
-					arrayAdapter.remove(selectContactName);
+					myOwnAdapter.remove(selectContactName);
 				break;
 			default:
 				break;
@@ -244,7 +251,7 @@ public class DeleteBanned extends ListActivity {
 			switch (idDialog) {			
 				case WARNING_DIALOG:
 					warningDialog.setContext(this);
-					warningDialog.setArrayAdapter(arrayAdapter);
+					warningDialog.setArrayAdapter(myOwnAdapter);
 					warningDialog.setHandler(handler);										
 					break;
 					
@@ -314,14 +321,14 @@ public class DeleteBanned extends ListActivity {
 	public final Handler handler = new Handler() {
 		public void handleMessage(Message message) {						
 			
-			if (arrayAdapter != null && arrayAdapter.getCount()>0) {
+			if (myOwnAdapter != null && myOwnAdapter.getCount()>0) {
 				
 				//int count = arrayAdapter.getCount();
 				int numRemoveContacts = message.getData().getInt(
 						ConfigAppValues.NUM_REMOVE_CONTACTS);
 				
 				//clear the arrayAdapter
-				arrayAdapter.clear();
+				myOwnAdapter.clear();
 				
 				//Show the toast message
 				if (QSToast.RELEASE) QSToast.r(
