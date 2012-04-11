@@ -29,11 +29,11 @@ import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 
-import es.cesar.quitesleep.beans.BCBean;
-import es.cesar.quitesleep.ddbb.ClientDDBB;
-import es.cesar.quitesleep.ddbb.Contact;
-import es.cesar.quitesleep.ddbb.MuteOrHangUp;
-import es.cesar.quitesleep.staticValues.ConfigAppValues;
+import es.cesar.quitesleep.data.controllers.ClientDDBB;
+import es.cesar.quitesleep.data.models.BCBean;
+import es.cesar.quitesleep.data.models.Contact;
+import es.cesar.quitesleep.data.models.MuteOrHangUp;
+import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
 

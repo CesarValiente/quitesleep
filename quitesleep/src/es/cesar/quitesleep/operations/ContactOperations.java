@@ -23,12 +23,12 @@ import java.util.List;
 
 import android.util.Log;
 import android.widget.CheckBox;
-import es.cesar.quitesleep.ddbb.Banned;
-import es.cesar.quitesleep.ddbb.ClientDDBB;
-import es.cesar.quitesleep.ddbb.Contact;
-import es.cesar.quitesleep.ddbb.Mail;
-import es.cesar.quitesleep.ddbb.Phone;
-import es.cesar.quitesleep.ddbb.Schedule;
+import es.cesar.quitesleep.data.controllers.ClientDDBB;
+import es.cesar.quitesleep.data.models.Banned;
+import es.cesar.quitesleep.data.models.Contact;
+import es.cesar.quitesleep.data.models.Mail;
+import es.cesar.quitesleep.data.models.Phone;
+import es.cesar.quitesleep.data.models.Schedule;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
 

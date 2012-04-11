@@ -21,10 +21,10 @@ package es.cesar.quitesleep.operations;
 
 import java.util.Calendar;
 
-import es.cesar.quitesleep.ddbb.ClientDDBB;
-import es.cesar.quitesleep.ddbb.Schedule;
-import es.cesar.quitesleep.ddbb.Settings;
-import es.cesar.quitesleep.staticValues.ConfigAppValues;
+import es.cesar.quitesleep.data.controllers.ClientDDBB;
+import es.cesar.quitesleep.data.models.Schedule;
+import es.cesar.quitesleep.data.models.Settings;
+import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.QSLog;
 
