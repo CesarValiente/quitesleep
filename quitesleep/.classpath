@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/db4o-7.12.132.14217-core-java5.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/db4o-7.12.132.14217-cs-java5.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
