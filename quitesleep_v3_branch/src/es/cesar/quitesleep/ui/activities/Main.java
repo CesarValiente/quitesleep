@@ -20,6 +20,7 @@
 package es.cesar.quitesleep.ui.activities;
 
 
+import android.R;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -29,8 +30,6 @@ import android.os.Message;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
@@ -38,15 +37,12 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
-import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.fragments.ContactsFragment;
 import es.cesar.quitesleep.ui.fragments.LogsFragment;
 import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
 import es.cesar.quitesleep.ui.fragments.SettingsFragment;
-import es.cesar.quitesleep.ui.fragments.adapter.PageViewerAdapter;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -76,7 +72,7 @@ public class Main extends SherlockFragmentActivity {
 		
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.main);
+		setContentView(R);
 		
 		mAdatper = new PageViewerAdapter(getSupportFragmentManager());
 		

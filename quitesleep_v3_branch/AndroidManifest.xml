@@ -28,11 +28,6 @@
       android:versionName="2.0.3"
       android:installLocation="auto">
       
-    <!-- Android 1.5 == api sdk version 3 -->
-    <!-- Android 2.0 == api sdk version 5 -->    
-    <!-- Android 2.2 (Froyo) == api sdk version 8 -->
-    <!-- Android 2.3 (Gingerbread) == api sdk version 9 -->
-    <!-- Android 4.0 (IceCream Sandwich) == api sdk  14-->
     <uses-sdk 
     	android:minSdkVersion="5"
     	android:targetSdkVersion="14"/>
@@ -81,16 +76,16 @@
         
         <!-- Activity with the Contacts Tab, which show options for addContacts and
         		view de list selected contacts -->
-        <activity android:name=".ui.fragments.ContactsTab" />                                
+        <activity android:name=".ui.fragments.ContactsFragment" />                                
         
         <!-- Activity with the Calendar Tab, which let to the user change the date and time -->
-        <activity android:name=".ui.fragments.ScheduleTab" />                                
+        <activity android:name=".ui.fragments.ScheduleFragment" />                                
         
         <!-- Activity with the Settings Tab where config and set up all concerning about send sms/mail messages
         and start/stop phone incomig calls service -->
-        <activity android:name=".u.ui.fragments.SettingsTab/>
+        <activity android:name="ui.fragments.SettingsFragment"/>
         
-        <activity android:name="..ui.fragments.LogsTab />
+        <activity android:name=".ui.fragments.LogsFragment"/>
         
         <!-- Sub Activity that manage the AddContacts process -->
         <activity android:name=".ui.activities.AddBanned" />        
