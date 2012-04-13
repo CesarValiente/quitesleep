@@ -91,10 +91,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		
 		try {
 			Log.d(CLASS_NAME, "Boot_Completed!!");
-			
-			if (ConfigAppValues.getContext() == null)
-				ConfigAppValues.setContext(context);									
-			
+						
 			if (ConfigAppValues.getQuiteSleepServiceState() != null) {
 							
 				if (ConfigAppValues.getQuiteSleepServiceState()) {

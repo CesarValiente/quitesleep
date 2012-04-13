@@ -45,7 +45,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class SmsSettings extends Activity implements OnClickListener {
+public class SmsSettings extends BaseActivity implements OnClickListener {
 	
 	final private String CLASS_NAME = getClass().getName();
 	final private int WARNING_DIALOG = 0;	
@@ -65,9 +65,8 @@ public class SmsSettings extends Activity implements OnClickListener {
 	public void onCreate (Bundle savedInstanceState) {				
 					
 		super.onCreate(savedInstanceState);
-		
-		createAppBar();
-		
+		super.homeToUp(true);
+				
 		setContentView(R.layout.smssettings);
 					
 		smsEditText = (EditText)findViewById(smsEditTextId);
@@ -85,19 +84,7 @@ public class SmsSettings extends Activity implements OnClickListener {
 		getDefaultValues();				
 	}
 	
-	
-	/**
-	 * Create the Application Title Bar in top of the activity
-	 */
-	private void createAppBar () {
-							
-		//Put an app icon to the upper left of the screen
-		Window window = getWindow();
-		window.requestFeature(Window.FEATURE_LEFT_ICON);
-		setContentView(R.layout.smssettings);
-		window.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.quitesleep);					
-	}
-	
+		
 	@Override
 	public void onClick (View view) {
 		

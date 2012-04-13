@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 
 
@@ -44,7 +45,7 @@ public class DeliveredActionSMSReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {		
 		
 		es.cesar.quitesleep.utils.Toast.d(
-        		ConfigAppValues.getContext(),
+				QuiteSleepApp.getContext(),
         		"The user have been receive the SMS message!!",
         		Toast.LENGTH_SHORT);;
 	}			

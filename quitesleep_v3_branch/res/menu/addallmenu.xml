@@ -24,6 +24,7 @@
 
     <item android:id="@+id/menu.addall"
         android:title="@string/menu.addall.label"
-        android:icon="@drawable/add_menu" />    
+        android:icon="@drawable/add_menu"
+        android:showAsAction="withText" />    
 
 </menu>

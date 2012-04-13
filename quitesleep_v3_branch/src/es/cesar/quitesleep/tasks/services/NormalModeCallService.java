@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.IBinder;
 import android.os.Vibrator;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
@@ -82,7 +83,7 @@ private final String CLASS_NAME = getClass().getName();
 		try {			
 				
 			AudioManager audioManager = 
-				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
+				(AudioManager)QuiteSleepApp.getContext().getSystemService(Context.AUDIO_SERVICE);
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 			
 			ConfigAppValues.processIdleCall = false;						
@@ -100,7 +101,7 @@ private final String CLASS_NAME = getClass().getName();
 		try {
 			
 			String vibratorService = Context.VIBRATOR_SERVICE;
-			Vibrator vibrator = (Vibrator)ConfigAppValues.getContext().
+			Vibrator vibrator = (Vibrator)QuiteSleepApp.getContext().
 				getSystemService(vibratorService);
 			
 			vibrator.vibrate(1000);

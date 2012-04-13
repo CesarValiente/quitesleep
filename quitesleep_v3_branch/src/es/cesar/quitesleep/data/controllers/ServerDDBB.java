@@ -19,16 +19,17 @@
 
 package es.cesar.quitesleep.data.controllers;
 
-
-import android.util.Log;
+import android.content.Context;
 
 import com.db4o.ObjectServer;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ServerConfiguration;
 
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.interfaces.IDDBB;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.utils.ExceptionUtils;
+import es.cesar.quitesleep.utils.Log;
 
 
 /**
@@ -67,7 +68,9 @@ public class ServerDDBB implements IDDBB {
 			configuration.common().activationDepth(DEEP);
 																											
 			server = Db4oClientServer.openServer(
-					configuration, getDDBBFile(DDBB_FILE), 0);																	
+					configuration, getDDBBFile(DDBB_FILE), 0);			
+			if (server == null)
+				Log.d(CLASS_NAME, "server null!!!!");
 																													
 		}catch (Exception e) {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
@@ -80,8 +83,10 @@ public class ServerDDBB implements IDDBB {
 	 */
 	private synchronized static void createInstance () {
 				
-		if (server == null) 
-			SINGLETON = new ServerDDBB();				
+		if (server == null)  {
+			Log.d(CLASS_NAME, "Creating server");
+			SINGLETON = new ServerDDBB();
+		}
 	}
 	
 	/**
@@ -138,9 +143,9 @@ public class ServerDDBB implements IDDBB {
 	 */
 	private static String getDDBBFile(String ddbb_file) {
 									
-		return ConfigAppValues.getContext().getDir(
+		return QuiteSleepApp.getContext().getDir(
 				DDBB_DIR, 
-				ConfigAppValues.getContext().MODE_PRIVATE) 
+				Context.MODE_PRIVATE) 
 				+ "/" + ddbb_file;							
 		
 		//NOTA: Para escribir en la sdcard, no se utiliza getContext().getDir()

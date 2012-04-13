@@ -1,16 +1,21 @@
 package es.cesar.quitesleep.ui.fragments.adapter;
 
-import es.cesar.quitesleep.ui.fragments.ContactsFragment;
-import es.cesar.quitesleep.ui.fragments.LogsFragment;
-import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
-import es.cesar.quitesleep.ui.fragments.SettingsFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.viewpagerindicator.TitleProvider;
+
+import es.cesar.quitesleep.ui.fragments.ContactsFragment;
+import es.cesar.quitesleep.ui.fragments.LogsFragment;
+import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
+import es.cesar.quitesleep.ui.fragments.SettingsFragment;
+
 public class PageViewerAdapter extends FragmentPagerAdapter implements TitleProvider {
     
     public static final String[] TAB_TITLES = { "Contacts", "Schedule", "Settings", "Logs"};
+    
+    private int mCount = TAB_TITLES.length;
     
     public PageViewerAdapter(FragmentManager fm) {
         super(fm);
@@ -18,6 +23,7 @@ public class PageViewerAdapter extends FragmentPagerAdapter implements TitleProv
 
     @Override
     public Fragment getItem(int position) {
+    	
         if(position == 0){
             return new ContactsFragment();
         } else if(position == 1){

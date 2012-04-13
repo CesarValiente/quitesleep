@@ -22,21 +22,27 @@ package es.cesar.quitesleep.ui.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
 import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
@@ -51,7 +57,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class DeleteBanned extends Activity implements OnItemClickListener {
+public class DeleteBanned extends SherlockListActivity implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -62,8 +68,7 @@ public class DeleteBanned extends Activity implements OnItemClickListener {
 	
 	//Widgets
 	private WarningDialog warningDialog;		
-	private ContactListAdapter<String> myOwnAdapter;
-	private ListView listView;
+	private ContactListAdapter<String> myOwnAdapter;	
 	
 	//Attributes
 	private String selectContactName;		
@@ -72,14 +77,16 @@ public class DeleteBanned extends Activity implements OnItemClickListener {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 				
-		super.onCreate(savedInstanceState);								
-		setContentView(R.layout.contact_list);
-		listView = (ListView)findViewById(R.id.contact_list_view);			
+		super.onCreate(savedInstanceState);										
+		
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		warningDialog = new WarningDialog(
 				this, 
 				ConfigAppValues.WARNING_REMOVE_ALL_CONTACTS);		
 		getAllContactList();			
-		listView.setOnItemClickListener(this);					
+		getListView().setOnItemClickListener(this);					
 	}
 	
 	
@@ -102,9 +109,9 @@ public class DeleteBanned extends Activity implements OnItemClickListener {
 					contactListString, 
 					this);
 			
-				listView.setAdapter(myOwnAdapter);
+				getListView().setAdapter(myOwnAdapter);
 				
-				listView.setFastScrollEnabled(true);																							
+				getListView().setFastScrollEnabled(true);																							
 			}
 			
 			clientDDBB.close();
@@ -236,7 +243,7 @@ public class DeleteBanned extends Activity implements OnItemClickListener {
 	@Override
 	public boolean onCreateOptionsMenu (Menu menu) {
 										
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.removeallmenu, menu);
 		
 		return true;					
@@ -251,6 +258,10 @@ public class DeleteBanned extends Activity implements OnItemClickListener {
 							
 		switch (item.getItemId()) {
 		
+			//To comeback to the previous activity we finalize it	
+			case android.R.id.home :
+				finish();			
+				break;
 			case removeAllMenuId:					
 				showDialog(WARNING_DIALOG);
 				break;					
@@ -280,8 +291,8 @@ public class DeleteBanned extends Activity implements OnItemClickListener {
 				
 				//Show the toast message
 				es.cesar.quitesleep.utils.Toast.d(
-                		ConfigAppValues.getContext(),
-                		numRemoveContacts + " " + ConfigAppValues.getContext().getString(
+						QuiteSleepApp.getContext(),
+                		numRemoveContacts + " " + QuiteSleepApp.getContext().getString(
                 				R.string.menu_removeall_toast_removecount),
                 		Toast.LENGTH_SHORT);		
 			}

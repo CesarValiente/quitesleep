@@ -22,22 +22,26 @@ package es.cesar.quitesleep.ui.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
@@ -51,38 +55,37 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class LogsFragment extends ListActivity implements IDialogs {
+public class LogsFragment extends SherlockListFragment implements IDialogs {
 
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
 	final private int WARNING_REMOVE_DIALOG 	= 	0;
 	final private int WARNING_REFRESH_DIALOG 	= 	1;
-	final private int HELP_DIALOG 		= 2;
+	final private int HELP_DIALOG 				= 	2;
 
 	//Widgets Ids
 	private final int removeCallLogMenuId = R.id.menu_calllog_remove;
-	private final int refreshCallLogMenuId = R.id.menu_calllog_refresh;
-	private final int helpCallLogMenuId = R.id.menu_information_help;
+	private final int refreshCallLogMenuId = R.id.menu_calllog_refresh;	
 	
 	//Widgets
 	private WarningDialog warningRemoveDialog;
 	private WarningDialog warningRefreshDialog;
 	private ArrayAdapter<String> arrayAdapter;	
+		
 	
-	//this activity
-	private Activity thisActivity = this;
+	
 	
 	@Override	
-	public void onCreate (Bundle savedInstanceState) {
+	public void onActivityCreated (Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		
 		warningRemoveDialog = new WarningDialog(
-				this, 
+				getSherlockActivity(), 
 				ConfigAppValues.WARNING_REMOVE_ALL_CALL_LOGS);
 		
 		warningRefreshDialog = new WarningDialog(
-				this, 
+				getSherlockActivity(), 
 				ConfigAppValues.WARNING_REFRESH_CALL_LOG);
 		
 		getAllCallLogList();
@@ -103,7 +106,7 @@ public class LogsFragment extends ListActivity implements IDialogs {
 			
 			if (callLogListString != null) {
 				arrayAdapter = new ArrayAdapter<String>(
-					this, 
+					QuiteSleepApp.getContext(), 
 					R.layout.logstab,
 					R.id.logstab_textview_contact,
 					callLogListString);
@@ -157,7 +160,6 @@ public class LogsFragment extends ListActivity implements IDialogs {
 	 * @return the dialog for the option specified
 	 * @see Dialog
 	 */
-	@Override
 	protected Dialog onCreateDialog (int id) {
 		
 		Dialog dialog;
@@ -187,13 +189,13 @@ public class LogsFragment extends ListActivity implements IDialogs {
 	public Dialog showWebviewDialog(String uri) {
 		
 		try {
-			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
               WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
               webView.getSettings().setJavaScriptEnabled(true);              
               
               webView.loadUrl(uri);
 
-              return new AlertDialog.Builder(this)
+              return new AlertDialog.Builder(QuiteSleepApp.getContext())
                   .setCustomTitle(null)
                   .setPositiveButton(android.R.string.ok, null)
                   .setView(contentView)
@@ -211,57 +213,22 @@ public class LogsFragment extends ListActivity implements IDialogs {
 	 *  @param int
 	 *  @param dialog
 	 */
-	@Override
 	protected void onPrepareDialog (int idDialog, Dialog dialog) {
 							
 		switch (idDialog) {			
 			case WARNING_REMOVE_DIALOG:
-				warningRemoveDialog.setContext(this);
+				warningRemoveDialog.setContext(QuiteSleepApp.getContext());
 				warningRemoveDialog.setArrayAdapter(arrayAdapter);
 				warningRemoveDialog.setHandler(handlerRemove);										
 				break;
 			case WARNING_REFRESH_DIALOG:
-				warningRefreshDialog.setContext(this);
+				warningRefreshDialog.setContext(QuiteSleepApp.getContext());
 				warningRefreshDialog.setArrayAdapter(arrayAdapter);
 				warningRefreshDialog.setHandler(handlerRefresh);										
 				break;			
 			default:
 				break;
 		}							
-	}
-	
-	
-	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-		
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.calllogmenu, menu);
-		
-		return true;					
-	}
-	
-	/**
-	 * @param 		item
-	 * @return 		boolean
-	 */
-	@Override
-	public boolean onOptionsItemSelected (MenuItem item) {				
-			
-		switch (item.getItemId()) {
-		
-			case removeCallLogMenuId:					
-				showDialog(WARNING_REMOVE_DIALOG);
-				break;					
-			case refreshCallLogMenuId:
-				showDialog(WARNING_REFRESH_DIALOG);
-				break;
-			case helpCallLogMenuId:
-				showDialog(HELP_DIALOG);
-				break;
-			default:
-				break;
-		}
-		return false;					
 	}
 	
 	
@@ -283,8 +250,8 @@ public class LogsFragment extends ListActivity implements IDialogs {
 				
 				//Show the toast message
 				Toast.makeText(
-                		ConfigAppValues.getContext(),
-                		numRemoveCallLogs + " " + ConfigAppValues.getContext().getString(
+                		QuiteSleepApp.getContext(),
+                		numRemoveCallLogs + " " + QuiteSleepApp.getContext().getString(
                 				R.string.menu_calllog_remove_toast),
                 		Toast.LENGTH_SHORT).show();		
 			}
@@ -320,8 +287,8 @@ public class LogsFragment extends ListActivity implements IDialogs {
 				}									
 				//Show the toast message
 				es.cesar.quitesleep.utils.Toast.d(
-                		ConfigAppValues.getContext(),
-                		ConfigAppValues.getContext().getString(
+						QuiteSleepApp.getContext(),
+						QuiteSleepApp.getContext().getString(
                 				R.string.menu_calllog_refresh_toast),
                 		Toast.LENGTH_SHORT);			
 			}
@@ -334,7 +301,7 @@ public class LogsFragment extends ListActivity implements IDialogs {
 				Log.d(CLASS_NAME, "inicializando arrayAdapter. " +
 						"CallLogListString: " + callLogListString);
 				arrayAdapter = new ArrayAdapter<String>(
-						thisActivity, 
+						QuiteSleepApp.getContext(), 
 						R.layout.logstab,
 						R.id.logstab_textview_contact,
 						callLogListString);

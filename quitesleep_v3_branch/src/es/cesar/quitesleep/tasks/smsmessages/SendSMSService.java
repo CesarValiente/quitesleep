@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.telephony.SmsManager;
 import android.util.Log;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Phone;
 import es.cesar.quitesleep.data.models.Settings;
@@ -176,7 +177,7 @@ public class SendSMSService extends Service {
 				//Create the setIntent parameter
 				Intent sentIntent = new Intent(SENT_SMS_ACTION);
 				PendingIntent sentPI = PendingIntent.getBroadcast(
-						ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 						0,
 						sentIntent,
 						0);
@@ -184,7 +185,7 @@ public class SendSMSService extends Service {
 				//Create the deliveryIntetn parameter
 				Intent deliveryIntent = new Intent(DELIVERED_SMS_ACTION);
 				PendingIntent deliverPI = PendingIntent.getBroadcast(
-						ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 						0,
 						deliveryIntent,
 						0);								

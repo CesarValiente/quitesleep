@@ -69,8 +69,6 @@ public class ConfigAppValues {
 	//Min Api level used in this app
 	private static int minApiLevel = 1;
 	
-	//General context used in this app
-	private static Context context = null;
 	
 	/* Used for check without to need to use the ddbb if the service 
 	 * QuiteSleep must be running or not.
@@ -101,12 +99,6 @@ public class ConfigAppValues {
 		ConfigAppValues.minApiLevel = minApiLevel;
 	}
 	
-	public static Context getContext () {
-		return context;
-	}	
-	public static void setContext (Context context) {
-		ConfigAppValues.context = context;
-	}
 
 	public static Boolean getQuiteSleepServiceState() {
 		return quiteSleepServiceState;

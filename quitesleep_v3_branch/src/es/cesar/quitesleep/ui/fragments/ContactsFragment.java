@@ -19,25 +19,24 @@
 
 package es.cesar.quitesleep.ui.fragments;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.settings.ConfigAppValues;
@@ -64,10 +63,6 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	private final int deleteBannedId = R.id.contacts_button_deleteBanned;
 	private final int syncContactsId = R.id.contacts_button_syncContacts;
 	
-	//Ids for option menu
-	final int aboutMenuId = R.id.menu_information_about;
-	final int helpMenuId = R.id.menu_information_help;
-
 	//IDs dialogs
 	private WarningDialog synchronizeDialog;	
 	
@@ -80,7 +75,10 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState) {			
 		
-		super.onCreate(savedInstanceState);																								
+		super.onCreate(savedInstanceState);
+		
+		//Indicate we want to repopulate the used action bar
+    	setHasOptionsMenu(true);    	
 						
 		//Instanciate all buttons
 		Button addBannedButton = (Button)getSherlockActivity().findViewById(addBannedId);
@@ -92,7 +90,7 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		deleteBannedButton.setOnClickListener(this);			
 		syncContactsButton.setOnClickListener(this);
 		
-		synchronizeDialog = new WarningDialog(this, ConfigAppValues.WARNING_SYNC_CONTACTS);															
+		synchronizeDialog = new WarningDialog(getSherlockActivity(), ConfigAppValues.WARNING_SYNC_CONTACTS);															
 	}
 	
 	
@@ -108,15 +106,15 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		
 		switch (viewId) {
 			case addBannedId:				
-				Intent intentAddContacts = new Intent(this, AddBanned.class);											
+				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), AddBanned.class);											
 				startActivityForResult(intentAddContacts, ConfigAppValues.REQCODE_ADD_BANNED);
 				break;			
 			case deleteBannedId:
-				Intent intentViewContacts = new Intent(this, DeleteBanned.class);
+				Intent intentViewContacts = new Intent(QuiteSleepApp.getContext(), DeleteBanned.class);
 				startActivityForResult(intentViewContacts, ConfigAppValues.REQCODE_DELETE_BANNED);
 				break;									
 			case syncContactsId:
-				showDialog(SYNCHRONIZE_DIALOG);
+				//showDialog(SYNCHRONIZE_DIALOG);
 				break;
 		}						
 	}
@@ -128,7 +126,7 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	 * @return the dialog for the option specified
 	 * @see Dialog
 	 */
-	@Override
+	
 	protected Dialog onCreateDialog (int id) {
 		
 		Dialog dialog;
@@ -158,13 +156,13 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	public Dialog showWebviewDialog(String uri) {
 		
 		try {
-			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
               WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
               webView.getSettings().setJavaScriptEnabled(true);              
               
               webView.loadUrl(uri);
 
-              return new AlertDialog.Builder(this)
+              return new AlertDialog.Builder(QuiteSleepApp.getContext())
                   .setCustomTitle(null)
                   .setPositiveButton(android.R.string.ok, null)
                   .setView(contentView)
@@ -174,37 +172,5 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
 			return null;
 		}
-	}			
-		
-	
-	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-										
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.informationmenu, menu);
-		
-		return true;					
-	}
-	
-	/**
-	 * @param 		item
-	 * @return 		boolean
-	 */
-	@Override
-	public boolean onOptionsItemSelected (MenuItem item) {				
-			
-		switch (item.getItemId()) {
-			case aboutMenuId:				
-				showDialog(ABOUT_DIALOG);
-				break;
-			case helpMenuId:
-				showDialog(HELP_DIALOG);
-				break;
-			default:
-				break;
-		}
-		return false;					
-	}
-	
-									
+	}																
 }

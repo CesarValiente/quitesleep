@@ -19,8 +19,6 @@
 
 package es.cesar.quitesleep.ui.activities;
 
-
-import android.R;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -34,15 +32,22 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
+import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.fragments.ContactsFragment;
 import es.cesar.quitesleep.ui.fragments.LogsFragment;
 import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
 import es.cesar.quitesleep.ui.fragments.SettingsFragment;
+import es.cesar.quitesleep.ui.fragments.adapter.PageViewerAdapter;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -56,7 +61,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * to show them.
  * 
  */
-public class Main extends SherlockFragmentActivity {
+public class Main extends BaseActivity {
 	
 	final String CLASS_NAME = getClass().getName();
 	
@@ -64,15 +69,17 @@ public class Main extends SherlockFragmentActivity {
 	private ViewPager mPager;
 	private PageIndicator mIndicator;
 	
-	final private int FIRST_TIME_DIALOG 	=	1;		
+	final private int FIRST_TIME_DIALOG 	=	1;	 
+     final private int ABOUT_DIALOG                  = 2; 
+     final private int HELP_DIALOG                   = 3;    
 	private WarningDialog firstTimeDialog;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {																		
 		
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);				
 		
-		setContentView(R);
+		setContentView(R.layout.main);				
 		
 		mAdatper = new PageViewerAdapter(getSupportFragmentManager());
 		
@@ -84,15 +91,13 @@ public class Main extends SherlockFragmentActivity {
 		
 				
 		//If is the first time QuiteSleep is running, then performs sync operations.
-		/*
+		
 		if (isTheFirstTime()) {
 			//We instantiate firstTimeDialog 
 			firstTimeDialog = new WarningDialog(this, ConfigAppValues.WARNING_FIRST_TIME);				
 			showDialog(FIRST_TIME_DIALOG);
 		}
-		*/							
-		
-		
+												
 	}
 	
 	
@@ -165,155 +170,6 @@ public class Main extends SherlockFragmentActivity {
 			return false;
 		}
 	}	
-	
-	/**
-	 * Create the Contacts Tab
-	 * 
-	 * @param intent
-	 * @param tabSpec
-	 * @param tabHost
-	 * @param resources
-	 * @throws Exception
-	 */
-	private void createContactsTab (
-			Intent intent,
-			TabSpec tabSpec, 
-			TabHost tabHost, 
-			Resources resources) throws Exception {
-
-		try {
-		
-			//---------------		Contacts Tab		----------------------//
-			
-			//Create an intent to launch an Activiy for the tab (to be reused)
-			intent = new Intent().setClass(this, ContactsFragment.class);
-			
-			//Get the string resource from the string xml set constants
-			CharSequence contactsLabel = getString(R.string.contacts_tab_label);
-			
-			//Initialize a TabSpec for each tab and add it to the TabHost. Also
-			//we add the intent to the tab for when it push, use the intent added
-			//(go to the clock tab)
-			tabSpec = tabHost.newTabSpec(contactsLabel.toString()).setIndicator(
-					contactsLabel,
-					resources.getDrawable(R.drawable.contactstab)).setContent(intent);			
-					
-			//Add the TabSpec to the TabHost
-			tabHost.addTab(tabSpec);
-
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception(e.toString());
-		}
-					
-	}
-	
-	/**
-	 * Create the Schedule Tab
-	 * 
-	 * @param intent
-	 * @param tabSpec
-	 * @param tabHost
-	 * @param resources
-	 * @throws Exception
-	 */
-	private void createScheduleTab (
-			Intent intent,
-			TabSpec tabSpec, 
-			TabHost tabHost, 
-			Resources resources) throws Exception {
-		
-		try {
-			
-			//------------		Schedule Tab	--------------------------//
-			
-			intent = new Intent().setClass(this, ScheduleFragment.class);
-			
-			CharSequence scheduleLabel = getString(R.string.schedule_tab_label);
-
-			tabSpec = tabHost.newTabSpec(scheduleLabel.toString()).setIndicator(
-					scheduleLabel,
-					resources.getDrawable(R.drawable.scheduletab)).setContent(intent);
-			
-			tabHost.addTab(tabSpec);
-
-		}catch (Exception e) {			
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception(e.toString());
-		}
-	}	
-	
-	
-	/**
-	 * 
-	 * @param intent
-	 * @param tabSpec
-	 * @param tabHost
-	 * @param resources
-	 * @throws Exception
-	 */
-	private void createSettingsTab (
-			Intent intent,
-			TabSpec tabSpec, 
-			TabHost tabHost, 
-			Resources resources) throws Exception {
-		
-		try {
-			
-			//------------		Settings Tab	--------------------------//
-			
-			intent = new Intent().setClass(this, SettingsFragment.class);
-			
-			CharSequence messageLabel = getString(R.string.settings_tab_label);
-
-			tabSpec = tabHost.newTabSpec(messageLabel.toString()).setIndicator(
-					messageLabel,
-					resources.getDrawable(R.drawable.settingstab)).setContent(intent);
-			
-			tabHost.addTab(tabSpec);
-
-		}catch (Exception e) {			
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception(e.toString());
-		}
-	}	
-	
-	/**
-	 * 
-	 * @param intent
-	 * @param tabSpec
-	 * @param tabHost
-	 * @param resources
-	 * @throws Exception
-	 */
-	private void createLogsTab (
-			Intent intent,
-			TabSpec tabSpec, 
-			TabHost tabHost, 
-			Resources resources) throws Exception {
-		
-		try {
-			
-			//------------		Logs Tab	--------------------------//
-			
-			intent = new Intent().setClass(this, LogsFragment.class);
-			
-			CharSequence messageLabel = getString(R.string.logs_tab_label);
-
-			tabSpec = tabHost.newTabSpec(messageLabel.toString()).setIndicator(
-					messageLabel,
-					resources.getDrawable(R.drawable.logstab)).setContent(intent);
-			
-			tabHost.addTab(tabSpec);
-
-		}catch (Exception e) {			
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception(e.toString());
-		}
-	}	
-	
 
 	/**
 	 * This handler manages the action regarding to check if the user click yes 
@@ -330,5 +186,5 @@ public class Main extends SherlockFragmentActivity {
 			Log.d(CLASS_NAME, "Num contacts sync 1st time: " + numContacts);								
 		}
 	};
-
+	
 }

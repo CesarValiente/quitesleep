@@ -19,23 +19,27 @@
 
 package es.cesar.quitesleep.ui.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.dialogs.EndTimeDialog;
 import es.cesar.quitesleep.components.dialogs.StartTimeDialog;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
@@ -50,7 +54,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class ScheduleFragment extends Activity implements OnClickListener {		
+public class ScheduleFragment extends SherlockFragment implements OnClickListener {		
 	
 	private final String CLASS_NAME = getClass().getName();
 	private final int START_TIME_DIALOG 	= 0;
@@ -92,32 +96,35 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 	private CheckBox fridayCheck;
 	private CheckBox saturdayCheck;
 	private CheckBox sundayCheck;
-	
-	//Ids for option menu
-	final int aboutMenuId = R.id.menu_information_about;
-	final int helpMenuId = R.id.menu_information_help;
-	
+		
 	final private String CALCULATOR_FONT = "fonts/calculator_script_mt.ttf";
 			
+	
+	@Override
+	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		return inflater.inflate(R.layout.scheduletab, container, false);				
+	}
 		
 	@Override
-	public void onCreate (Bundle savedInstanceState) {
+	public void onActivityCreated (Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.scheduletab);
-			
-		startTimeDialog = new StartTimeDialog(this);
-		endTimeDialog = new EndTimeDialog(this);
 		
-		Button startTimeButton = (Button)findViewById(startTimeButtonId);				
-		Button endTimeButton = (Button)findViewById(endTimeButtonId);
-		Button daysWeekButton = (Button)findViewById(daysWeekButtonId);
+		setHasOptionsMenu(true);
+			
+		startTimeDialog = new StartTimeDialog(getSherlockActivity());
+		endTimeDialog = new EndTimeDialog(getSherlockActivity());
+		
+		Button startTimeButton = (Button)getSherlockActivity().findViewById(startTimeButtonId);				
+		Button endTimeButton = (Button)getSherlockActivity().findViewById(endTimeButtonId);
+		Button daysWeekButton = (Button)getSherlockActivity().findViewById(daysWeekButtonId);
 		
 		//---------		Define our own text style used a custom font	------//
-		startTimeLabel = (TextView)findViewById(startTimeLabelId);
-		endTimeLabel = (TextView)findViewById(endTimeLabelId);
+		startTimeLabel = (TextView)getSherlockActivity().findViewById(startTimeLabelId);
+		endTimeLabel = (TextView)getSherlockActivity().findViewById(endTimeLabelId);
 		
-		Typeface face = Typeface.createFromAsset(getAssets(), CALCULATOR_FONT);
+		Typeface face = Typeface.createFromAsset(getSherlockActivity().getAssets(), CALCULATOR_FONT);
 		
 		startTimeLabel.setTypeface(face);
 		endTimeLabel.setTypeface(face);
@@ -129,13 +136,13 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 		
 		
 		//Instantiate the days of the week checkboxes
-		mondayCheck = (CheckBox)findViewById(mondayCheckId);
-		tuesdayCheck = (CheckBox)findViewById(tuesdayCheckId);
-		wednesdayCheck = (CheckBox)findViewById(wednesdayCheckId);
-		thursdayCheck = (CheckBox)findViewById(thursdayCheckId);
-		fridayCheck = (CheckBox)findViewById(fridayCheckId);
-		saturdayCheck = (CheckBox)findViewById(saturdayCheckId);
-		sundayCheck = (CheckBox)findViewById(sundayCheckId);
+		mondayCheck = (CheckBox)getSherlockActivity().findViewById(mondayCheckId);
+		tuesdayCheck = (CheckBox)getSherlockActivity().findViewById(tuesdayCheckId);
+		wednesdayCheck = (CheckBox)getSherlockActivity().findViewById(wednesdayCheckId);
+		thursdayCheck = (CheckBox)getSherlockActivity().findViewById(thursdayCheckId);
+		fridayCheck = (CheckBox)getSherlockActivity().findViewById(fridayCheckId);
+		saturdayCheck = (CheckBox)getSherlockActivity().findViewById(saturdayCheckId);
+		sundayCheck = (CheckBox)getSherlockActivity().findViewById(sundayCheckId);
 		
 		//Define the onClick listeners
 		startTimeButton.setOnClickListener(this);
@@ -162,11 +169,11 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 		switch (viewId) {
 		
 			case startTimeButtonId:				
-				showDialog(START_TIME_DIALOG);				
+				//showDialog(START_TIME_DIALOG);				
 				break;
 				
 			case endTimeButtonId:
-				showDialog(END_TIME_DIALOG);				
+				//showDialog(END_TIME_DIALOG);				
 				break;			
 				
 			case daysWeekButtonId:
@@ -178,7 +185,6 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 	/**
 	 * For the first time that create the dialogs
 	 */
-	@Override
 	protected Dialog onCreateDialog (int id) {
 		
 		Dialog dialog;
@@ -211,13 +217,13 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 	public Dialog showWebviewDialog(String uri) {
 		
 		try {
-			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
               WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
               webView.getSettings().setJavaScriptEnabled(true);              
               
               webView.loadUrl(uri);
 
-              return new AlertDialog.Builder(this)
+              return new AlertDialog.Builder(QuiteSleepApp.getContext())
                   .setCustomTitle(null)
                   .setPositiveButton(android.R.string.ok, null)
                   .setView(contentView)
@@ -235,7 +241,7 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 	 *  @param int
 	 *  @param dialog
 	 */
-	@Override
+	
 	protected void onPrepareDialog (int idDialog, Dialog dialog) {				
 			
 		switch (idDialog) {
@@ -246,37 +252,6 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 			default:
 				break;
 		}								
-	}
-	
-	
-	
-	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-								
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.informationmenu, menu);
-		
-		return true;						
-	}
-	
-	/**
-	 * @param 		item
-	 * @return 		boolean
-	 */
-	@Override
-	public boolean onOptionsItemSelected (MenuItem item) {				
-			
-		switch (item.getItemId()) {
-			case aboutMenuId:
-				showDialog(ABOUT_DIALOG);
-				break;
-			case helpMenuId:
-				showDialog(HELP_DIALOG);
-				break;
-			default:
-				break;
-		}
-		return false;				
 	}
 	
 	/**
@@ -309,7 +284,7 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 				clientDDBB.close();
 				
 				es.cesar.quitesleep.utils.Toast.r(
-                		this,
+                		QuiteSleepApp.getContext(),
                 		this.getString(
                 				R.string.schedule_toast_daysweek_ok),
                 		Toast.LENGTH_SHORT);
@@ -318,7 +293,7 @@ public class ScheduleFragment extends Activity implements OnClickListener {
 				
 			}else {
 				es.cesar.quitesleep.utils.Toast.r(
-                		this,
+						QuiteSleepApp.getContext(),
                 		this.getString(
                 				R.string.schedule_toast_daysweek_ko),
                 		Toast.LENGTH_SHORT);

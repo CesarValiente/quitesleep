@@ -25,6 +25,7 @@ import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.operations.CheckSettingsOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.tasks.services.NormalModeCallService;
@@ -51,9 +52,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 	 */
 	public MyPhoneStateListener (Context context) {
 		
-		super();
-		if (ConfigAppValues.getContext() == null)
-			ConfigAppValues.setContext(context);		
+		super();			
 	}
 	
 	
@@ -120,15 +119,15 @@ public class MyPhoneStateListener extends PhoneStateListener {
 				ConfigAppValues.processIdleCall = true;
 
 				//--  If you choose use Android Service for process incoming call use this --//				
-				ConfigAppValues.getContext().startService(
+				QuiteSleepApp.getContext().startService(
 						new Intent(
-								ConfigAppValues.getContext(),
+								QuiteSleepApp.getContext(),
 								NormalModeCallService.class)); 				
 				//------------------------------------------------------------//							
 
 				
 				es.cesar.quitesleep.utils.Toast.d(
-						ConfigAppValues.getContext().getApplicationContext(),
+						QuiteSleepApp.getContext().getApplicationContext(),
 						"IDLE!!!!!!!!",
 						Toast.LENGTH_SHORT);
 			}					
@@ -150,7 +149,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 			ConfigAppValues.processRingCall = false;
 			
 			es.cesar.quitesleep.utils.Toast.d(
-            		ConfigAppValues.getContext().getApplicationContext(),
+					QuiteSleepApp.getContext().getApplicationContext(),
             		"OFFHOOK!!!!!!!!",
             		Toast.LENGTH_SHORT);	
 			
@@ -180,9 +179,9 @@ public class MyPhoneStateListener extends PhoneStateListener {
 				
 				
 				// Process to control the incoming call and kill it if proceed.				
-				ConfigAppValues.getContext().startService(
+				QuiteSleepApp.getContext().startService(
 						new Intent(
-								ConfigAppValues.getContext(),
+								QuiteSleepApp.getContext(),
 								SilentModeCallService.class).putExtra(
 									ConfigAppValues.INCOMING_CALL_NUMBER, 
 									incomingNumber));											
@@ -190,7 +189,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 				//------------------------------------------------------------//
 										
 				es.cesar.quitesleep.utils.Toast.d(
-						ConfigAppValues.getContext().getApplicationContext(),
+						QuiteSleepApp.getContext().getApplicationContext(),
 						"RINGING!!!!!!!!",
 						Toast.LENGTH_SHORT);															
 			}														
@@ -213,7 +212,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
 		try {
 			
 			AudioManager audioManager = 
-				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
+				(AudioManager)QuiteSleepApp.getContext().getSystemService(Context.AUDIO_SERVICE);
 			
 			
 			//Only for traces

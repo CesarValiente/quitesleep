@@ -29,9 +29,5 @@
     <item android:id="@+id/menu.calllog.remove"
         android:title="@string/menu.calllog.remove.label"
         android:icon="@drawable/delete_menu" />         
-        
-    <item android:id="@+id/menu.information.help"
-        android:title="@string/menu.information.help"
-        android:icon="@drawable/help_menu" />    
 
 </menu>

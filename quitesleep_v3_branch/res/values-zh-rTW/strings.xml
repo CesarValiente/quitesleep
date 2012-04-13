@@ -190,8 +190,8 @@
     <!-- ##################		MENUS	#################################### -->
     
    <!-- @@@@@@@@@@	Menu Information	@@@@@@@@@@@@@@@@@@@@@@@@ -->
-   <string name="menu.information.about">關於</string>
-   <string name="menu.information.help">說明</string>
+   <string name="menu_information_about">關於</string>
+   <string name="menu_information_help">說明</string>
    
    <!-- @@@@@@@@@@@	Menu Add All	@@@@@@@@@@@@@@@@@@@@@@@@@ -->
    <string name="menu.addall.label">新增所有聯繫人</string>

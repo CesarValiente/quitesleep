@@ -19,7 +19,6 @@
 
 package es.cesar.quitesleep.ui.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +43,7 @@ import es.cesar.quitesleep.utils.Log;
  * and/or unknown calls, etc.
  * 
  */
-public class BlockCallsConfScreen extends Activity implements OnClickListener {
+public class BlockCallsActivity extends BaseActivity implements OnClickListener {
 	
 	private final String CLASS_NAME = this.getClass().getName();
 	
@@ -64,14 +63,8 @@ public class BlockCallsConfScreen extends Activity implements OnClickListener {
 	public void onCreate (Bundle savedInstanceState) {
 						
 		super.onCreate(savedInstanceState);
-		
-		try {
-			createAppBar();
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			return;
-		}
-		
+		super.homeToUp(true);
+				
 		//Initialize the radioButtons
 		blockAll = (RadioButton)findViewById(blockAllId);			
 		blockBlockedContacts = (RadioButton)findViewById(blockBlockedContactsId);
@@ -86,29 +79,7 @@ public class BlockCallsConfScreen extends Activity implements OnClickListener {
 		
 		initActivity();							
 	}
-	
-	
-	/**
-	 * Create the Application Title Bar in top of the activity
-	 * 
-	 * @throws Exception
-	 */
-	private void createAppBar () throws Exception {
 		
-		try {
-			
-			//Put an app icon to the upper left of the screen
-			Window window = getWindow();
-			window.requestFeature(Window.FEATURE_LEFT_ICON);
-			setContentView(R.layout.configblockcalls);
-			window.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.quitesleep);
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception();
-		}
-	}
-	
 	/**
 	 * Initialize the activity with the main actions like get the BlockCall 
 	 * object with all its content.
@@ -138,8 +109,7 @@ public class BlockCallsConfScreen extends Activity implements OnClickListener {
 				clientDDBB.close();
 			}						
 			
-			switch (ConfigAppValues.getBlockCallsConf().whatIsInUse()) {
-			
+			switch (ConfigAppValues.getBlockCallsConf().whatIsInUse()) {			
 				case 0:
 					break;
 				case 1:

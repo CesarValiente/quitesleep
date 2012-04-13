@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ArrayAdapter;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.dialogs.CallLogDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.CallLog;
@@ -107,7 +108,7 @@ public class RefreshCallLogMenu extends Thread {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));		
 		}finally {
 			//Hide and dismiss de synchronization dialog
-			callLogDialog.stopDialog(ConfigAppValues.getContext());
+			callLogDialog.stopDialog(QuiteSleepApp.getContext());
 			
 			//Create and send the numBanned message to the handler in gui main thread
 			Message message = handler.obtainMessage();

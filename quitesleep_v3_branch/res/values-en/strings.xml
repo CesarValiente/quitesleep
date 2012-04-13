@@ -192,8 +192,8 @@
     <!-- ##################		MENUS	#################################### -->
     
    <!-- @@@@@@@@@@	Menu Information	@@@@@@@@@@@@@@@@@@@@@@@@ -->
-   <string name="menu.information.about">About</string>
-   <string name="menu.information.help">Help</string>
+   <string name="menu_information_about">About</string>
+   <string name="menu_information_help">Help</string>
    
    <!-- @@@@@@@@@@@	Menu Add All	@@@@@@@@@@@@@@@@@@@@@@@@@ -->
    <string name="menu.addall.label">Add all contacts</string>

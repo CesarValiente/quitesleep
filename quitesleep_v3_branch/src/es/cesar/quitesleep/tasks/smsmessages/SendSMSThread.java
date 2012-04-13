@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.telephony.SmsManager;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.CallLog;
 import es.cesar.quitesleep.data.models.Phone;
@@ -162,7 +163,7 @@ public class SendSMSThread extends Thread {
 				//Create the setIntent parameter
 				Intent sentIntent = new Intent(SENT_SMS_ACTION);
 				PendingIntent sentPI = PendingIntent.getBroadcast(
-						ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 						0,
 						sentIntent,
 						0);
@@ -170,7 +171,7 @@ public class SendSMSThread extends Thread {
 				//Create the deliveryIntetn parameter
 				Intent deliveryIntent = new Intent(DELIVERED_SMS_ACTION);
 				PendingIntent deliverPI = PendingIntent.getBroadcast(
-						ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 						0,
 						deliveryIntent,
 						0);							
@@ -228,7 +229,7 @@ public class SendSMSThread extends Thread {
 			    new String[] {REPLY_PATH_PRESENT, SERVICE_CENTER,};
 			
 			Cursor cursor =
-		        ConfigAppValues.getContext().getContentResolver().query(SMS_CONTENT_URI,
+					QuiteSleepApp.getContext().getContentResolver().query(SMS_CONTENT_URI,
 		            SERVICE_CENTER_PROJECTION, "thread_id = " + 0, null, "date DESC");
 
 		      // cursor = SqliteWrapper.query(mContext, mContext.getContentResolver(),

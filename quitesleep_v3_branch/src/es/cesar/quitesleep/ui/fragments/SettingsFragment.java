@@ -19,29 +19,34 @@
 
 package es.cesar.quitesleep.ui.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.MuteOrHangUp;
 import es.cesar.quitesleep.data.models.Settings;
 import es.cesar.quitesleep.operations.StartStopServicesOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.activities.BlockCallsConfScreen;
+import es.cesar.quitesleep.ui.activities.BlockCallsActivity;
 import es.cesar.quitesleep.ui.activities.MailSettings;
 import es.cesar.quitesleep.ui.activities.SmsSettings;
 import es.cesar.quitesleep.ui.notifications.QuiteSleepNotification;
@@ -54,7 +59,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@mgail.com
  *
  */
-public class SettingsFragment extends Activity implements OnClickListener, IDialogs {
+public class SettingsFragment extends SherlockFragment implements OnClickListener, IDialogs {
 	
 	private final String CLASS_NAME = getClass().getName();
 	
@@ -70,9 +75,6 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 	final int hangUpRButtonId = R.id.settings_radiobutton_hangup;
 	final int serviceToggleButtonId = R.id.settings_togglebutton_service;	
 	
-	//Ids for option menu
-	final int aboutMenuId = R.id.menu_information_about;
-	final int helpMenuId = R.id.menu_information_help;
 	
 	//Activity buttons
 	private Button mailButton;
@@ -82,25 +84,27 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 	private RadioButton hangUpRButton;
 	private ToggleButton serviceToggleButton;
 	
-	//Notification
-	//private NotificationManager notificationManager;
-	//final private int notificationId = R.layout.quitesleep_notification;
-	
-	
+
+	@Override
+	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		return inflater.inflate(R.layout.settingstab, container, false);
+	}
 	
 	@Override
-	public void onCreate (Bundle savedInstanceState) {
+	public void onActivityCreated (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settingstab);
+		super.onCreate(savedInstanceState);		
+		
+		setHasOptionsMenu(true);
 
 		//All Activity buttons
-		mailButton = (Button)findViewById(mailButtonId);
-		smsButton = (Button)findViewById(smsButtonId);
-		blockOtherCalls = (Button)findViewById(blockOtherCallsId);
-		muteRButton = (RadioButton)findViewById(muteRButtonId);
-		hangUpRButton = (RadioButton)findViewById(hangUpRButtonId);
-		serviceToggleButton = (ToggleButton)findViewById(serviceToggleButtonId);
+		mailButton = (Button)getSherlockActivity().findViewById(mailButtonId);
+		smsButton = (Button)getSherlockActivity().findViewById(smsButtonId);
+		blockOtherCalls = (Button)getSherlockActivity().findViewById(blockOtherCallsId);
+		muteRButton = (RadioButton)getSherlockActivity().findViewById(muteRButtonId);
+		hangUpRButton = (RadioButton)getSherlockActivity().findViewById(hangUpRButtonId);
+		serviceToggleButton = (ToggleButton)getSherlockActivity().findViewById(serviceToggleButtonId);
 		
 			
 		//Define all button listeners
@@ -137,12 +141,12 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 		switch (viewId) {
 		
 			case mailButtonId:
-				Intent intentMailSettings = new Intent(this, MailSettings.class);
+				Intent intentMailSettings = new Intent(QuiteSleepApp.getContext(), MailSettings.class);
 				startActivityForResult(intentMailSettings, ConfigAppValues.REQCODE_MAIL_SETTINGS);
 				break;
 				
 			case smsButtonId:
-				Intent intentSmsSettings = new Intent(this, SmsSettings.class);
+				Intent intentSmsSettings = new Intent(QuiteSleepApp.getContext(), SmsSettings.class);
 				startActivityForResult(intentSmsSettings, ConfigAppValues.REQCODE_SMS_SETTINGS);
 				break;
 				
@@ -159,14 +163,14 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 				break;
 								
 			case blockOtherCallsId:
-				Intent intentBlockOtherCalls = new Intent(this, BlockCallsConfScreen.class);
+				Intent intentBlockOtherCalls = new Intent(QuiteSleepApp.getContext(), BlockCallsActivity.class);
 				startActivityForResult(intentBlockOtherCalls, ConfigAppValues.REQCODE_BLOCK_OTHER_CALLS);
 				break;
 				
 			case serviceToggleButtonId:
 				startStopServiceProcess();					
 				QuiteSleepNotification.showNotification(
-						this, 
+						QuiteSleepApp.getContext(), 
 						serviceToggleButton.isChecked());			
 				break;
 				
@@ -215,36 +219,7 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));			
 		}
 	}
-	
-	
-	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-								
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.informationmenu, menu);
-		
-		return true;						
-	}
-	
-	/**
-	 * @param 		item
-	 * @return 		boolean
-	 */
-	@Override
-	public boolean onOptionsItemSelected (MenuItem item) {				
-			
-		switch (item.getItemId()) {
-			case aboutMenuId:
-				showDialog(ABOUT_DIALOG);
-				break;
-			case helpMenuId:
-				showDialog(HELP_DIALOG);
-				break;
-			default:
-				break;
-		}
-		return false;					
-	}
+
 	
 	/**
 	 * Create the activity dialogs used for it
@@ -253,7 +228,6 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 	 * @return the dialog for the option specified
 	 * @see Dialog
 	 */
-	@Override
 	protected Dialog onCreateDialog (int id) {
 		
 		Dialog dialog;
@@ -281,13 +255,13 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 	public Dialog showWebviewDialog(String uri) {
 		
 		try {
-			  View contentView = getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
+			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
               WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
               webView.getSettings().setJavaScriptEnabled(true);              
               
               webView.loadUrl(uri);
 
-              return new AlertDialog.Builder(this)
+              return new AlertDialog.Builder(getSherlockActivity())
                   .setCustomTitle(null)
                   .setPositiveButton(android.R.string.ok, null)
                   .setView(contentView)
@@ -383,14 +357,14 @@ public class SettingsFragment extends Activity implements OnClickListener, IDial
 				if (result)
 					//All right, stop the service was ok!
 					es.cesar.quitesleep.utils.Toast.r(
-	                		this,
+	                		QuiteSleepApp.getContext(),
 	                		this.getString(
 	                				R.string.settings_toast_stop_service),
 	                		Toast.LENGTH_SHORT);
 				else
 					//An error has ocurred!!
 					es.cesar.quitesleep.utils.Toast.r(
-	                		this,
+							QuiteSleepApp.getContext(),
 	                		this.getString(
 	                				R.string.settings_toast_fail_service),
 	                		Toast.LENGTH_SHORT);								

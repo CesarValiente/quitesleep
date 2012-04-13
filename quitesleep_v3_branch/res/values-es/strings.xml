@@ -193,8 +193,8 @@
     <!-- ##################        MENUS    #################################### -->
    
    <!-- @@@@@@@@@@    Menu Information    @@@@@@@@@@@@@@@@@@@@@@@@ -->
-   <string name="menu.information.about">Acerca de</string>
-   <string name="menu.information.help">Ayuda</string>
+   <string name="menu_information_about">Acerca de</string>
+   <string name="menu_information_help">Ayuda</string>
   
    <!-- @@@@@@@@@@@    Menu Add All    @@@@@@@@@@@@@@@@@@@@@@@@@ -->
    <string name="menu.addall.label">Añadir todos los contactos</string>

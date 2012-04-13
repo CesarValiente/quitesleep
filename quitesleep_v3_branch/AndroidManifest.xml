@@ -27,7 +27,7 @@
       android:versionCode="9"
       android:versionName="2.0.3"
       android:installLocation="auto">
-      
+              
     <uses-sdk 
     	android:minSdkVersion="5"
     	android:targetSdkVersion="14"/>
@@ -54,7 +54,7 @@
         android:name=".application.QuiteSleepApp" 
         android:icon="@drawable/quitesleep" 
         android:label="@string/app_name"                 
-        android:theme="@style/Theme.Sherlock.ForceOverflow">
+        android:theme="@style/mySherlockTheme">
       
       	<!-- Main Activity which launch the app with the TabWidgets -->
       	<!-- if we don't have the up bar with the small app-ico and so
@@ -73,20 +73,7 @@
             </intent-filter>
         </activity>
         
-        
-        <!-- Activity with the Contacts Tab, which show options for addContacts and
-        		view de list selected contacts -->
-        <activity android:name=".ui.fragments.ContactsFragment" />                                
-        
-        <!-- Activity with the Calendar Tab, which let to the user change the date and time -->
-        <activity android:name=".ui.fragments.ScheduleFragment" />                                
-        
-        <!-- Activity with the Settings Tab where config and set up all concerning about send sms/mail messages
-        and start/stop phone incomig calls service -->
-        <activity android:name="ui.fragments.SettingsFragment"/>
-        
-        <activity android:name=".ui.fragments.LogsFragment"/>
-        
+                
         <!-- Sub Activity that manage the AddContacts process -->
         <activity android:name=".ui.activities.AddBanned" />        
         
@@ -94,7 +81,7 @@
         <activity android:name=".ui.activities.DeleteBanned" />
         
         <!-- Sub Activity for manage other incoming calls -->
-        <activity android:name=".ui.activities.BlockCallsConfScreen" />
+        <activity android:name=".ui.activities.BlockCallsActivity" />
         
         <!-- Sub Activity that manage all sms settings, text, and activation -->
         <activity 

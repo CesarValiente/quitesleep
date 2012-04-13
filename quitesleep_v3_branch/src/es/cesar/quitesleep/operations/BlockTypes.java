@@ -29,6 +29,7 @@ import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.BCBean;
 import es.cesar.quitesleep.data.models.Contact;
@@ -245,7 +246,7 @@ public class BlockTypes {
 		
 		try {					
 			
-			TelephonyManager telephonyManager = (TelephonyManager)ConfigAppValues.getContext().
+			TelephonyManager telephonyManager = (TelephonyManager)QuiteSleepApp.getContext().
 				getSystemService(Context.TELEPHONY_SERVICE);
 			
 			//Java reflection to gain access to TelephonyManager						
@@ -276,7 +277,7 @@ public class BlockTypes {
 		
 		try {															
 			AudioManager audioManager = 
-				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
+				(AudioManager)QuiteSleepApp.getContext().getSystemService(Context.AUDIO_SERVICE);
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			
 			
@@ -292,7 +293,7 @@ public class BlockTypes {
 		
 		try {									
 			AudioManager audioManager = 
-				(AudioManager)ConfigAppValues.getContext().getSystemService(Context.AUDIO_SERVICE);
+				(AudioManager)QuiteSleepApp.getContext().getSystemService(Context.AUDIO_SERVICE);
 							
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);											
 			
@@ -309,7 +310,7 @@ public class BlockTypes {
 		try {
 			
 			String vibratorService = Context.VIBRATOR_SERVICE;
-			Vibrator vibrator = (Vibrator)ConfigAppValues.getContext().
+			Vibrator vibrator = (Vibrator)QuiteSleepApp.getContext().
 				getSystemService(vibratorService);
 						
 			vibrator.cancel();

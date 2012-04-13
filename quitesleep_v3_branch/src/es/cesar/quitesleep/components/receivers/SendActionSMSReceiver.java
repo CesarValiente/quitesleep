@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 
 
@@ -51,7 +52,7 @@ public class SendActionSMSReceiver extends BroadcastReceiver{
 			case Activity.RESULT_OK:
 				Log.d(CLASS_NAME, "Successful transmission!!");
 				es.cesar.quitesleep.utils.Toast.d(
-	            		ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 	            		"Successful transmission!!",
 	            		Toast.LENGTH_SHORT);
 				break;
@@ -59,21 +60,21 @@ public class SendActionSMSReceiver extends BroadcastReceiver{
 				Log.d(CLASS_NAME, "Nonspecific Failure!! Intent extra: " 
 						+ intent.getExtras().getInt("errorCode"));
 				es.cesar.quitesleep.utils.Toast.d(
-	            		ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 	            		"Nonspecific Failure!!",
 	            		Toast.LENGTH_SHORT);
 				break;
 			case SmsManager.RESULT_ERROR_RADIO_OFF:
 				Log.d(CLASS_NAME, "Radio is turned Off!!");
 				es.cesar.quitesleep.utils.Toast.d(
-	            		ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 	            		"Radio is turned Off!!",
 	            		Toast.LENGTH_SHORT);
 				break;
 			case SmsManager.RESULT_ERROR_NULL_PDU:
 				Log.d(CLASS_NAME, "PDU Failure");
 				es.cesar.quitesleep.utils.Toast.d(
-	            		ConfigAppValues.getContext(),
+						QuiteSleepApp.getContext(),
 	            		"PDU Failure",
 	            		Toast.LENGTH_SHORT);
 				break;

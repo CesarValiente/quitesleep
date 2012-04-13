@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.dialogs.AddAllDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Banned;
@@ -128,7 +129,7 @@ public class AddAllMenu extends Thread {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
 		}finally {
 			//Hide and dismiss de synchronization dialog
-			addAllDialog.stopDialog(ConfigAppValues.getContext());
+			addAllDialog.stopDialog(QuiteSleepApp.getContext());
 			
 			//Create and send the numBanned message to the handler in gui main thread
 			Message message = handler.obtainMessage();

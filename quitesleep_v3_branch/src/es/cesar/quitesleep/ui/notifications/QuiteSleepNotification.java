@@ -25,6 +25,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.activities.Main;
 import es.cesar.quitesleep.utils.ExceptionUtils;
@@ -88,7 +89,7 @@ public class QuiteSleepNotification {
 				
 				CharSequence message;
 				
-				message = ConfigAppValues.getContext().getText(
+				message = QuiteSleepApp.getContext().getText(
 						R.string.quitesleep_notification_start_message);
 				
 				Notification notification = new Notification(

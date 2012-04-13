@@ -28,14 +28,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
 import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
@@ -55,7 +60,7 @@ import es.cesar.quitesleep.utils.Toast;
  * Class for AddContacts to the banned user list
  * 
  */
-public class AddBanned extends Activity implements OnItemClickListener {
+public class AddBanned extends SherlockListActivity implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -64,10 +69,11 @@ public class AddBanned extends Activity implements OnItemClickListener {
 	//Widgets Id's
 	final private int addAllMenuId = R.id.menu_addall; 
 	
+	
 	//Widgets
 	private WarningDialog warningDialog;
 	private ContactListAdapter<String> myOwnAdapter;
-	private ListView listView;
+	//private ListView listView;
 	
 	//Auxiliar attributes
 	private String selectContactName;
@@ -82,14 +88,18 @@ public class AddBanned extends Activity implements OnItemClickListener {
 	public void onCreate (Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.contact_list);
-		listView = (ListView)findViewById(R.id.contact_list_view);		
+			
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		//setContentView(R.layout.contact_list);
+		//listView = (ListView)findViewById(R.id.contact_list_view);		
 		warningDialog = new WarningDialog(
 				this, 
 				ConfigAppValues.WARNING_ADD_ALL_CONTACTS);						
 				
 		getAllContactList();		
-		listView.setOnItemClickListener(this);		
+		getListView().setOnItemClickListener(this);		
 	}
 	
 	
@@ -114,9 +124,9 @@ public class AddBanned extends Activity implements OnItemClickListener {
 					contactListString, 
 					this);
 			
-				listView.setAdapter(myOwnAdapter);
+				getListView().setAdapter(myOwnAdapter);
 				
-				listView.setFastScrollEnabled(true);
+				getListView().setFastScrollEnabled(true);
 			}		
 			clientDDBB.close();
 						
@@ -238,15 +248,12 @@ public class AddBanned extends Activity implements OnItemClickListener {
 			default:
 				break;
 		}								
-	}
-	
-	
+	}		
 	
 	@Override
 	public boolean onCreateOptionsMenu (Menu menu) {
-		
-									
-		MenuInflater menuInflater = getMenuInflater();
+										
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.addallmenu, menu);
 		
 		return true;					
@@ -261,9 +268,13 @@ public class AddBanned extends Activity implements OnItemClickListener {
 							
 		switch (item.getItemId()) {
 		
+			//To comeback to the previous activity we finalize it
+			case android.R.id.home :
+				finish();			
+				break;
 			case addAllMenuId:					
 				showDialog(WARNING_DIALOG);
-				break;					
+				break;									
 			default:
 				break;
 		}
@@ -289,8 +300,8 @@ public class AddBanned extends Activity implements OnItemClickListener {
 				
 				//Show the toast message
 				Toast.d(
-                		ConfigAppValues.getContext(),
-                		numBanned + " " + ConfigAppValues.getContext().getString(
+						QuiteSleepApp.getContext(),
+                		numBanned + " " + QuiteSleepApp.getContext().getString(
                 				R.string.menu_addall_toast_insertscount),
                 		android.widget.Toast.LENGTH_SHORT);		
 			}
