@@ -43,7 +43,7 @@ import es.cesar.quitesleep.utils.Log;
  * and/or unknown calls, etc.
  * 
  */
-public class BlockCallsActivity extends BaseActivity implements OnClickListener {
+public class BlockCallsActivity extends BaseSherlockActivity implements OnClickListener {
 	
 	private final String CLASS_NAME = this.getClass().getName();
 	
@@ -64,6 +64,8 @@ public class BlockCallsActivity extends BaseActivity implements OnClickListener 
 						
 		super.onCreate(savedInstanceState);
 		super.homeToUp(true);
+		
+		setContentView(R.layout.configblockcalls);
 				
 		//Initialize the radioButtons
 		blockAll = (RadioButton)findViewById(blockAllId);			
@@ -171,5 +173,4 @@ public class BlockCallsActivity extends BaseActivity implements OnClickListener 
 		clientDDBB.commit();
 		clientDDBB.close();					
 	}
-	
 }

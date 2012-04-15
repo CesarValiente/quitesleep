@@ -37,6 +37,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -44,10 +46,13 @@ import android.widget.Toast;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
-import es.cesar.quitesleep.components.dialogs.WarningDialog;
+import es.cesar.quitesleep.components.listeners.LoadContactsListener;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Banned;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
+import es.cesar.quitesleep.tasks.LoadContactsDataTask;
+import es.cesar.quitesleep.ui.dialogs.WarningDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -57,7 +62,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class DeleteBanned extends SherlockListActivity implements OnItemClickListener {
+public class DeleteBanned extends BaseListActivity implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -67,60 +72,50 @@ public class DeleteBanned extends SherlockListActivity implements OnItemClickLis
 	private final int removeAllMenuId = R.id.menu_removeall;
 	
 	//Widgets
-	private WarningDialog warningDialog;		
-	private ContactListAdapter<String> myOwnAdapter;	
+	private WarningDialog warningDialog;			
 	
 	//Attributes
-	private String selectContactName;		
-
+	private String selectContactName;			
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 				
-		super.onCreate(savedInstanceState);										
-		
+		super.onCreate(savedInstanceState);				
+			
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		/*
 		warningDialog = new WarningDialog(
 				this, 
 				ConfigAppValues.WARNING_REMOVE_ALL_CONTACTS);		
-		getAllContactList();			
-		getListView().setOnItemClickListener(this);					
+		*/
+		getListView().setOnItemClickListener(this);
+		
+		setSupportProgressBarIndeterminateVisibility(true);
+		new LoadContactsDataTask(this, TypeContacts.BANNED).execute();
 	}
 	
 	
 	/**
 	 * Get all banned contact list from the database
 	 */
-	private void getAllContactList () {
+	@Override
+	public void getDataContacts (List<String> contactList) {
+			
+		setSupportProgressBarIndeterminateVisibility (false);
+			
+		if (contactList != null) {
+			myOwnAdapter = new ContactListAdapter<String>(
+				getApplicationContext(), 
+				R.layout.list_item,					
+				contactList, 
+				this);
 		
-		try {
+			getListView().setAdapter(myOwnAdapter);
 			
-			ClientDDBB clientDDBB = new ClientDDBB();
-			
-			List<Banned> contactList = clientDDBB.getSelects().selectAllBannedContacts();
-			List<String> contactListString = convertContactList(contactList);
-			
-			if (contactListString != null) {
-				myOwnAdapter = new ContactListAdapter<String>(
-					getApplicationContext(), 
-					R.layout.list_item,					
-					contactListString, 
-					this);
-			
-				getListView().setAdapter(myOwnAdapter);
-				
-				getListView().setFastScrollEnabled(true);																							
-			}
-			
-			clientDDBB.close();
-			
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-		}
-		
+			refreshList();																							
+		}				
 	}
 	
 	/**
@@ -209,13 +204,14 @@ public class DeleteBanned extends SherlockListActivity implements OnItemClickLis
 		
 		switch (id) {
 			case WARNING_DIALOG:				
-				dialog = warningDialog.getAlertDialog();				
+				//dialog = warningDialog.getAlertDialog();				
 				break;
 			default:
 				dialog = null;
 		}
 		
-		return dialog;	
+		//return dialog;
+		return null;
 	}
 	
 	/**
@@ -297,6 +293,6 @@ public class DeleteBanned extends SherlockListActivity implements OnItemClickLis
                 		Toast.LENGTH_SHORT);		
 			}
 		}
-	};
+	};		
 
 }

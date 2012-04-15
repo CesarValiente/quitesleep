@@ -40,9 +40,9 @@ import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import es.cesar.quitesleep.R;
-import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.dialogs.WarningDialog;
 import es.cesar.quitesleep.ui.fragments.ContactsFragment;
 import es.cesar.quitesleep.ui.fragments.LogsFragment;
 import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
@@ -61,7 +61,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * to show them.
  * 
  */
-public class Main extends BaseActivity {
+public class Main extends BaseSherlockActivity {
 	
 	final String CLASS_NAME = getClass().getName();
 	
@@ -94,8 +94,8 @@ public class Main extends BaseActivity {
 		
 		if (isTheFirstTime()) {
 			//We instantiate firstTimeDialog 
-			firstTimeDialog = new WarningDialog(this, ConfigAppValues.WARNING_FIRST_TIME);				
-			showDialog(FIRST_TIME_DIALOG);
+			//firstTimeDialog = new WarningDialog(this, ConfigAppValues.WARNING_FIRST_TIME);				
+			//showDialog(FIRST_TIME_DIALOG);
 		}
 												
 	}
@@ -115,13 +115,14 @@ public class Main extends BaseActivity {
 		
 		switch (id) {		
 			case FIRST_TIME_DIALOG:
-				dialog = firstTimeDialog.getAlertDialog();
+				//dialog = firstTimeDialog.getAlertDialog();
 				break;
 			default:
 				dialog = null;
 		}
 		
-		return dialog;	
+		//return dialog;
+		return null;
 	}
 	
 	/**

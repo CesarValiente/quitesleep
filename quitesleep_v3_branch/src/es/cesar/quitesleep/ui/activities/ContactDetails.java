@@ -22,6 +22,8 @@ package es.cesar.quitesleep.ui.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.ActionBar;
+
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -49,7 +51,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class ContactDetails extends Activity implements OnClickListener {
+public class ContactDetails extends BaseSherlockActivity implements OnClickListener {
 	
 	final private String CLASS_NAME = getClass().getName();
 	
@@ -78,6 +80,8 @@ public class ContactDetails extends Activity implements OnClickListener {
 	public void onCreate (Bundle savedInstanceState) {
 				
 		super.onCreate(savedInstanceState);		
+		super.homeToUp(true);
+		
 		initDynamicLayout();			
 	}
 	
@@ -384,6 +388,5 @@ public class ContactDetails extends Activity implements OnClickListener {
 		}catch (Exception e) {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
 		}
-	}
-
+	}	
 }

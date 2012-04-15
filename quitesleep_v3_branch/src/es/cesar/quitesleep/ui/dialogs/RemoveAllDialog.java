@@ -17,12 +17,11 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.components.dialogs;
+package es.cesar.quitesleep.ui.dialogs;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import es.cesar.quitesleep.R;
-import es.cesar.quitesleep.settings.ConfigAppValues;
 
 /**
  * 
@@ -30,7 +29,7 @@ import es.cesar.quitesleep.settings.ConfigAppValues;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class CallLogDialog {
+public class RemoveAllDialog {
 	
 	private String CLASS_NAME = getClass().getName();	
 		
@@ -49,7 +48,7 @@ public class CallLogDialog {
 	/**
 	 * Constructor without parameters. 
 	 */
-	public CallLogDialog () {		
+	public RemoveAllDialog () {		
 			
 	}
 			
@@ -58,22 +57,13 @@ public class CallLogDialog {
 	/**
 	 * Show the synchronization message
 	 */
-	public void showDialog (Context context, int typeDialog) {
+	public void showDialog (Context context) {
 		
-		if (typeDialog == ConfigAppValues.WARNING_REMOVE_ALL_CALL_LOGS)
-			progressDialog = ProgressDialog.show(
+		progressDialog = ProgressDialog.show(
 				context, 
 				"",
-				context.getString(R.string.calllogdialog_dialog_remove_label), 
+				context.getString(R.string.removealldialog_dialog_label), 
 				true);
-		
-		else if (typeDialog == ConfigAppValues.WARNING_REFRESH_CALL_LOG)
-			progressDialog = ProgressDialog.show(
-					context, 
-					"",
-					context.getString(R.string.calllogdialog_dialog_refresh_label), 
-					true);
-			
 	}
 	
 	/**

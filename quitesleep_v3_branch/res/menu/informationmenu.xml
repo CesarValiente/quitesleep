@@ -20,16 +20,16 @@
  -->
  
 <menu 
-	xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/menu_information_about"
-        android:title="@string/menu_information_about"
-        android:icon="@drawable/info_menu"
-        android:showAsAction="collapseActionView" />    
+	xmlns:android="http://schemas.android.com/apk/res/android">     
         
     <item android:id="@+id/menu_information_help"
         android:title="@string/menu_information_help"
         android:icon="@drawable/help_menu"
-        android:showAsAction="collapseActionView" />
+        android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/menu_information_about"
+        android:title="@string/menu_information_about"
+        android:icon="@drawable/info_menu"
+        android:showAsAction="ifRoom" />
 
 </menu>

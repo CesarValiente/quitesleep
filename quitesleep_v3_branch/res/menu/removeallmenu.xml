@@ -22,8 +22,9 @@
 <menu 
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu.removeall"
+    <item android:id="@+id/menu_removeall"
         android:title="@string/menu.removeall.label"
-        android:icon="@drawable/delete_menu" />    
+        android:icon="@drawable/delete_menu"
+        android:showAsAction="always" />    
 
 </menu>

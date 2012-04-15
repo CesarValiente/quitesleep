@@ -373,5 +373,11 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));			
 		}
 	}
+
+	@Override
+	public void clickYes() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

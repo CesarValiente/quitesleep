@@ -42,11 +42,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.CallLog;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.dialogs.WarningDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -80,6 +80,8 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 		
 		super.onCreate(savedInstanceState);
 		
+		setHasOptionsMenu(true);
+		/*
 		warningRemoveDialog = new WarningDialog(
 				getSherlockActivity(), 
 				ConfigAppValues.WARNING_REMOVE_ALL_CALL_LOGS);
@@ -87,7 +89,7 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 		warningRefreshDialog = new WarningDialog(
 				getSherlockActivity(), 
 				ConfigAppValues.WARNING_REFRESH_CALL_LOG);
-		
+		*/
 		getAllCallLogList();
 		
 	}
@@ -166,10 +168,10 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 		
 		switch (id) {
 			case WARNING_REMOVE_DIALOG:				
-				dialog = warningRemoveDialog.getAlertDialog();				
+				//dialog = warningRemoveDialog.getAlertDialog();				
 				break;
 			case WARNING_REFRESH_DIALOG:				
-				dialog = warningRefreshDialog.getAlertDialog();				
+				//dialog = warningRefreshDialog.getAlertDialog();				
 				break;
 			case HELP_DIALOG:
 				dialog = showWebviewDialog(IDialogs.HELP_LOGS_URI);
@@ -178,7 +180,8 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 				dialog = null;
 		}
 		
-		return dialog;	
+		//return dialog;	
+		return null;
 	}
 	
 	/**
@@ -309,6 +312,33 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 			}
 		}
 	};
+	
+	@Override
+	public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+		
+		inflater.inflate(R.menu.calllogmenu, menu);		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected (MenuItem item) {
+		
+		switch (item.getItemId()) {
+		
+			case R.id.menu_calllog_refresh:
+				//TODO
+				break;		
+			case R.id.menu_calllog_remove:
+				//TODO
+				break;
+		}				
+		return false;		
+	}
+
+	@Override
+	public void clickYes() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

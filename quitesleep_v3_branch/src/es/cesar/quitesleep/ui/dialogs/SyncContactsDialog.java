@@ -17,7 +17,7 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.components.dialogs;
+package es.cesar.quitesleep.ui.dialogs;
 
 import android.app.ProgressDialog;
 import android.content.Context;

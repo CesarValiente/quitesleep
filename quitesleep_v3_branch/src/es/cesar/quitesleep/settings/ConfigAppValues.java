@@ -88,7 +88,9 @@ public class ConfigAppValues {
 	public static boolean processRingCall = false;
 	public static boolean processIdleCall = false;
 	
-	//Variables used for the system's cache
+	
+	//Enum to differenciate between load contact requests
+	public static enum TypeContacts {NON_BANNED, BANNED};
 	
 	
 	//----------	Getters & Setters	-----------------------------------//

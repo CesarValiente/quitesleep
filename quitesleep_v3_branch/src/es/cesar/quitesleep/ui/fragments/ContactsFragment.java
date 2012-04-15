@@ -30,18 +30,16 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.activities.AddBanned;
 import es.cesar.quitesleep.ui.activities.DeleteBanned;
+import es.cesar.quitesleep.ui.dialogs.WarningDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -53,18 +51,15 @@ import es.cesar.quitesleep.utils.Log;
  */
 public class ContactsFragment extends SherlockFragment implements OnClickListener, IDialogs {
 	
-	final private String CLASS_NAME = getClass().getName();	
-	final private int SYNCHRONIZE_DIALOG 	= 1;
-	final private int ABOUT_DIALOG 			= 2; 
-	final private int HELP_DIALOG 			= 3;	
+	final private String CLASS_NAME = getClass().getName();
 	
+	
+
 	//Ids for the button widgets
 	private final int addBannedId = R.id.contacts_button_addBanned;
 	private final int deleteBannedId = R.id.contacts_button_deleteBanned;
-	private final int syncContactsId = R.id.contacts_button_syncContacts;
+	private final int syncContactsId = R.id.contacts_button_syncContacts;		
 	
-	//IDs dialogs
-	private WarningDialog synchronizeDialog;	
 	
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,8 +84,12 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		addBannedButton.setOnClickListener(this);
 		deleteBannedButton.setOnClickListener(this);			
 		syncContactsButton.setOnClickListener(this);
-		
-		synchronizeDialog = new WarningDialog(getSherlockActivity(), ConfigAppValues.WARNING_SYNC_CONTACTS);															
+	
+		/*
+		synchronizeDialog = new WarningDialog(
+				getSherlockActivity(), 
+				ConfigAppValues.WARNING_SYNC_CONTACTS);
+		*/															
 	}
 	
 	
@@ -101,9 +100,7 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	 */
 	public void onClick (View view) {
 		
-		int viewId = view.getId();
-		
-		
+		int viewId = view.getId();				
 		switch (viewId) {
 			case addBannedId:				
 				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), AddBanned.class);											
@@ -113,11 +110,21 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 				Intent intentViewContacts = new Intent(QuiteSleepApp.getContext(), DeleteBanned.class);
 				startActivityForResult(intentViewContacts, ConfigAppValues.REQCODE_DELETE_BANNED);
 				break;									
-			case syncContactsId:
-				//showDialog(SYNCHRONIZE_DIALOG);
+			case syncContactsId:				
+				SherlockDialogFragment dialogFragment = WarningDialog.newInstance(this, 1);
+				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");		
 				break;
 		}						
 	}
+	
+	/**
+	 * When the user press yes in the {@link SyncDialog} this method is launched,
+	 * and starts the re synchronization
+	 */
+	public void clickYes () {
+		Log.d(CLASS_NAME, "click yes!!!!");
+	}
+	
 	
 	/**
 	 * Create the activity dialogs used for it
@@ -127,6 +134,7 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	 * @see Dialog
 	 */
 	
+	/*
 	protected Dialog onCreateDialog (int id) {
 		
 		Dialog dialog;
@@ -147,6 +155,7 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		
 		return dialog;	
 	}
+	*/
 	
 	/**
 	 * Create the webview dialog using the file (uri) specified to show the information.

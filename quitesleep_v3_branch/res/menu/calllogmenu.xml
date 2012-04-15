@@ -22,12 +22,14 @@
 <menu 
 	xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<item android:id="@+id/menu.calllog.refresh"
+	<item android:id="@+id/menu_calllog_refresh"
         android:title="@string/menu.calllog.refresh.label"
-        android:icon="@drawable/sync_menu" />
+        android:icon="@drawable/sync_menu"
+        android:showAsAction="always" />
 
-    <item android:id="@+id/menu.calllog.remove"
+    <item android:id="@+id/menu_calllog_remove"
         android:title="@string/menu.calllog.remove.label"
-        android:icon="@drawable/delete_menu" />         
+        android:icon="@drawable/delete_menu"
+        android:showAsAction="always" />         
 
 </menu>

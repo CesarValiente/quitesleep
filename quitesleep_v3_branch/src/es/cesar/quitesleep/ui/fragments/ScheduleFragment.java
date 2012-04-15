@@ -40,11 +40,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.dialogs.EndTimeDialog;
-import es.cesar.quitesleep.components.dialogs.StartTimeDialog;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Schedule;
+import es.cesar.quitesleep.ui.dialogs.EndTimeDialog;
+import es.cesar.quitesleep.ui.dialogs.StartTimeDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 

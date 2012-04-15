@@ -25,12 +25,12 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.dialogs.AddAllDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Banned;
 import es.cesar.quitesleep.data.models.Contact;
 import es.cesar.quitesleep.data.models.Schedule;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.dialogs.AddAllDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**

@@ -17,18 +17,27 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.components.dialogs;
+package es.cesar.quitesleep.ui.dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
+import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.activities.BaseSherlockActivity;
+import es.cesar.quitesleep.ui.fragments.ContactsFragment;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 
@@ -38,13 +47,12 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class WarningDialog {
+public class WarningDialog extends SherlockDialogFragment {
 
 	private final String CLASS_NAME = getClass().getName();
 			
 	private int alertDialogImage;
 	
-	private AlertDialog alertDialog;
 	private int operationType;
 	
 	//Use for addAll, removeAll, smsService and mailService
@@ -60,21 +68,7 @@ public class WarningDialog {
 	private int title;
 	private int message;
 			
-	//------------------		Getters & Setters		----------------------//
-	public AlertDialog getAlertDialog() {
-		return alertDialog;
-	}
-	public void setAlertDialog(AlertDialog alertDialog) {
-		this.alertDialog = alertDialog;
-	}
-	
-	public int getOperationType() {
-		return operationType;
-	}
-	public void setOperationType(int operationType) {
-		this.operationType = operationType;
-	}
-	
+	//------------------		Getters & Setters		----------------------//		
 	public int getTitle() {
 		return title;
 	}
@@ -118,6 +112,91 @@ public class WarningDialog {
 		this.toggleButtonIsChecked = toggleButtonIsChecked;
 	}
 	//------------------------------------------------------------------------//
+	
+	 
+	public static WarningDialog newInstance (Fragment fragment, int operationType) {
+		WarningDialog warningDialog = new WarningDialog(operationType);
+		warningDialog.setTargetFragment(fragment, 0);
+		return warningDialog;
+	}
+	
+	
+	public WarningDialog (int operationType) {
+		this.operationType = operationType;
+	}		
+
+	@Override
+	public Dialog onCreateDialog (Bundle savedInstanceState) {
+				
+		Log.d(CLASS_NAME, "onCreateDialog");
+		
+		
+		//ContactsFragment fragment = (ContactsFragment)getTargetFragment();
+		
+		if (getTargetFragment() instanceof IDialogs) {
+			Log.d(CLASS_NAME, "Implement ok!");
+		}
+		
+		/* set the operation type and the new context for this warning dialog and to
+		 * use after in other operations (like progressDialogs where we find errors about
+		 * the previously killed activity.
+		 * With this, it runs well ;-) 
+		 */							
+		setLabelsOperationType();
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
+								
+		builder.setIcon(alertDialogImage);
+		builder.setTitle(title).setMessage(message);				
+				
+		if ((operationType != ConfigAppValues.WARNING_SMS_ACTION) &&
+				(operationType != ConfigAppValues.WARNING_MAIL_ACTION))  {
+			
+			builder.setCancelable(false);
+			
+			builder.setPositiveButton(
+    		   R.string.warningdialog_yes_label, 
+    		   new DialogInterface.OnClickListener() {
+    			   
+    			   public void onClick(DialogInterface dialog, int id) {
+    				   Log.d(CLASS_NAME, "YES");		            		                		              
+                		
+    				  // baseFragment.syncYes();
+    				   //callOperationType();		                		                           
+    			   }
+    		   });
+			builder.setNegativeButton(
+    		   R.string.warningdialog_no_label, 
+    		   new DialogInterface.OnClickListener() {
+    			   
+    			   public void onClick(DialogInterface dialog, int id) {
+        	   
+    				   Log.d(CLASS_NAME, "NO");
+               
+    				   dialog.cancel();		
+    				   
+    				   if (operationType == ConfigAppValues.WARNING_FIRST_TIME)
+    					   getSherlockActivity().finish();
+    				   
+    				   //no debemos hacer nada extra.
+    			   }
+    		   });		
+			
+		}else {
+			builder.setNeutralButton(
+				R.string.warningdialog_ok_label, 
+				new DialogInterface.OnClickListener() {
+		    			   
+					public void onClick(DialogInterface dialog, int id) {
+						
+						Log.d(CLASS_NAME, "OK");
+						callOperationType();		               
+						
+		    		}
+				});							
+		}		
+		return builder.create();										
+	}
 	
 					
 	/**
@@ -217,78 +296,5 @@ public class WarningDialog {
 		}catch (Exception e) {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
 		}
-	}
-	
-	/**
-	 * Constructor with the basic parameter
-	 * @param activity
-	 */
-	public WarningDialog (final Activity activity, final int operationType) {
-				
-		/* set the operation type and the new context for this warning dialog and to
-		 * use after in other operations (like progressDialogs where we find errors about
-		 * the previously killed activity.
-		 * With this, it runs well ;-) 
-		 */
-		this.operationType = operationType;				
-		this.context = activity;
-		
-		setLabelsOperationType();
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-								
-		builder.setIcon(alertDialogImage);
-		builder.setTitle(title).setMessage(message);				
-				
-		if ((operationType != ConfigAppValues.WARNING_SMS_ACTION) &&
-				(operationType != ConfigAppValues.WARNING_MAIL_ACTION))  {
-			
-			builder.setCancelable(false);
-			
-			builder.setPositiveButton(
-    		   R.string.warningdialog_yes_label, 
-    		   new DialogInterface.OnClickListener() {
-    			   
-    			   public void onClick(DialogInterface dialog, int id) {
-    				   Log.d(CLASS_NAME, "YES");		            		                		              
-                		
-    				   callOperationType();		                		                           
-    			   }
-    		   });
-			builder.setNegativeButton(
-    		   R.string.warningdialog_no_label, 
-    		   new DialogInterface.OnClickListener() {
-    			   
-    			   public void onClick(DialogInterface dialog, int id) {
-        	   
-    				   Log.d(CLASS_NAME, "NO");
-               
-    				   dialog.cancel();		
-    				   
-    				   if (operationType == ConfigAppValues.WARNING_FIRST_TIME)
-    					   activity.finish();
-    				   
-    				   //no debemos hacer nada extra.
-    			   }
-    		   });		
-			
-		}else {
-			builder.setNeutralButton(
-				R.string.warningdialog_ok_label, 
-				new DialogInterface.OnClickListener() {
-		    			   
-					public void onClick(DialogInterface dialog, int id) {
-						
-						Log.d(CLASS_NAME, "OK");
-						callOperationType();		               
-						
-		    		}
-				});							
-		}
-		
-		alertDialog = builder.create();		
-	}
-	
-	
-	
+	}				
 }

@@ -19,7 +19,6 @@
 
 package es.cesar.quitesleep.ui.activities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -31,10 +30,8 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -42,10 +39,10 @@ import com.actionbarsherlock.view.MenuItem;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
-import es.cesar.quitesleep.components.dialogs.WarningDialog;
-import es.cesar.quitesleep.data.controllers.ClientDDBB;
-import es.cesar.quitesleep.data.models.Contact;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
+import es.cesar.quitesleep.tasks.LoadContactsDataTask;
+import es.cesar.quitesleep.ui.dialogs.WarningDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 import es.cesar.quitesleep.utils.Toast;
@@ -60,7 +57,7 @@ import es.cesar.quitesleep.utils.Toast;
  * Class for AddContacts to the banned user list
  * 
  */
-public class AddBanned extends SherlockListActivity implements OnItemClickListener {
+public class AddBanned extends BaseListActivity implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -71,13 +68,11 @@ public class AddBanned extends SherlockListActivity implements OnItemClickListen
 	
 	
 	//Widgets
-	private WarningDialog warningDialog;
-	private ContactListAdapter<String> myOwnAdapter;
-	//private ListView listView;
+	private WarningDialog warningDialog;		
 	
 	//Auxiliar attributes
-	private String selectContactName;
-		
+	private String selectContactName;			
+	
 	
 	/**
 	 * onCreate
@@ -87,19 +82,22 @@ public class AddBanned extends SherlockListActivity implements OnItemClickListen
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);		
-			
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		super.onCreate(savedInstanceState);										
 		
-		//setContentView(R.layout.contact_list);
-		//listView = (ListView)findViewById(R.id.contact_list_view);		
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);								
+		
+		/*		
 		warningDialog = new WarningDialog(
 				this, 
-				ConfigAppValues.WARNING_ADD_ALL_CONTACTS);						
-				
-		getAllContactList();		
+				ConfigAppValues.WARNING_ADD_ALL_CONTACTS);				
+		*/
+		
 		getListView().setOnItemClickListener(this);		
+		
+		setSupportProgressBarIndeterminateVisibility(true);
+		
+		new LoadContactsDataTask(this, TypeContacts.NON_BANNED).execute();
 	}
 	
 	
@@ -107,63 +105,27 @@ public class AddBanned extends SherlockListActivity implements OnItemClickListen
 	/**
 	 * Get all not banned contacts from the database and parse it for create
 	 * one contact list only with their contactNames
+	 * @param contactList
 	 */
-	private void getAllContactList () {
+	@Override
+	public void getDataContacts (List<String> contactList) {
+			
+		setSupportProgressBarIndeterminateVisibility (false);
+			
+		if (contactList != null) {
+			myOwnAdapter = new ContactListAdapter<String>(
+				getApplicationContext(), 
+				R.layout.list_item,
+				contactList, 
+				this);
 		
-		try {
+			getListView().setAdapter(myOwnAdapter);
 			
-			ClientDDBB clientDDBB = new ClientDDBB();
-			
-			List<Contact> contactList = clientDDBB.getSelects().selectAllNotBannedContacts();
-			List<String> contactListString = convertContactList(contactList);						
-			
-			if (contactListString != null) {
-				myOwnAdapter = new ContactListAdapter<String>(
-					getApplicationContext(), 
-					R.layout.list_item,
-					contactListString, 
-					this);
-			
-				getListView().setAdapter(myOwnAdapter);
-				
-				getListView().setFastScrollEnabled(true);
-			}		
-			clientDDBB.close();
-						
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
+			refreshList();		
 		}
-		
 	}
 	
-	/**
-	 * 
-	 * @param 		contactList
-	 * @return 		The contactList but only the list with the name contacts
-	 * @see			List<String>
-	 */
-	private List<String> convertContactList (List<Contact> contactList) throws Exception {
-		
-		try {
-			
-			if (contactList != null && contactList.size()>0) {
-				
-				List<String> contactListString = new ArrayList<String>();
-				
-				for (int i=0; i<contactList.size(); i++) {
-					String contactName = contactList.get(i).getContactName();
-					if (contactName != null)						
-						contactListString.add(contactName);					
-				}
-				return contactListString;
-			}
-			return null;
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception();
-		}
-	}
+	
 	
 	@Override
 	public void onItemClick(
@@ -220,13 +182,14 @@ public class AddBanned extends SherlockListActivity implements OnItemClickListen
 		
 		switch (id) {
 			case WARNING_DIALOG:				
-				dialog = warningDialog.getAlertDialog();				
+				//dialog = warningDialog.getAlertDialog();				
 				break;
 			default:
 				dialog = null;
 		}
 		
-		return dialog;	
+		//return dialog;
+		return null;
 	}
 	
 	/**
@@ -300,15 +263,11 @@ public class AddBanned extends SherlockListActivity implements OnItemClickListen
 				
 				//Show the toast message
 				Toast.d(
-						QuiteSleepApp.getContext(),
-                		numBanned + " " + QuiteSleepApp.getContext().getString(
-                				R.string.menu_addall_toast_insertscount),
-                		android.widget.Toast.LENGTH_SHORT);		
+					QuiteSleepApp.getContext(),
+            		numBanned + " " + QuiteSleepApp.getContext().getString(
+            				R.string.menu_addall_toast_insertscount),
+            		android.widget.Toast.LENGTH_SHORT);		
 			}
 		}
-	};
-	
-	
-	
+	};			
 }
- 

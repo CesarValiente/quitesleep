@@ -25,9 +25,9 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.dialogs.CallLogDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.dialogs.CallLogDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 

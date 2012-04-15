@@ -49,7 +49,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class EditContact extends Activity implements OnClickListener {
+public class EditContact extends BaseSherlockActivity implements OnClickListener {
 	
 	final private String CLASS_NAME = getClass().getName();
 	
@@ -79,7 +79,9 @@ public class EditContact extends Activity implements OnClickListener {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);										
+		super.onCreate(savedInstanceState);
+		super.homeToUp(true);
+		
 		initDynamicLayout();				
 	}
 	

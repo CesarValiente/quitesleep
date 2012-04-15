@@ -26,12 +26,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
-import es.cesar.quitesleep.components.dialogs.SyncContactsDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Contact;
 import es.cesar.quitesleep.data.models.Mail;
 import es.cesar.quitesleep.data.models.Phone;
 import es.cesar.quitesleep.data.models.Schedule;
+import es.cesar.quitesleep.ui.dialogs.SyncContactsDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.TokenizerUtils;
 

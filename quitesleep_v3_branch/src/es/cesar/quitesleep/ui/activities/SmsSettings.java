@@ -31,12 +31,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import es.cesar.quitesleep.R;
-import es.cesar.quitesleep.components.dialogs.WarningDialog;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Settings;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.operations.SmsOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.dialogs.WarningDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -45,7 +45,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class SmsSettings extends BaseActivity implements OnClickListener {
+public class SmsSettings extends BaseSherlockActivity implements OnClickListener {
 	
 	final private String CLASS_NAME = getClass().getName();
 	final private int WARNING_DIALOG = 0;	
@@ -76,9 +76,11 @@ public class SmsSettings extends BaseActivity implements OnClickListener {
 		saveSmsButton.setOnClickListener(this);
 		smsServiceToggleButton.setOnClickListener(this);			
 		
+		/*
 		warningDialog = new WarningDialog(
 				this, 
-				ConfigAppValues.WARNING_SMS_ACTION);				
+				ConfigAppValues.WARNING_SMS_ACTION);
+		*/				
 		
 		//Put in the widgets the prevoious data saved into ddbb.
 		getDefaultValues();				
@@ -125,13 +127,14 @@ public class SmsSettings extends BaseActivity implements OnClickListener {
 		
 		switch (id) {
 			case WARNING_DIALOG:				
-				dialog = warningDialog.getAlertDialog();				
+				//dialog = warningDialog.getAlertDialog();				
 				break;
 			default:
 				dialog = null;
 		}
 		
-		return dialog;	
+		//return dialog;
+		return null;
 	}
 	
 	/**

@@ -39,5 +39,7 @@ public interface IDialogs {
 	 * @return
 	 */
 	public Dialog showWebviewDialog (String uri);
+	
+	public void clickYes ();
 				
 }

@@ -22,9 +22,9 @@
 <menu 
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu.addall"
+    <item android:id="@+id/menu_addall"
         android:title="@string/menu.addall.label"
         android:icon="@drawable/add_menu"
-        android:showAsAction="withText" />    
+        android:showAsAction="always" />    
 
 </menu>
