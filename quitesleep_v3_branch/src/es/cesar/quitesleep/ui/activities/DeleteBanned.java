@@ -52,7 +52,7 @@ import es.cesar.quitesleep.data.models.Banned;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
 import es.cesar.quitesleep.tasks.LoadContactsDataTask;
-import es.cesar.quitesleep.ui.dialogs.WarningDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -62,7 +62,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class DeleteBanned extends BaseListActivity implements OnItemClickListener {
+public class DeleteBanned extends BaseListSherlockFragment implements OnItemClickListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -72,7 +72,7 @@ public class DeleteBanned extends BaseListActivity implements OnItemClickListene
 	private final int removeAllMenuId = R.id.menu_removeall;
 	
 	//Widgets
-	private WarningDialog warningDialog;			
+	private WarningFragmentDialog warningDialog;			
 	
 	//Attributes
 	private String selectContactName;			

@@ -27,6 +27,7 @@ import android.view.Window;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.app.SherlockListFragment;
 
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
 
@@ -39,7 +40,7 @@ import es.cesar.quitesleep.components.adapters.ContactListAdapter;
  * the app to have different commons features without the necessity to
  * implement the same code over and over again.
  */
-public abstract class BaseListActivity extends SherlockListActivity {
+public abstract class BaseListSherlockFragment extends SherlockListFragment {
 	
 	public ContactListAdapter<String> myOwnAdapter;
 	
@@ -47,12 +48,9 @@ public abstract class BaseListActivity extends SherlockListActivity {
 	private boolean fixIndexCursor = false;
 	
 	@Override
-	protected void onCreate (Bundle savedInstanceState) {
+	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);
-		
-		//To use the progress loader in the action bar 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		super.onCreate(savedInstanceState);		
 	}
 	
 	public abstract void getDataContacts (List<String> contactList);

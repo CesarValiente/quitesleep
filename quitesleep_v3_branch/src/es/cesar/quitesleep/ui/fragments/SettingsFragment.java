@@ -41,6 +41,7 @@ import com.actionbarsherlock.view.MenuItem;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
+import es.cesar.quitesleep.components.listeners.DialogListener;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.MuteOrHangUp;
 import es.cesar.quitesleep.data.models.Settings;
@@ -59,7 +60,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@mgail.com
  *
  */
-public class SettingsFragment extends SherlockFragment implements OnClickListener, IDialogs {
+public class SettingsFragment extends SherlockFragment implements OnClickListener, DialogListener {
 	
 	private final String CLASS_NAME = getClass().getName();
 	

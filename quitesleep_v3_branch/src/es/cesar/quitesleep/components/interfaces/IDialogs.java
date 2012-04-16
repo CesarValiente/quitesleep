@@ -38,8 +38,6 @@ public interface IDialogs {
 	 * the resource to show. 
 	 * @return
 	 */
-	public Dialog showWebviewDialog (String uri);
-	
-	public void clickYes ();
+	public Dialog showWebviewDialog (String uri);		
 				
 }

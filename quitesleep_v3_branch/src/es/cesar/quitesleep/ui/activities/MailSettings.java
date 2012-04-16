@@ -19,24 +19,25 @@
 
 package es.cesar.quitesleep.ui.activities;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Settings;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.operations.MailOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.dialogs.WarningDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.SmsEmailFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -47,8 +48,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  */
 public class MailSettings extends BaseSherlockActivity implements OnClickListener {
 	
-	private final String CLASS_NAME = getClass().getName();
-	final private int WARNING_DIALOG = 0;
+	private final String CLASS_NAME = getClass().getName();	
 	
 	//Widgets id's
 	private final int userEditTextId = R.id.mailsettings_edittext_user;
@@ -64,8 +64,7 @@ public class MailSettings extends BaseSherlockActivity implements OnClickListene
 	private EditText subjectEditText;
 	private EditText bodyEditText;
 	private Button saveMailButton;
-	private ToggleButton mailServiceToggleButton;	
-	private WarningDialog warningDialog;
+	private ToggleButton mailServiceToggleButton;		
 	
 	
 	
@@ -89,11 +88,6 @@ public class MailSettings extends BaseSherlockActivity implements OnClickListene
 		saveMailButton.setOnClickListener(this);	
 		mailServiceToggleButton.setOnClickListener(this);
 	
-		/*
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_MAIL_ACTION);
-		*/
 		//Put in the widgets the prevoious data saved into ddbb.
 		getDefaultValues();				
 	}
@@ -110,9 +104,12 @@ public class MailSettings extends BaseSherlockActivity implements OnClickListene
 				break;			
 			
 			case mailServiceToggleButtonId:
-				if (mailServiceToggleButton.isChecked())
-					showDialog(WARNING_DIALOG);
-				else
+				if (mailServiceToggleButton.isChecked()) {
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();					
+					SherlockDialogFragment dialog = SmsEmailFragmentDialog.newInstance(
+							ConfigAppValues.DialogType.MAIL_DIALOG);
+					dialog.show(ft, "dialog");
+				}else
 					DialogOperations.checkMailService(
 							this,
 							mailServiceToggleButton.isChecked());
@@ -122,58 +119,7 @@ public class MailSettings extends BaseSherlockActivity implements OnClickListene
 				break;
 		}
 	}
-	
-	
-	/**
-	 * Create the activity dialogs used for it
-	 * 
-	 * @param id
-	 * @return the dialog for the option specified
-	 * @see Dialog
-	 */
-	@Override
-	protected Dialog onCreateDialog (int id) {
-		
-		Dialog dialog;
-		
-		switch (id) {
-			case WARNING_DIALOG:				
-				//dialog = warningDialog.getAlertDialog();				
-				break;
-			default:
-				dialog = null;
-		}
-		
-		//return dialog;
-		return null;
-	}
-	
-	/**
-	 * This function prepare the dalogs every time to call for some of this
-	 * 
-	 *  @param int
-	 *  @param dialog
-	 */
-	@Override
-	protected void onPrepareDialog (int idDialog, Dialog dialog) {
-		
-		try {
-			
-			switch (idDialog) {
-				case WARNING_DIALOG:
-					warningDialog.setContext(this);	
-					warningDialog.setToggleButtonIsChecked(mailServiceToggleButton.isChecked());
-					break;
-					
-				default:
-					break;
-			}
-			
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));			
-		}
-	}
+
 	
 	/**
 	 * Function that put in the widgets the data saved into ddbb.

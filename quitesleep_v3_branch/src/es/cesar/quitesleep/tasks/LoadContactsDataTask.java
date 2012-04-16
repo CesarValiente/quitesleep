@@ -10,7 +10,7 @@ import es.cesar.quitesleep.data.models.Contact;
 import es.cesar.quitesleep.data.models.Id;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
-import es.cesar.quitesleep.ui.activities.BaseListActivity;
+import es.cesar.quitesleep.ui.activities.BaseListSherlockFragment;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -21,7 +21,7 @@ import android.support.v4.content.AsyncTaskLoader;
 
 public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 
-	private BaseListActivity listener;
+	private BaseListSherlockFragment listener;
 	private ConfigAppValues.TypeContacts typeContacts;
 	
 	/**
@@ -29,7 +29,7 @@ public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 	 * @param listener
 	 * @param typeContacts
 	 */
-	public LoadContactsDataTask(BaseListActivity listener, TypeContacts typeContacts) {
+	public LoadContactsDataTask(BaseListSherlockFragment listener, TypeContacts typeContacts) {
 	
 		this.listener = listener;
 		this.typeContacts = typeContacts;

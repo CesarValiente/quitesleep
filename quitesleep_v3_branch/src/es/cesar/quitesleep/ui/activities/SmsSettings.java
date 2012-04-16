@@ -19,24 +19,25 @@
 
 package es.cesar.quitesleep.ui.activities;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Settings;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.operations.SmsOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.dialogs.WarningDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.SmsEmailFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -47,8 +48,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  */
 public class SmsSettings extends BaseSherlockActivity implements OnClickListener {
 	
-	final private String CLASS_NAME = getClass().getName();
-	final private int WARNING_DIALOG = 0;	
+	final private String CLASS_NAME = getClass().getName();	
 	
 	//Ids for widgets
 	final int smsEditTextId = R.id.smssettings_edittext_savesms;
@@ -58,8 +58,7 @@ public class SmsSettings extends BaseSherlockActivity implements OnClickListener
 	//Widgets
 	private EditText smsEditText;
 	private Button saveSmsButton;
-	private ToggleButton smsServiceToggleButton;	
-	private WarningDialog warningDialog;
+	private ToggleButton smsServiceToggleButton;		
 	
 	
 	public void onCreate (Bundle savedInstanceState) {				
@@ -76,11 +75,6 @@ public class SmsSettings extends BaseSherlockActivity implements OnClickListener
 		saveSmsButton.setOnClickListener(this);
 		smsServiceToggleButton.setOnClickListener(this);			
 		
-		/*
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_SMS_ACTION);
-		*/				
 		
 		//Put in the widgets the prevoious data saved into ddbb.
 		getDefaultValues();				
@@ -96,12 +90,13 @@ public class SmsSettings extends BaseSherlockActivity implements OnClickListener
 		
 			case saveSmsButtonId:				
 				prepareSaveSmsOperation();
-				break;
-				
+				break;				
 			case smsServiceToggleButtonId:
-				if (smsServiceToggleButton.isChecked()) 					
-					showDialog(WARNING_DIALOG);				
-				else 					
+				if (smsServiceToggleButton.isChecked()) { 														
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();						
+					SherlockDialogFragment dialog = SmsEmailFragmentDialog.newInstance(ConfigAppValues.DialogType.SMS_DIALOG);
+					dialog.show(ft, "dialog");
+				}else 					
 					DialogOperations.checkSmsService(
 							this, 
 							smsServiceToggleButton.isChecked());												
@@ -111,52 +106,7 @@ public class SmsSettings extends BaseSherlockActivity implements OnClickListener
 				break;
 		}						
 	}
-	
-	
-	/**
-	 * Create the activity dialogs used for it
-	 * 
-	 * @param id
-	 * @return the dialog for the option specified
-	 * @see Dialog
-	 */
-	@Override
-	protected Dialog onCreateDialog (int id) {
-		
-		Dialog dialog;
-		
-		switch (id) {
-			case WARNING_DIALOG:				
-				//dialog = warningDialog.getAlertDialog();				
-				break;
-			default:
-				dialog = null;
-		}
-		
-		//return dialog;
-		return null;
-	}
-	
-	/**
-	 * This function prepare the dalogs every time to call for some of this
-	 * 
-	 *  @param int
-	 *  @param dialog
-	 */
-	@Override
-	protected void onPrepareDialog (int idDialog, Dialog dialog) {				
 			
-		switch (idDialog) {
-			case WARNING_DIALOG:
-				warningDialog.setContext(this);	
-				warningDialog.setToggleButtonIsChecked(smsServiceToggleButton.isChecked());
-				break;
-				
-			default:
-				break;
-		}								
-	}
-	
 	/**
 	 * Put the default values saved in the ddbb in the widgets
 	 */

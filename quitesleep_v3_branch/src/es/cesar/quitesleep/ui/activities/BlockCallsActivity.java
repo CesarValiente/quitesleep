@@ -64,9 +64,9 @@ public class BlockCallsActivity extends BaseSherlockActivity implements OnClickL
 						
 		super.onCreate(savedInstanceState);
 		super.homeToUp(true);
-		
-		setContentView(R.layout.configblockcalls);
 				
+		setContentView(R.layout.configblockcalls);
+		
 		//Initialize the radioButtons
 		blockAll = (RadioButton)findViewById(blockAllId);			
 		blockBlockedContacts = (RadioButton)findViewById(blockBlockedContactsId);
@@ -173,4 +173,5 @@ public class BlockCallsActivity extends BaseSherlockActivity implements OnClickL
 		clientDDBB.commit();
 		clientDDBB.close();					
 	}
+	
 }

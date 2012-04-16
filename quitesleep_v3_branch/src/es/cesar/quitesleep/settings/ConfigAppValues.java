@@ -48,17 +48,7 @@ public class ConfigAppValues {
 	public static final int REQCODE_BLOCK_OTHER_CALLS 	=	8;
 	public static final int REQ_TEST					=	100;
 	//------------------------------------------------------------------------//
-	
-	//------------	Codes for dialog actions	------------------------------//
-	public static final int WARNING_SYNC_CONTACTS 			=		1;
-	public static final int WARNING_ADD_ALL_CONTACTS		=		2;
-	public static final int WARNING_REMOVE_ALL_CONTACTS		=		3;
-	public static final int WARNING_SMS_ACTION				=		4;
-	public static final int WARNING_MAIL_ACTION				=		5;
-	public static final int WARNING_REMOVE_ALL_CALL_LOGS 	=		6;
-	public static final int WARNING_REFRESH_CALL_LOG		=		7;
-	public static final int WARNING_FIRST_TIME				=		8;
-	//------------------------------------------------------------------------//
+		
 	
 	//----------		Codes for informaton through intents		----------//
 	public static final String NUM_REMOVE_CONTACTS = "NUM_REMOVE_CONTACTS";
@@ -91,6 +81,10 @@ public class ConfigAppValues {
 	
 	//Enum to differenciate between load contact requests
 	public static enum TypeContacts {NON_BANNED, BANNED};
+	
+	//Enum to show different warning dialog depending of the caller
+	public static enum DialogType {SYNC_FIRST_TIME, SYNC_REST_OF_TIMES, ADD_ALL_CONTACTS, 
+		REMOVE_ALL_CONTACTS, SMS_DIALOG, MAIL_DIALOG, REMOVE_ALL_LOGS, REFRESH_ALL_LOGS};
 	
 	
 	//----------	Getters & Setters	-----------------------------------//

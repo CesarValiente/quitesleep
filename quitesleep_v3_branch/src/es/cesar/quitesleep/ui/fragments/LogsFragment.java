@@ -46,7 +46,7 @@ import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.CallLog;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.dialogs.WarningDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -68,8 +68,8 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 	private final int refreshCallLogMenuId = R.id.menu_calllog_refresh;	
 	
 	//Widgets
-	private WarningDialog warningRemoveDialog;
-	private WarningDialog warningRefreshDialog;
+	private WarningFragmentDialog warningRemoveDialog;
+	private WarningFragmentDialog warningRefreshDialog;
 	private ArrayAdapter<String> arrayAdapter;	
 		
 	

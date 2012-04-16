@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -48,7 +50,7 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 
 		final String CLASS_NAME = getClass().getName();
 	
-		Activity activity;
+		SherlockListFragment fragment;
 		List<String> contactListString;
 		HashMap<String, Integer> alphaIndexer;
 		String[] sections;
@@ -60,11 +62,11 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 		 * @param viewResourceId
 		 * @param objects
 		 */
-		public ContactListAdapter (Context context, int viewResourceId, List<T> objects, Activity activity) {
+		public ContactListAdapter (Context context, int viewResourceId, List<T> objects, SherlockListFragment fragment) {
 			
 			super (context, viewResourceId, objects);
 			
-			this.activity= activity;
+			this.fragment = fragment;
 			
 			//Gets the elements passed by param
 			contactListString = (ArrayList<String>)objects;
@@ -112,7 +114,7 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 			Log.d(CLASS_NAME, "get view!!!!");
 			
 			if (convertView == null)
-				view = activity.getLayoutInflater().inflate(R.layout.list_item, parent, false);
+				view = fragment.getSherlockActivity().getLayoutInflater().inflate(R.layout.list_item, parent, false);
 			else
 				view = convertView;
 			

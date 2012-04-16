@@ -17,115 +17,102 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.ui.dialogs;
+package es.cesar.quitesleep.ui.dialogs.fragments;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Schedule;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
- * 
+ * Custom alert dialog for setup the start time for control the contacts calls
  * 
  * @author Cesar Valiente Gordo
  * @mail cesar.valiente@gmail.com
  *
  */
-public class EndTimeDialog {
+public class StartTimeFragmentDialog extends SherlockDialogFragment {
 	
 	private String CLASS_NAME = getClass().getName();	
-	
-	DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);		
-	Calendar dateAndTime = Calendar.getInstance();
 		
-	private TimePickerDialog timePickerDialog;
+	DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);		
+	Calendar dateAndTime = Calendar.getInstance();				
 	
-	private TextView endTimeLabel;
-	
-	private Activity activity;
+	private static TextView mStartTimeLabel;
 					
 	
-	//--------------		Getters & Setters		-----------------------//
-	public TimePickerDialog getTimePickerDialog() {
-		return timePickerDialog;
-	}
-	public void setTimePickerDialog(TimePickerDialog timePickerDialog) {
-		this.timePickerDialog = timePickerDialog;
+	public static StartTimeFragmentDialog newInstance (Fragment fragment, TextView startTimeLabel) {
+		
+		StartTimeFragmentDialog startTimeDialog = new StartTimeFragmentDialog();
+		startTimeDialog.setTargetFragment(fragment, 0);
+		mStartTimeLabel = startTimeLabel;
+		return startTimeDialog;		
 	}
 	
-	public TextView getEndTimeLabel() {
-		return endTimeLabel;
-	}
-	public void setEndTimeLabel(TextView endTimeLabel) {
-		this.endTimeLabel = endTimeLabel;
-	}
-	//-----------------------------------------------------------------------//
 
-			
-	TimePickerDialog.OnTimeSetListener timerPickerEnd = 
+	TimePickerDialog.OnTimeSetListener timerPickerStart = 
 		new TimePickerDialog.OnTimeSetListener() {
 		
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-						
-			view.setIs24HourView(true);
+			
+			
+			view.setIs24HourView(true);			
 			dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-			dateAndTime.set(Calendar.MINUTE, minute);			
+			dateAndTime.set(Calendar.MINUTE, minute);		
 			
 			//Update operations
-			updateSchedule();
+			updateSchedule();	
 			updateEndTimeLabel();
-			
 		}
 	};
 
 	/**
-	 * Constructor
+	 * Constructor with one parameter
 	 * 
 	 * @param activity
 	 */
-	public EndTimeDialog (Activity activity) {					
+	public Dialog onCreateDialog (Bundle savedInstanceState) {					
 		
-		timePickerDialog = new TimePickerDialog(
-				activity,
-				timerPickerEnd,
+		TimePickerDialog timePickerDialog = new TimePickerDialog(
+				getTargetFragment().getActivity(),
+				timerPickerStart,
 				dateAndTime.get(Calendar.HOUR_OF_DAY),
 				dateAndTime.get(Calendar.MINUTE),
-				true);	
-		
-		this.activity = activity;
-		
-		//If we have redefine the time picker dialog title
-		//timePickerDialog.setTitle(R.string.endtimedialog_message_label);		
-	}				
-	
-	/**
-	 * Update the endTimeLabel located in the activity ScheduleTab, with the
-	 * selected by user endTime.
-	 */
-	private void updateEndTimeLabel () {
-		
-		try {
-						
-			if (endTimeLabel != null)
-				endTimeLabel.setText(timeFormat.format(dateAndTime.getTime()));
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));			
-		}
+				true);
+				
+		return timePickerDialog;
 	}
 	
+	 /**
+     * Update the endTimeLabel located in the activity ScheduleTab, with the
+     * selected by user endTime.
+     */
+    private void updateEndTimeLabel () {
+                                                                    
+        if (mStartTimeLabel != null)
+                mStartTimeLabel.setText(timeFormat.format(dateAndTime.getTime()));                   
+    }
+
+	
+	
 	/**
-	 * Update the Schedule object from the database with the end time objects
+	 * Update the Schedule object from the database with the start time objects
 	 * that have been used in the dialog and specified by the user.
 	 * 
 	 * @throws Exception
@@ -141,24 +128,26 @@ public class EndTimeDialog {
 			/* If the Schedule object is null, then never have been created before
 			 * so, we have to create here.
 			 */			
-			if (schedule == null)
+			if (schedule == null)			
 				schedule = new Schedule();
-			
-			schedule.setAllEndTime(
+						
+			schedule.setAllStartTime(
 					dateAndTime.getTime(), 
-					timeFormat.format(dateAndTime.getTime()));
+					timeFormat.format(dateAndTime.getTime()));		
 			
 			clientDDBB.getUpdates().insertSchedule(schedule);
 			
-			clientDDBB.commit();			
-			clientDDBB.close();						
+			clientDDBB.commit();						
+			clientDDBB.close();
+			
+			Log.d(CLASS_NAME, "Schedule saved with the start time!!");
 			
 			es.cesar.quitesleep.utils.Toast.r(
-            		activity,
-            		activity.getString(
-            				R.string.schedule_toast_endTime),
+            		QuiteSleepApp.getContext(),
+            		QuiteSleepApp.getContext().getString(
+            				R.string.schedule_toast_startTime),
             		Toast.LENGTH_SHORT);	
-						
+			
 		}catch (Exception e) {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
 			throw new Error(e.toString());

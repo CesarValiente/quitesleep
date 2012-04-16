@@ -22,16 +22,17 @@ package es.cesar.quitesleep.ui.activities;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -39,10 +40,12 @@ import com.actionbarsherlock.view.MenuItem;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
+import es.cesar.quitesleep.components.listeners.DialogListener;
+import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
 import es.cesar.quitesleep.tasks.LoadContactsDataTask;
-import es.cesar.quitesleep.ui.dialogs.WarningDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 import es.cesar.quitesleep.utils.Toast;
@@ -57,19 +60,14 @@ import es.cesar.quitesleep.utils.Toast;
  * Class for AddContacts to the banned user list
  * 
  */
-public class AddBanned extends BaseListActivity implements OnItemClickListener {
+public class AddBanned extends BaseListSherlockFragment implements OnItemClickListener, DialogListener {
 	
 	//Constants
-	final private String CLASS_NAME = this.getClass().getName();
-	final private int WARNING_DIALOG = 0;	
-		
+	final private String CLASS_NAME = this.getClass().getName();	
+	
 	//Widgets Id's
 	final private int addAllMenuId = R.id.menu_addall; 
-	
-	
-	//Widgets
-	private WarningDialog warningDialog;		
-	
+		
 	//Auxiliar attributes
 	private String selectContactName;			
 	
@@ -80,22 +78,20 @@ public class AddBanned extends BaseListActivity implements OnItemClickListener {
 	 * @param savedInstanceState
 	 */
 	@Override
-	public void onCreate (Bundle savedInstanceState) {
+	public void onActivityCreated (Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);										
 		
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);								
+		//To use the progress loader in the action bar 
+        getSherlockActivity().requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		
-		/*		
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_ADD_ALL_CONTACTS);				
-		*/
+		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);								
 		
 		getListView().setOnItemClickListener(this);		
 		
-		setSupportProgressBarIndeterminateVisibility(true);
+		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
 		
 		new LoadContactsDataTask(this, TypeContacts.NON_BANNED).execute();
 	}
@@ -110,11 +106,11 @@ public class AddBanned extends BaseListActivity implements OnItemClickListener {
 	@Override
 	public void getDataContacts (List<String> contactList) {
 			
-		setSupportProgressBarIndeterminateVisibility (false);
+		getSherlockActivity().setSupportProgressBarIndeterminateVisibility (false);
 			
 		if (contactList != null) {
 			myOwnAdapter = new ContactListAdapter<String>(
-				getApplicationContext(), 
+				QuiteSleepApp.getContext(), 
 				R.layout.list_item,
 				contactList, 
 				this);
@@ -136,12 +132,8 @@ public class AddBanned extends BaseListActivity implements OnItemClickListener {
 		
 		try {										
 			selectContactName = (String) myOwnAdapter.getItem(position);														
-			
-			/* If we like to use one subactivity for show better contact details
-			 * and select what phone number and/or mail addresses are used for 
-			 * send busy response.
-			 */			
-			Intent intentContactDetails = new Intent(this,ContactDetails.class);
+				
+			Intent intentContactDetails = new Intent(QuiteSleepApp.getContext(),ContactDetails.class);
 			intentContactDetails.putExtra(ConfigAppValues.CONTACT_NAME, selectContactName);
 			startActivityForResult(intentContactDetails, ConfigAppValues.REQCODE_CONTACT_DETAILS);
 						
@@ -167,59 +159,10 @@ public class AddBanned extends BaseListActivity implements OnItemClickListener {
 		}
 	}
 	
-		
-	/**
-	 * Create the activity dialogs used for it
-	 * 
-	 * @param id
-	 * @return the dialog for the option specified
-	 * @see Dialog
-	 */
 	@Override
-	protected Dialog onCreateDialog (int id) {
-		
-		Dialog dialog;
-		
-		switch (id) {
-			case WARNING_DIALOG:				
-				//dialog = warningDialog.getAlertDialog();				
-				break;
-			default:
-				dialog = null;
-		}
-		
-		//return dialog;
-		return null;
-	}
-	
-	/**
-	 * This function prepare the dalogs every time to call for some of this
-	 * 
-	 *  @param int
-	 *  @param dialog
-	 */
-	@Override
-	protected void onPrepareDialog (int idDialog, Dialog dialog) {
-						
-		switch (idDialog) {
-			case WARNING_DIALOG:
-				warningDialog.setContext(this);
-				warningDialog.setArrayAdapter(myOwnAdapter);
-				warningDialog.setHandler(handler);										
-				break;
-				
-			default:
-				break;
-		}								
-	}		
-	
-	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-										
-		MenuInflater menuInflater = getSupportMenuInflater();
-		menuInflater.inflate(R.menu.addallmenu, menu);
-		
-		return true;					
+	public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+												
+		inflater.inflate(R.menu.addallmenu, menu);								
 	}
 	
 	/**
@@ -233,10 +176,12 @@ public class AddBanned extends BaseListActivity implements OnItemClickListener {
 		
 			//To comeback to the previous activity we finalize it
 			case android.R.id.home :
-				finish();			
+				getSherlockActivity().finish();			
 				break;
 			case addAllMenuId:					
-				showDialog(WARNING_DIALOG);
+				SherlockDialogFragment dialogFragment = WarningFragmentDialog.newInstance(
+						this, this, ConfigAppValues.DialogType.ADD_ALL_CONTACTS);
+				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");					
 				break;									
 			default:
 				break;
@@ -269,5 +214,11 @@ public class AddBanned extends BaseListActivity implements OnItemClickListener {
             		android.widget.Toast.LENGTH_SHORT);		
 			}
 		}
-	};			
+	};
+
+
+	@Override
+	public void clickYes() {
+		 DialogOperations.addAllContacts(QuiteSleepApp.getContext(), myOwnAdapter, handler);		
+	}			
 }

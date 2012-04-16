@@ -33,6 +33,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -43,8 +44,8 @@ import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Schedule;
-import es.cesar.quitesleep.ui.dialogs.EndTimeDialog;
-import es.cesar.quitesleep.ui.dialogs.StartTimeDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.EndTimeFragmentDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.StartTimeFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -57,10 +58,6 @@ import es.cesar.quitesleep.utils.Log;
 public class ScheduleFragment extends SherlockFragment implements OnClickListener {		
 	
 	private final String CLASS_NAME = getClass().getName();
-	private final int START_TIME_DIALOG 	= 0;
-	private final int END_TIME_DIALOG 		= 1;
-	private final int ABOUT_DIALOG 			= 2;
-	private final int HELP_DIALOG			= 3;
 	
 	//Ids for the button widgets
 	private final int startTimeButtonId = R.id.schedule_button_startTime;
@@ -80,9 +77,6 @@ public class ScheduleFragment extends SherlockFragment implements OnClickListene
 	private final int saturdayCheckId = R.id.schedule_checkbox_saturday;
 	private final int sundayCheckId = R.id.schedule_checkbox_sunday;				
 	
-	//Used dialogs in this activity
-	private StartTimeDialog startTimeDialog; 
-	private EndTimeDialog endTimeDialog;
 	
 	//labels for start and end times
 	private TextView startTimeLabel; 
@@ -112,10 +106,7 @@ public class ScheduleFragment extends SherlockFragment implements OnClickListene
 		super.onCreate(savedInstanceState);
 		
 		setHasOptionsMenu(true);
-			
-		startTimeDialog = new StartTimeDialog(getSherlockActivity());
-		endTimeDialog = new EndTimeDialog(getSherlockActivity());
-		
+					
 		Button startTimeButton = (Button)getSherlockActivity().findViewById(startTimeButtonId);				
 		Button endTimeButton = (Button)getSherlockActivity().findViewById(endTimeButtonId);
 		Button daysWeekButton = (Button)getSherlockActivity().findViewById(daysWeekButtonId);
@@ -129,11 +120,7 @@ public class ScheduleFragment extends SherlockFragment implements OnClickListene
 		startTimeLabel.setTypeface(face);
 		endTimeLabel.setTypeface(face);
 		//-------------------------------------------------------------------//
-		
-		//Sets the timeLabes into start and end time dialogs for update the changes		
-		startTimeDialog.setStartTimeLabel(startTimeLabel);
-		endTimeDialog.setEndTimeLabel(endTimeLabel);
-		
+			
 		
 		//Instantiate the days of the week checkboxes
 		mondayCheck = (CheckBox)getSherlockActivity().findViewById(mondayCheckId);
@@ -169,90 +156,19 @@ public class ScheduleFragment extends SherlockFragment implements OnClickListene
 		switch (viewId) {
 		
 			case startTimeButtonId:				
-				//showDialog(START_TIME_DIALOG);				
-				break;
-				
+				StartTimeFragmentDialog startTimeDialog = StartTimeFragmentDialog.newInstance(this, startTimeLabel);								
+				startTimeDialog.show(getSherlockActivity().getSupportFragmentManager(), "startTime");				
+				break;				
 			case endTimeButtonId:
-				//showDialog(END_TIME_DIALOG);				
-				break;			
-				
+				EndTimeFragmentDialog endTimeDialog = EndTimeFragmentDialog.newInstance(this, endTimeLabel);
+				endTimeDialog.show(getSherlockActivity().getSupportFragmentManager(), "endTime");				
+				break;							
 			case daysWeekButtonId:
 				saveDayWeeksSelection();
 				break;
 		}						
 	}
 	
-	/**
-	 * For the first time that create the dialogs
-	 */
-	protected Dialog onCreateDialog (int id) {
-		
-		Dialog dialog;
-		
-		switch (id) {
-			case START_TIME_DIALOG:				
-				dialog = startTimeDialog.getTimePickerDialog();				
-				break;
-			case END_TIME_DIALOG:							
-				dialog = endTimeDialog.getTimePickerDialog();
-				break;
-			case ABOUT_DIALOG:
-				dialog = showWebviewDialog(IDialogs.ABOUT_URI);
-				break;	
-			case HELP_DIALOG:
-				dialog = showWebviewDialog(IDialogs.HELP_SCHEDULE_URI);
-				break;	
-			default:
-				dialog = null;
-		}
-		
-		return dialog;	
-	}
-	
-	/**
-	 * Create the webview dialog using the file (uri) specified to show the information.
-	 * 
-	 * @return
-	 */
-	public Dialog showWebviewDialog(String uri) {
-		
-		try {
-			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
-              WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
-              webView.getSettings().setJavaScriptEnabled(true);              
-              
-              webView.loadUrl(uri);
-
-              return new AlertDialog.Builder(QuiteSleepApp.getContext())
-                  .setCustomTitle(null)
-                  .setPositiveButton(android.R.string.ok, null)
-                  .setView(contentView)
-                  .create();
-              
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			return null;
-		}
-	}
-	
-	/**
-	 * This function prepare the dalogs every time to call for some of this
-	 * 
-	 *  @param int
-	 *  @param dialog
-	 */
-	
-	protected void onPrepareDialog (int idDialog, Dialog dialog) {				
-			
-		switch (idDialog) {
-			case START_TIME_DIALOG:				
-				break;
-			case END_TIME_DIALOG:
-				break;
-			default:
-				break;
-		}								
-	}
 	
 	/**
 	 * Save the days of the weeks checkboxes state into a Schedule object from the
