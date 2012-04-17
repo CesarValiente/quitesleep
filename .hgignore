@@ -1,0 +1,9 @@
+
+syntax: regexp
+^quitesleep_v3_branch/gen$
+syntax: regexp
+^quitesleep_v3_branch/bin$
+syntax: regexp
+^quitesleep_v3_branch/resources$
+syntax: regexp
+^quitesleep_v3_branch/lint\.xml$

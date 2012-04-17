@@ -17,7 +17,7 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.ui.activities;
+package es.cesar.quitesleep.ui.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +52,8 @@ import es.cesar.quitesleep.data.models.Banned;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
 import es.cesar.quitesleep.tasks.LoadContactsDataTask;
+import es.cesar.quitesleep.ui.activities.BaseListSherlockFragment;
+import es.cesar.quitesleep.ui.activities.EditContact;
 import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
@@ -65,35 +67,35 @@ import es.cesar.quitesleep.utils.Log;
 public class DeleteBanned extends BaseListSherlockFragment implements OnItemClickListener {
 	
 	//Constants
-	final private String CLASS_NAME = this.getClass().getName();
-	final private int WARNING_DIALOG = 0;
+	final private String CLASS_NAME = this.getClass().getName();	
 	
 	//Widgets Ids
 	private final int removeAllMenuId = R.id.menu_removeall;
-	
-	//Widgets
-	private WarningFragmentDialog warningDialog;			
-	
+
 	//Attributes
 	private String selectContactName;			
 	
+	public static DeleteBanned newInstance () {
+		
+		DeleteBanned deleteBanned = new DeleteBanned();
+		Bundle bundle = new Bundle();
+		bundle.putInt(ConfigAppValues.TYPE_FRAGMENT, ConfigAppValues.TypeContacts.REMOVE_CONTACTS.ordinal());
+		deleteBanned.setArguments(bundle);
+		return deleteBanned;
+	}
+	
 	@Override
-	public void onCreate (Bundle savedInstanceState) {
+	public void onActivityCreated (Bundle savedInstanceState) {
 				
-		super.onCreate(savedInstanceState);				
+		super.onActivityCreated(savedInstanceState);				
 			
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		/*
-		warningDialog = new WarningDialog(
-				this, 
-				ConfigAppValues.WARNING_REMOVE_ALL_CONTACTS);		
-		*/
 		getListView().setOnItemClickListener(this);
 		
-		setSupportProgressBarIndeterminateVisibility(true);
-		new LoadContactsDataTask(this, TypeContacts.BANNED).execute();
+		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+		new LoadContactsDataTask(this, TypeContacts.REMOVE_CONTACTS).execute();
 	}
 	
 	
@@ -103,11 +105,11 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 	@Override
 	public void getDataContacts (List<String> contactList) {
 			
-		setSupportProgressBarIndeterminateVisibility (false);
+		getSherlockActivity().setSupportProgressBarIndeterminateVisibility (false);
 			
 		if (contactList != null) {
 			myOwnAdapter = new ContactListAdapter<String>(
-				getApplicationContext(), 
+				QuiteSleepApp.getContext(), 
 				R.layout.list_item,					
 				contactList, 
 				this);
@@ -166,7 +168,7 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 			 * and edit what phone number and/or mail addresses are used for 
 			 * send busy response, and remove contact from banned list.
 			 */			
-			Intent intentEditContact = new Intent(this, EditContact.class);
+			Intent intentEditContact = new Intent(QuiteSleepApp.getContext(), EditContact.class);
 			intentEditContact.putExtra(ConfigAppValues.CONTACT_NAME, selectContactName);
 			startActivityForResult(intentEditContact, ConfigAppValues.REQCODE_EDIT_CONTACT);
 									
@@ -190,59 +192,13 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 		}
 	}
 	
-	/**
-	 * Create the activity dialogs used for it
-	 * 
-	 * @param id
-	 * @return the dialog for the option specified
-	 * @see Dialog
-	 */
-	@Override
-	protected Dialog onCreateDialog (int id) {
-		
-		Dialog dialog;
-		
-		switch (id) {
-			case WARNING_DIALOG:				
-				//dialog = warningDialog.getAlertDialog();				
-				break;
-			default:
-				dialog = null;
-		}
-		
-		//return dialog;
-		return null;
-	}
 	
-	/**
-	 * This function prepare the dalogs every time to call for some of this
-	 * 
-	 *  @param int
-	 *  @param dialog
-	 */
-	@Override
-	protected void onPrepareDialog (int idDialog, Dialog dialog) {
-						
-		switch (idDialog) {			
-			case WARNING_DIALOG:
-				warningDialog.setContext(this);
-				warningDialog.setArrayAdapter(myOwnAdapter);
-				warningDialog.setHandler(handler);										
-				break;
-				
-			default:
-				break;
-		}								
-	}
 
 	
 	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-										
-		MenuInflater menuInflater = getSupportMenuInflater();
-		menuInflater.inflate(R.menu.removeallmenu, menu);
-		
-		return true;					
+	public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+												
+		inflater.inflate(R.menu.removeallmenu, menu);							
 	}
 	
 	/**
@@ -256,10 +212,10 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 		
 			//To comeback to the previous activity we finalize it	
 			case android.R.id.home :
-				finish();			
+				getSherlockActivity().finish();			
 				break;
 			case removeAllMenuId:					
-				showDialog(WARNING_DIALOG);
+				//showDialog(WARNING_DIALOG);
 				break;					
 			default:
 				break;

@@ -42,7 +42,7 @@ public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 		
 		List contactList = null;
 		
-		if (typeContacts == TypeContacts.NON_BANNED)
+		if (typeContacts == TypeContacts.ADD_CONTACTS)
 			contactList = (List<Contact>) clientDDBB.getSelects().selectAllNotBannedContacts();
 		else
 			contactList = (List<Banned>) clientDDBB.getSelects().selectAllBannedContacts();
@@ -76,7 +76,7 @@ public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 			String contactName = null;
 			for (int i=0; i<contactList.size(); i++) {
 								
-				if (typeContacts == typeContacts.NON_BANNED) 
+				if (typeContacts == typeContacts.ADD_CONTACTS) 
 					contactName = ((List<Contact>)contactList).get(i).getContactName();					
 				else 
 					contactName = ((List<Banned>)contactList).get(i).getContact().getContactName();

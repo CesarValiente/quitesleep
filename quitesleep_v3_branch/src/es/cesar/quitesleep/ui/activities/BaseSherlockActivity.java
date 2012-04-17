@@ -20,6 +20,7 @@
 package es.cesar.quitesleep.ui.activities;
 
 import android.os.Bundle;
+import android.view.Window;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -45,38 +46,12 @@ public class BaseSherlockActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);				
+		super.onCreate(savedInstanceState);
+		
+		//To use the progress loader in the action bar 
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	}
-		
-	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
-		
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.informationmenu, menu);
-		
-		return true;				
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected (MenuItem item) {
-		
-		switch(item.getItemId()) {
 			
-			//To come back to the previous activity we finalize it	
-			case android.R.id.home :
-				finish();			
-				break;
-			case R.id.menu_information_about:
-				//TODO
-				Log.d(CLASS_NAME, "about");
-				break;
-			case R.id.menu_information_help:
-				//TODO
-				Log.d(CLASS_NAME, "help");
-				break;				
-		}				
-		return true;
-	}
 	
 	/**
 	 * This function update the action bar home icon to allow up navigation 

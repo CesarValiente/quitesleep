@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -50,15 +51,21 @@ public abstract class BaseListSherlockFragment extends SherlockListFragment {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);		
-	}
+		super.onCreate(savedInstanceState);													
+		
+	}	
 	
+	/**
+	 * Get all defined contacts from the database and parse it for create
+	 * one contact list only with their contactNames
+	 * @param contactList
+	 */
 	public abstract void getDataContacts (List<String> contactList);
 	
 	/**
 	 * Refreshes the list to also can use properly the indexer and fastScroll
 	 */
-	public void refreshList () {				
+	protected void refreshList () {				
 		
 		/* To refresh the indexer we need to disable the fastScroll, 
 		 * call to notifyDataSetChanged, re-create the index sections 

@@ -61,8 +61,13 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 		 * @param context
 		 * @param viewResourceId
 		 * @param objects
+		 * @param fragment
 		 */
-		public ContactListAdapter (Context context, int viewResourceId, List<T> objects, SherlockListFragment fragment) {
+		public ContactListAdapter (
+				Context context, 
+				int viewResourceId, 
+				List<T> objects, 
+				SherlockListFragment fragment) {
 			
 			super (context, viewResourceId, objects);
 			
@@ -107,14 +112,13 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 		@Override
 		public View getView (int position, View convertView, ViewGroup parent) {
 			
-			View view;
-			
-			TextView textview;
-			
+			View view;			
+			TextView textview;			
 			Log.d(CLASS_NAME, "get view!!!!");
 			
 			if (convertView == null)
-				view = fragment.getSherlockActivity().getLayoutInflater().inflate(R.layout.list_item, parent, false);
+				view = fragment.getSherlockActivity().getLayoutInflater().inflate(
+						R.layout.list_item, parent, false);
 			else
 				view = convertView;
 			

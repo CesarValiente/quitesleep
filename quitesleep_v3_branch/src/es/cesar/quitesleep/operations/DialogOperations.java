@@ -269,7 +269,7 @@ public class DialogOperations {
 					new RemoveCallLogMenu(arrayAdapter, callLogDialog, handler);
 				
 				//Show the progress dialog and run the thread for add all contacts
-				callLogDialog.showDialog(context, ConfigAppValues.DialogType.REMOVE_ALL_LOGS);
+				//callLogDialog.showDialog(context, ConfigAppValues.DialogType.REMOVE_ALL_LOGS);
 				callLogMenu.start();								
 			}
 											
@@ -294,7 +294,7 @@ public class DialogOperations {
 				new RefreshCallLogMenu(arrayAdapter, callLogDialog, handler);
 				
 			//Show the progress dialog and run the thread for add all contacts
-			callLogDialog.showDialog(context, ConfigAppValues.WARNING_REFRESH_CALL_LOG);
+			//callLogDialog.showDialog(context, ConfigAppValues.WARNING_REFRESH_CALL_LOG);
 			refreshCallLogMenu.start();											
 			
 		}catch (Exception e) {

@@ -66,20 +66,15 @@ public class WarningFragmentDialog extends SherlockDialogFragment {
 	 
 	/**
 	 * Gets a new {@link WarningFragmentDialog}
-	 * @param fragment
 	 * @param listener
 	 * @param dialogType
 	 * @return
 	 */
-	public static WarningFragmentDialog newInstance (
-			Fragment fragment, 
+	public static WarningFragmentDialog newInstance (			
 			DialogListener listener, 
 			ConfigAppValues.DialogType dialogType) {
 		
-		WarningFragmentDialog warningDialog = new WarningFragmentDialog(dialogType, listener);	
-		if (fragment != null) {
-			warningDialog.setTargetFragment(fragment, 0);
-		}
+		WarningFragmentDialog warningDialog = new WarningFragmentDialog(dialogType, listener);			
 		return warningDialog;
 	}
 	
@@ -134,25 +129,29 @@ public class WarningFragmentDialog extends SherlockDialogFragment {
 		
 								
 		if (dialogType == ConfigAppValues.DialogType.SYNC_FIRST_TIME) {
-				alertDialogImage = R.drawable.dialog_warning;
-				title = R.string.warningdialog_caution_label;
-				message = R.string.warningdialog_contactOperations_label;
+			alertDialogImage = R.drawable.quitesleep;
+			title = R.string.warningdialog_firstime_title;
+			message = R.string.warningdialog_firstime_message;
 		}else if (dialogType == ConfigAppValues.DialogType.SYNC_REST_OF_TIMES) {
-			  alertDialogImage = R.drawable.dialog_warning;
-              title = R.string.warningdialog_caution_label;
-              message = R.string.warningdialog_synccontact_label;
-		}else if (dialogType == ConfigAppValues.DialogType.SYNC_REST_OF_TIMES) {
-				alertDialogImage = R.drawable.dialog_warning;
-				title = R.string.warningdialog_caution_label;
-				message = R.string.warningdialog_synccontact_label;									
+			alertDialogImage = R.drawable.dialog_warning;
+			title = R.string.warningdialog_caution_label;
+			message = R.string.warningdialog_synccontact_label;
+		}else if (dialogType == ConfigAppValues.DialogType.ADD_ALL_CONTACTS) {
+			alertDialogImage = R.drawable.dialog_warning;
+			title = R.string.warningdialog_caution_label;
+			message = R.string.warningdialog_contactOperations_label;
+		}else if (dialogType == ConfigAppValues.DialogType.REMOVE_ALL_CONTACTS) {
+			alertDialogImage = R.drawable.dialog_warning;
+			title = R.string.warningdialog_caution_label;
+			message = R.string.warningdialog_contactOperations_label;
 		}else if (dialogType == ConfigAppValues.DialogType.REMOVE_ALL_LOGS) {
-				alertDialogImage = R.drawable.dialog_warning;
-				title = R.string.warningdialog_caution_label;
-				message = R.string.warningdialog_calllog_remove_label;					
+			alertDialogImage = R.drawable.dialog_warning;
+			title = R.string.warningdialog_caution_label;
+			message = R.string.warningdialog_calllog_remove_label;					
 		}else if (dialogType == ConfigAppValues.DialogType.REFRESH_ALL_LOGS) {
-				alertDialogImage = R.drawable.dialog_warning;
-				title = R.string.warningdialog_caution_label;
-				message = R.string.warningdialog_calllog_refresh_label;
+			alertDialogImage = R.drawable.dialog_warning;
+			title = R.string.warningdialog_caution_label;
+			message = R.string.warningdialog_calllog_refresh_label;
 		}
 	}
 	

@@ -58,16 +58,16 @@ public class CallLogDialog {
 	/**
 	 * Show the synchronization message
 	 */
-	public void showDialog (Context context, int typeDialog) {
+	public void showDialog (Context context, ConfigAppValues.DialogType typeDialog) {
 		
-		if (typeDialog == ConfigAppValues.WARNING_REMOVE_ALL_CALL_LOGS)
+		if (typeDialog == ConfigAppValues.DialogType.REMOVE_ALL_LOGS)
 			progressDialog = ProgressDialog.show(
 				context, 
 				"",
 				context.getString(R.string.calllogdialog_dialog_remove_label), 
 				true);
 		
-		else if (typeDialog == ConfigAppValues.WARNING_REFRESH_CALL_LOG)
+		else if (typeDialog == ConfigAppValues.DialogType.REFRESH_ALL_LOGS)
 			progressDialog = ProgressDialog.show(
 					context, 
 					"",

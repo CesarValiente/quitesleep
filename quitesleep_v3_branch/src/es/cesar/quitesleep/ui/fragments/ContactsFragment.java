@@ -39,8 +39,7 @@ import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.components.listeners.DialogListener;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.activities.AddBanned;
-import es.cesar.quitesleep.ui.activities.DeleteBanned;
+import es.cesar.quitesleep.ui.activities.ListActivityHolder;
 import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
@@ -99,16 +98,18 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		int viewId = view.getId();				
 		switch (viewId) {
 			case addBannedId:				
-				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), AddBanned.class);											
-				startActivityForResult(intentAddContacts, ConfigAppValues.REQCODE_ADD_BANNED);
+				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), ListActivityHolder.class);				
+				intentAddContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, ConfigAppValues.TypeContacts.ADD_CONTACTS.ordinal());				
+				startActivity(intentAddContacts);
 				break;			
 			case deleteBannedId:
-				Intent intentViewContacts = new Intent(QuiteSleepApp.getContext(), DeleteBanned.class);
-				startActivityForResult(intentViewContacts, ConfigAppValues.REQCODE_DELETE_BANNED);
+				Intent intentDeleteContacts = new Intent(QuiteSleepApp.getContext(), ListActivityHolder.class);
+				intentDeleteContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, ConfigAppValues.TypeContacts.REMOVE_CONTACTS.ordinal());
+				startActivity(intentDeleteContacts);
 				break;									
 			case syncContactsId:				
 				SherlockDialogFragment dialogFragment = WarningFragmentDialog.newInstance(
-						this, this, ConfigAppValues.DialogType.SYNC_REST_OF_TIMES);
+						this, ConfigAppValues.DialogType.SYNC_REST_OF_TIMES);
 				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");		
 				break;
 		}						

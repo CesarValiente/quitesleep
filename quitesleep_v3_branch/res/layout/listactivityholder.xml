@@ -18,9 +18,17 @@
     You should have received a copy of the GNU General Public License
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
  -->
- 
-<menu 
-	xmlns:android="http://schemas.android.com/apk/res/android">     
-          
-
-</menu>
+	
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent" 
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	
+    <FrameLayout 
+        android:id="@+id/holder"
+        android:tag="holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />                    
+	
+</LinearLayout>	 

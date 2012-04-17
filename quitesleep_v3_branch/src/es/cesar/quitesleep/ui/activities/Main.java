@@ -82,7 +82,7 @@ public class Main extends BaseSherlockActivity implements DialogListener {
 		if (isTheFirstTime()) {
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();					
 			SherlockDialogFragment dialog = WarningFragmentDialog.newInstance(
-					null, this, ConfigAppValues.DialogType.SYNC_FIRST_TIME);
+					this, ConfigAppValues.DialogType.SYNC_FIRST_TIME);
 			dialog.show(ft, "dialog");							
 		}
 												
@@ -135,7 +135,7 @@ public class Main extends BaseSherlockActivity implements DialogListener {
 
 	@Override
 	public void clickYes() {
-		DialogOperations.synchronizeFirstTime(QuiteSleepApp.getContext(), handler);
+		DialogOperations.synchronizeFirstTime(this, handler);
 	}
 	
 }

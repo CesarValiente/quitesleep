@@ -22,16 +22,10 @@ package es.cesar.quitesleep.ui.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -43,6 +37,7 @@ import com.actionbarsherlock.view.MenuItem;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
+import es.cesar.quitesleep.components.listeners.DialogListener;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.CallLog;
 import es.cesar.quitesleep.settings.ConfigAppValues;
@@ -55,7 +50,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class LogsFragment extends SherlockListFragment implements IDialogs {
+public class LogsFragment extends SherlockListFragment implements DialogListener {
 
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();
@@ -81,17 +76,8 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 		super.onCreate(savedInstanceState);
 		
 		setHasOptionsMenu(true);
-		/*
-		warningRemoveDialog = new WarningDialog(
-				getSherlockActivity(), 
-				ConfigAppValues.WARNING_REMOVE_ALL_CALL_LOGS);
 		
-		warningRefreshDialog = new WarningDialog(
-				getSherlockActivity(), 
-				ConfigAppValues.WARNING_REFRESH_CALL_LOG);
-		*/
-		getAllCallLogList();
-		
+		getAllCallLogList();	
 	}
 	
 	/**
@@ -154,87 +140,7 @@ public class LogsFragment extends SherlockListFragment implements IDialogs {
 		}
 	}
 	
-	
-	/**
-	 * Create the activity dialogs used for it
-	 * 
-	 * @param id
-	 * @return the dialog for the option specified
-	 * @see Dialog
-	 */
-	protected Dialog onCreateDialog (int id) {
 		
-		Dialog dialog;
-		
-		switch (id) {
-			case WARNING_REMOVE_DIALOG:				
-				//dialog = warningRemoveDialog.getAlertDialog();				
-				break;
-			case WARNING_REFRESH_DIALOG:				
-				//dialog = warningRefreshDialog.getAlertDialog();				
-				break;
-			case HELP_DIALOG:
-				dialog = showWebviewDialog(IDialogs.HELP_LOGS_URI);
-				break;
-			default:
-				dialog = null;
-		}
-		
-		//return dialog;	
-		return null;
-	}
-	
-	/**
-	 * Create the webview dialog using the file (uri) specified to show the information.
-	 * 
-	 * @return
-	 */
-	public Dialog showWebviewDialog(String uri) {
-		
-		try {
-			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
-              WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
-              webView.getSettings().setJavaScriptEnabled(true);              
-              
-              webView.loadUrl(uri);
-
-              return new AlertDialog.Builder(QuiteSleepApp.getContext())
-                  .setCustomTitle(null)
-                  .setPositiveButton(android.R.string.ok, null)
-                  .setView(contentView)
-                  .create();
-              
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			return null;
-		}
-	}
-	
-	/**
-	 * This function prepare the dalogs every time to call for some of this
-	 * 
-	 *  @param int
-	 *  @param dialog
-	 */
-	protected void onPrepareDialog (int idDialog, Dialog dialog) {
-							
-		switch (idDialog) {			
-			case WARNING_REMOVE_DIALOG:
-				warningRemoveDialog.setContext(QuiteSleepApp.getContext());
-				warningRemoveDialog.setArrayAdapter(arrayAdapter);
-				warningRemoveDialog.setHandler(handlerRemove);										
-				break;
-			case WARNING_REFRESH_DIALOG:
-				warningRefreshDialog.setContext(QuiteSleepApp.getContext());
-				warningRefreshDialog.setArrayAdapter(arrayAdapter);
-				warningRefreshDialog.setHandler(handlerRefresh);										
-				break;			
-			default:
-				break;
-		}							
-	}
-	
-	
 	/**
 	 * Handler for clear the listView and the array adapter once we have been
 	 * add all contacts to the banned list

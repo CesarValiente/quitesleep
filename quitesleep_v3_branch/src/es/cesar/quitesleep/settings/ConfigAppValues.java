@@ -45,7 +45,7 @@ public class ConfigAppValues {
 	public static final int REQCODE_SYNC_CONTACTS		=	5;
 	public static final int REQCODE_CONTACT_DETAILS 	=	6;
 	public static final int REQCODE_EDIT_CONTACT 		=	7;
-	public static final int REQCODE_BLOCK_OTHER_CALLS 	=	8;
+	public static final int REQCODE_BLOCK_OTHER_CALLS 	=	8;	
 	public static final int REQ_TEST					=	100;
 	//------------------------------------------------------------------------//
 		
@@ -80,11 +80,13 @@ public class ConfigAppValues {
 	
 	
 	//Enum to differenciate between load contact requests
-	public static enum TypeContacts {NON_BANNED, BANNED};
+	public static enum TypeContacts {ADD_CONTACTS, REMOVE_CONTACTS};
 	
 	//Enum to show different warning dialog depending of the caller
 	public static enum DialogType {SYNC_FIRST_TIME, SYNC_REST_OF_TIMES, ADD_ALL_CONTACTS, 
 		REMOVE_ALL_CONTACTS, SMS_DIALOG, MAIL_DIALOG, REMOVE_ALL_LOGS, REFRESH_ALL_LOGS};
+		
+	public static final String TYPE_FRAGMENT = "TYPE_FRAGMENT"; 
 	
 	
 	//----------	Getters & Setters	-----------------------------------//

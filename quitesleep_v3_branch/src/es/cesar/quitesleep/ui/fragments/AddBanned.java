@@ -17,7 +17,7 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.ui.activities;
+package es.cesar.quitesleep.ui.fragments;
 
 import java.util.List;
 
@@ -45,33 +45,39 @@ import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
 import es.cesar.quitesleep.tasks.LoadContactsDataTask;
+import es.cesar.quitesleep.ui.activities.BaseListSherlockFragment;
+import es.cesar.quitesleep.ui.activities.ContactDetails;
 import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 import es.cesar.quitesleep.utils.Toast;
 
 /**
- * 
  * @author		Cesar Valiente Gordo
  * @mail		cesar.valiente@gmail.com	
  * 
- * @version 0.1, 03-13-2010
- * 
  * Class for AddContacts to the banned user list
- * 
  */
 public class AddBanned extends BaseListSherlockFragment implements OnItemClickListener, DialogListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();	
 	
-	//Widgets Id's
-	final private int addAllMenuId = R.id.menu_addall; 
 		
 	//Auxiliar attributes
 	private String selectContactName;			
+			
+	/**
+	 * Creates a new instance of {@link AddBanned}
+	 * @return {@link AddBanned}
+	 */
+	public static AddBanned newInstance () {				
+		
+		AddBanned addBanned = new AddBanned();								
+		return addBanned;		
+	}
 	
-	
+		
 	/**
 	 * onCreate
 	 * 
@@ -80,48 +86,41 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);										
-		
-		//To use the progress loader in the action bar 
-        getSherlockActivity().requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
-		
-		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);								
-		
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+							
 		getListView().setOnItemClickListener(this);		
 		
 		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
 		
-		new LoadContactsDataTask(this, TypeContacts.NON_BANNED).execute();
+		Log.d(CLASS_NAME, "in addBanned");
+		
+		new LoadContactsDataTask(this, TypeContacts.ADD_CONTACTS).execute();
 	}
 	
 	
 	
-	/**
-	 * Get all not banned contacts from the database and parse it for create
-	 * one contact list only with their contactNames
-	 * @param contactList
-	 */
+	
 	@Override
 	public void getDataContacts (List<String> contactList) {
 			
 		getSherlockActivity().setSupportProgressBarIndeterminateVisibility (false);
 			
 		if (contactList != null) {
-			myOwnAdapter = new ContactListAdapter<String>(
+			Log.d(CLASS_NAME, "contact list != null");
+			
+			myOwnAdapter 
+			 = new ContactListAdapter<String>(
 				QuiteSleepApp.getContext(), 
 				R.layout.list_item,
 				contactList, 
 				this);
-		
-			getListView().setAdapter(myOwnAdapter);
+					
+			setListAdapter(myOwnAdapter);
 			
 			refreshList();		
 		}
-	}
-	
-	
+	}		
 	
 	@Override
 	public void onItemClick(
@@ -172,15 +171,13 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 	@Override
 	public boolean onOptionsItemSelected (MenuItem item) {
 							
+		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
-		
-			//To comeback to the previous activity we finalize it
-			case android.R.id.home :
-				getSherlockActivity().finish();			
-				break;
-			case addAllMenuId:					
+					
+			case R.id.menu_addall:	
+				Log.d(CLASS_NAME, "click in ADD contacts");
 				SherlockDialogFragment dialogFragment = WarningFragmentDialog.newInstance(
-						this, this, ConfigAppValues.DialogType.ADD_ALL_CONTACTS);
+						this, ConfigAppValues.DialogType.ADD_ALL_CONTACTS);
 				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");					
 				break;									
 			default:
@@ -190,8 +187,8 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 	}
 	
 	/**
-	 * Handler for clear the listView and the array adapter once we have been
-	 * add all contacts to the banned list
+	 * Handler for clear the listView and the array adapter once we have added
+	 * all contacts to the banned list
 	 */
 	public final Handler handler = new Handler() {
 		public void handleMessage(Message message) {
@@ -203,8 +200,7 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 				//int count = arrayAdapter.getCount();
 				int numBanned = message.getData().getInt(NUM_BANNED);
 				
-				//clear the arrayAdapter
-				myOwnAdapter.clear();
+				refreshList();
 				
 				//Show the toast message
 				Toast.d(
@@ -219,6 +215,7 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 
 	@Override
 	public void clickYes() {
+		Log.d(CLASS_NAME, "ClickYes!!!");
 		 DialogOperations.addAllContacts(QuiteSleepApp.getContext(), myOwnAdapter, handler);		
 	}			
 }
