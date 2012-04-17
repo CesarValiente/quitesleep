@@ -7,3 +7,5 @@ syntax: regexp
 ^quitesleep_v3_branch/resources$
 syntax: regexp
 ^quitesleep_v3_branch/lint\.xml$
+syntax: regexp
+^quitesleep_v3_branch/bin$
