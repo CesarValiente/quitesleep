@@ -17,7 +17,7 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.ui.activities;
+package es.cesar.quitesleep.ui.activities.base;
 
 import android.os.Bundle;
 import android.view.Window;
@@ -39,7 +39,7 @@ import es.cesar.quitesleep.utils.Log;
  * the same and repeated functionality withou the necesity to implement the
  * same code over and over again.
  */
-public class BaseSherlockActivity extends SherlockFragmentActivity {				
+public class BaseFragmentActivity extends SherlockFragmentActivity {				
 	
 	private final String CLASS_NAME = getClass().getName();
 	
@@ -61,5 +61,28 @@ public class BaseSherlockActivity extends SherlockFragmentActivity {
 		
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(homeToUp);
-	}			
+	}
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu (Menu menu) {
+			
+		//Empty creator to build the initial action bar
+		return true;				
+	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected (MenuItem item) {
+		
+		switch(item.getItemId()) {
+			
+			//To come back to the previous activity we finalize it	
+			case android.R.id.home :
+				finish();			
+				break;						
+		}				
+		return false;
+	}
 }

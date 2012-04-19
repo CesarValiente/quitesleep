@@ -28,6 +28,7 @@ import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.BlockCallsConf;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.activities.base.BaseFragmentActivity;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -43,7 +44,7 @@ import es.cesar.quitesleep.utils.Log;
  * and/or unknown calls, etc.
  * 
  */
-public class BlockCallsActivity extends BaseSherlockActivity implements OnClickListener {
+public class BlockCallsActivity extends BaseFragmentActivity implements OnClickListener {
 	
 	private final String CLASS_NAME = this.getClass().getName();
 	

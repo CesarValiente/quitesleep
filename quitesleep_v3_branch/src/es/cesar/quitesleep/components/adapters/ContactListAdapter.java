@@ -77,9 +77,7 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 			contactListString = (ArrayList<String>)objects;
 			
 			//We order the contact list string
-			Collections.sort(contactListString);
-			
-			Log.d(CLASS_NAME, "contact list string: " + contactListString);
+			Collections.sort(contactListString);					
 			
 			//Init the indexer to use in the list
 			alphaIndexer = new HashMap<String, Integer>();
@@ -89,9 +87,7 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 			for (int i=size-1; i>=0; i--) {				
 				String item = contactListString.get(i);
 				alphaIndexer.put(item.substring(0,1), i);				
-			}
-			
-			Log.d(CLASS_NAME, "alphaIndexer: " + alphaIndexer);
+			}					
 			
 			//Creates the keylist with the first letter
 			List<String> keyList = new ArrayList<String>(alphaIndexer.size());
@@ -104,17 +100,14 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 			
 			//We create the array with the keys
 			sections = new String[keyList.size()];
-			keyList.toArray(sections);			
-			
-			Log.d(CLASS_NAME, "sections: " + sections);
+			keyList.toArray(sections);								
 		}
 		
 		@Override
 		public View getView (int position, View convertView, ViewGroup parent) {
 			
 			View view;			
-			TextView textview;			
-			Log.d(CLASS_NAME, "get view!!!!");
+			TextView textview;						
 			
 			if (convertView == null)
 				view = fragment.getSherlockActivity().getLayoutInflater().inflate(
@@ -130,8 +123,7 @@ public class ContactListAdapter<T> extends ArrayAdapter<T> implements SectionInd
 			
 			//Gets the item in the actual position and casting it
 			T item = getItem(position);
-			textview.setText(item.toString());
-			Log.d(CLASS_NAME, "Item: " + item.toString());
+			textview.setText(item.toString());			
 			
 			return view;
 		}

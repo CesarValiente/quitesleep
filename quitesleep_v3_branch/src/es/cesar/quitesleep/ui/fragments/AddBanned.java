@@ -40,14 +40,14 @@ import com.actionbarsherlock.view.MenuItem;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
-import es.cesar.quitesleep.components.listeners.DialogListener;
+import es.cesar.quitesleep.components.listeners.ContactDialogListener;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
+import es.cesar.quitesleep.settings.ConfigAppValues.TypeFragment;
 import es.cesar.quitesleep.tasks.LoadContactsDataTask;
-import es.cesar.quitesleep.ui.activities.BaseListSherlockFragment;
 import es.cesar.quitesleep.ui.activities.ContactDetails;
-import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.ContactsFragmentDialog;
+import es.cesar.quitesleep.ui.fragments.base.BaseListFragment;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 import es.cesar.quitesleep.utils.Toast;
@@ -58,7 +58,7 @@ import es.cesar.quitesleep.utils.Toast;
  * 
  * Class for AddContacts to the banned user list
  */
-public class AddBanned extends BaseListSherlockFragment implements OnItemClickListener, DialogListener {
+public class AddBanned extends BaseListFragment implements OnItemClickListener, ContactDialogListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();	
@@ -87,37 +87,26 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 	public void onActivityCreated (Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-							
-		getListView().setOnItemClickListener(this);		
-		
-		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
-		
-		Log.d(CLASS_NAME, "in addBanned");
-		
-		new LoadContactsDataTask(this, TypeContacts.ADD_CONTACTS).execute();
+		setHasOptionsMenu(true);							
+				
+		getListView().setOnItemClickListener(this);				
+		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);					
+		new LoadContactsDataTask(this, TypeFragment.ADD_CONTACTS).execute();
 	}
-	
-	
-	
-	
+			
 	@Override
-	public void getDataContacts (List<String> contactList) {
+	public void getDataInfo (List<String> contactList) {
 			
 		getSherlockActivity().setSupportProgressBarIndeterminateVisibility (false);
 			
-		if (contactList != null) {
-			Log.d(CLASS_NAME, "contact list != null");
-			
-			myOwnAdapter 
-			 = new ContactListAdapter<String>(
+		if (contactList != null) {					
+			myOwnAdapter = new ContactListAdapter<String>(
 				QuiteSleepApp.getContext(), 
 				R.layout.list_item,
 				contactList, 
 				this);
 					
-			setListAdapter(myOwnAdapter);
-			
+			setListAdapter(myOwnAdapter);			
 			refreshList();		
 		}
 	}		
@@ -135,8 +124,7 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 			Intent intentContactDetails = new Intent(QuiteSleepApp.getContext(),ContactDetails.class);
 			intentContactDetails.putExtra(ConfigAppValues.CONTACT_NAME, selectContactName);
 			startActivityForResult(intentContactDetails, ConfigAppValues.REQCODE_CONTACT_DETAILS);
-						
-									
+															
 		}catch (Exception e) {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));			
 		}		
@@ -150,8 +138,10 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 		
 		switch(requestCode) {
 			case ConfigAppValues.REQCODE_CONTACT_DETAILS:				
-				if (resultCode == Activity.RESULT_OK)
+				if (resultCode == Activity.RESULT_OK) {
 					myOwnAdapter.remove(selectContactName);
+					refreshList();
+				}
 				break;
 			default:
 				break;
@@ -170,13 +160,10 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 	 */
 	@Override
 	public boolean onOptionsItemSelected (MenuItem item) {
-							
-		super.onOptionsItemSelected(item);
-		switch (item.getItemId()) {
-					
-			case R.id.menu_addall:	
-				Log.d(CLASS_NAME, "click in ADD contacts");
-				SherlockDialogFragment dialogFragment = WarningFragmentDialog.newInstance(
+									
+		switch (item.getItemId()) {					
+			case R.id.menu_addall:					
+				SherlockDialogFragment dialogFragment = ContactsFragmentDialog.newInstance(
 						this, ConfigAppValues.DialogType.ADD_ALL_CONTACTS);
 				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");					
 				break;									
@@ -193,29 +180,23 @@ public class AddBanned extends BaseListSherlockFragment implements OnItemClickLi
 	public final Handler handler = new Handler() {
 		public void handleMessage(Message message) {
 			
-			final String NUM_BANNED = "NUM_BANNED";
+			final String NUM_BANNED = "NUM_BANNED";																
+
+			int numBanned = message.getData().getInt(NUM_BANNED);			
+			myOwnAdapter.clear();
+			refreshList();
 			
-			if (myOwnAdapter != null && myOwnAdapter.getCount()>0) {
-				
-				//int count = arrayAdapter.getCount();
-				int numBanned = message.getData().getInt(NUM_BANNED);
-				
-				refreshList();
-				
-				//Show the toast message
-				Toast.d(
-					QuiteSleepApp.getContext(),
-            		numBanned + " " + QuiteSleepApp.getContext().getString(
-            				R.string.menu_addall_toast_insertscount),
-            		android.widget.Toast.LENGTH_SHORT);		
-			}
-		}
+			//Show the toast message
+			Toast.d(
+				QuiteSleepApp.getContext(),
+        		numBanned + " " + QuiteSleepApp.getContext().getString(
+        				R.string.menu_addall_toast_insertscount),
+        		android.widget.Toast.LENGTH_SHORT);		
+		}		
 	};
 
-
 	@Override
-	public void clickYes() {
-		Log.d(CLASS_NAME, "ClickYes!!!");
-		 DialogOperations.addAllContacts(QuiteSleepApp.getContext(), myOwnAdapter, handler);		
+	public void clickYes() {		
+		 DialogOperations.addAllContacts(getSherlockActivity(), myOwnAdapter, handler);			 
 	}			
 }

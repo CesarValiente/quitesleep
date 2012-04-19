@@ -43,6 +43,7 @@ import es.cesar.quitesleep.data.models.Mail;
 import es.cesar.quitesleep.data.models.Phone;
 import es.cesar.quitesleep.operations.ContactOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.activities.base.BaseFragmentActivity;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -51,7 +52,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class ContactDetails extends BaseSherlockActivity implements OnClickListener {
+public class ContactDetails extends BaseFragmentActivity implements OnClickListener {
 	
 	final private String CLASS_NAME = getClass().getName();
 	

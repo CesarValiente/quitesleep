@@ -89,7 +89,7 @@ public class AddAllMenu extends Thread {
 	private void addAll () {
 		
 		final String NUM_BANNED = "NUM_BANNED";
-		int numBanend = 0;
+		int numBanned = 0;
 		
 		try {													
 			ClientDDBB clientDDBB = new ClientDDBB();
@@ -117,7 +117,7 @@ public class AddAllMenu extends Thread {
 							clientDDBB.getUpdates().insertContact(contact);
 							clientDDBB.getInserts().insertBanned(banned);
 							
-							numBanend ++;							
+							numBanned ++;							
 						}	
 					}
 				}
@@ -130,11 +130,11 @@ public class AddAllMenu extends Thread {
 		}finally {
 			//Hide and dismiss de synchronization dialog
 			addAllDialog.stopDialog(QuiteSleepApp.getContext());
-			
+						
 			//Create and send the numBanned message to the handler in gui main thread
-			Message message = handler.obtainMessage();
+			Message message = new Message();
             Bundle bundle = new Bundle();
-            bundle.putInt(NUM_BANNED, numBanend);
+            bundle.putInt(NUM_BANNED, numBanned);
             message.setData(bundle);
             handler.sendMessage(message);
 		}

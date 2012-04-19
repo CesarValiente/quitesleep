@@ -105,7 +105,7 @@
         
         <!-- BroadCastReceiver for BootCompleted, IncomingCalls and SMSReceived broadcast messages -->
         <receiver 
-        	android:name=".receivers.PhoneStateReceiver">
+        	android:name=".components.receivers.PhoneStateReceiver">
         	<intent-filter>
         		<action android:name="android.intent.action.PHONE_STATE" />
         		<action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -126,7 +126,7 @@
                                  
         <!-- Receiver for SENT_SMS_ACTION BroadCast signal -->
       	<receiver 
-        	android:name=".receivers.SendActionSMSReceiver">
+        	android:name=".components.receivers.SendActionSMSReceiver">
         	<intent-filter>        		
         		<action android:name="SENT_SMS_ACTION" />        		
         	</intent-filter>        	        
@@ -134,7 +134,7 @@
 		
 		<!-- Receiver for DELIVERED_SMS_ACTION BroadCast signal -->
 		<receiver 
-        	android:name=".receivers.DeliveredActionSMSReceiver">
+        	android:name=".components.receivers.DeliveredActionSMSReceiver">
         	<intent-filter>        		
         		<action android:name="DELIVERED_SMS_ACTION" />        		
         	</intent-filter>        	        

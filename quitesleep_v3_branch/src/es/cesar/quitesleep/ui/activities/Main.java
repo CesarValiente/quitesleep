@@ -33,11 +33,12 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.listeners.DialogListener;
+import es.cesar.quitesleep.components.listeners.ContactDialogListener;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
+import es.cesar.quitesleep.ui.activities.base.BaseFragmentActivity;
+import es.cesar.quitesleep.ui.dialogs.fragments.ContactsFragmentDialog;
 import es.cesar.quitesleep.ui.fragments.adapter.PageViewerAdapter;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
@@ -52,7 +53,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * to show them.
  * 
  */
-public class Main extends BaseSherlockActivity implements DialogListener {
+public class Main extends BaseFragmentActivity implements ContactDialogListener {
 	
 	final String CLASS_NAME = getClass().getName();
 	
@@ -74,14 +75,12 @@ public class Main extends BaseSherlockActivity implements DialogListener {
 		mPager.setAdapter(mAdatper);
 		
 		mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-		mIndicator.setViewPager(mPager);
-		
+		mIndicator.setViewPager(mPager);		
 				
-		//If is the first time QuiteSleep is running, then performs sync operations.
-		
+		//If is the first time QuiteSleep is running, then performs sync operations.		
 		if (isTheFirstTime()) {
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();					
-			SherlockDialogFragment dialog = WarningFragmentDialog.newInstance(
+			SherlockDialogFragment dialog = ContactsFragmentDialog.newInstance(
 					this, ConfigAppValues.DialogType.SYNC_FIRST_TIME);
 			dialog.show(ft, "dialog");							
 		}
@@ -124,10 +123,8 @@ public class Main extends BaseSherlockActivity implements DialogListener {
 	public final Handler handler = new Handler() {
 		public void handleMessage(Message message) {
 											
-			final String NUM_CONTACTS = "NUM_CONTACTS";
-			
-			int numContacts = message.getData().getInt(NUM_CONTACTS);
-			
+			final String NUM_CONTACTS = "NUM_CONTACTS";			
+			int numContacts = message.getData().getInt(NUM_CONTACTS);			
 			Log.d(CLASS_NAME, "Num contacts sync 1st time: " + numContacts);								
 		}
 	};

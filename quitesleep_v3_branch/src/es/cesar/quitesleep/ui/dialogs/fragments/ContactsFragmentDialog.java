@@ -21,26 +21,14 @@ package es.cesar.quitesleep.ui.dialogs.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap.Config;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
 import es.cesar.quitesleep.R;
-import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.interfaces.IDialogs;
-import es.cesar.quitesleep.components.listeners.DialogListener;
-import es.cesar.quitesleep.operations.DialogOperations;
+import es.cesar.quitesleep.components.listeners.ContactDialogListener;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.ui.activities.BaseSherlockActivity;
-import es.cesar.quitesleep.ui.fragments.ContactsFragment;
-import es.cesar.quitesleep.utils.ExceptionUtils;
 
 
 /**
@@ -49,15 +37,15 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class WarningFragmentDialog extends SherlockDialogFragment {
+public class ContactsFragmentDialog extends SherlockDialogFragment {
 
 	private final String CLASS_NAME = getClass().getName();
-			
-	private int alertDialogImage;	
+				
 	private ConfigAppValues.DialogType dialogType;
 	
-	private DialogListener listener;
-				
+	private ContactDialogListener listener;
+			
+	private int alertDialogImage;	
 	private int title;
 	private int message;
 			
@@ -65,27 +53,25 @@ public class WarningFragmentDialog extends SherlockDialogFragment {
 	
 	 
 	/**
-	 * Gets a new {@link WarningFragmentDialog}
+	 * Gets a new {@link ContactsFragmentDialog}
 	 * @param listener
 	 * @param dialogType
 	 * @return
 	 */
-	public static WarningFragmentDialog newInstance (			
-			DialogListener listener, 
+	public static ContactsFragmentDialog newInstance (			
+			ContactDialogListener listener, 
 			ConfigAppValues.DialogType dialogType) {
 		
-		WarningFragmentDialog warningDialog = new WarningFragmentDialog(dialogType, listener);			
+		ContactsFragmentDialog warningDialog = new ContactsFragmentDialog(dialogType, listener);			
 		return warningDialog;
 	}
-	
-	
-	
+			
 	/**
 	 * Constructor
 	 * @param operationType
 	 * @oaram listener
 	 */
-	public WarningFragmentDialog (ConfigAppValues.DialogType operationType, DialogListener listener) {
+	public ContactsFragmentDialog (ConfigAppValues.DialogType operationType, ContactDialogListener listener) {
 		
 		this.dialogType = operationType;
 		this.listener = listener;
@@ -98,21 +84,20 @@ public class WarningFragmentDialog extends SherlockDialogFragment {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity())								
 			.setIcon(alertDialogImage)
-			.setTitle(title).setMessage(message)															
+			.setTitle(title)
+			.setMessage(message)															
 			.setCancelable(false)				
 			.setPositiveButton(
     		   R.string.warningdialog_yes_label, 
     		   new DialogInterface.OnClickListener() {    			   
-    			   public void onClick(DialogInterface dialog, int id) {
-    				   Log.d(CLASS_NAME, "YES");		            		                		              	                	
+    			   public void onClick(DialogInterface dialog, int id) {    				         		                		              	                
     				   listener.clickYes();		                		                          
     			   }
     		   })
 			.setNegativeButton(
     		   R.string.warningdialog_no_label, 
     		   new DialogInterface.OnClickListener() {	    			   
-    			   public void onClick(DialogInterface dialog, int id) {	        	   
-    				   Log.d(CLASS_NAME, "NO");	               
+    			   public void onClick(DialogInterface dialog, int id) {	        	      				   	              
     				   dialog.cancel();			    				   
     				   if (dialogType == ConfigAppValues.DialogType.SYNC_FIRST_TIME)
     					   getSherlockActivity().finish();	    				   	    				  
@@ -144,14 +129,6 @@ public class WarningFragmentDialog extends SherlockDialogFragment {
 			alertDialogImage = R.drawable.dialog_warning;
 			title = R.string.warningdialog_caution_label;
 			message = R.string.warningdialog_contactOperations_label;
-		}else if (dialogType == ConfigAppValues.DialogType.REMOVE_ALL_LOGS) {
-			alertDialogImage = R.drawable.dialog_warning;
-			title = R.string.warningdialog_caution_label;
-			message = R.string.warningdialog_calllog_remove_label;					
-		}else if (dialogType == ConfigAppValues.DialogType.REFRESH_ALL_LOGS) {
-			alertDialogImage = R.drawable.dialog_warning;
-			title = R.string.warningdialog_caution_label;
-			message = R.string.warningdialog_calllog_refresh_label;
 		}
 	}
 	

@@ -37,6 +37,7 @@ import es.cesar.quitesleep.data.models.Settings;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.operations.MailOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
+import es.cesar.quitesleep.ui.activities.base.BaseFragmentActivity;
 import es.cesar.quitesleep.ui.dialogs.fragments.SmsEmailFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
@@ -46,7 +47,7 @@ import es.cesar.quitesleep.utils.ExceptionUtils;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class MailSettings extends BaseSherlockActivity implements OnClickListener {
+public class MailSettings extends BaseFragmentActivity implements OnClickListener {
 	
 	private final String CLASS_NAME = getClass().getName();	
 	

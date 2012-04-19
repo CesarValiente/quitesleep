@@ -36,11 +36,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.interfaces.IDialogs;
-import es.cesar.quitesleep.components.listeners.DialogListener;
+import es.cesar.quitesleep.components.listeners.ContactDialogListener;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.activities.ListActivityHolder;
-import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.ContactsFragmentDialog;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -50,7 +50,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class ContactsFragment extends SherlockFragment implements OnClickListener, DialogListener {
+public class ContactsFragment extends SherlockFragment implements OnClickListener, ContactDialogListener {
 	
 	final private String CLASS_NAME = getClass().getName();
 	
@@ -98,17 +98,21 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		int viewId = view.getId();				
 		switch (viewId) {
 			case addBannedId:				
-				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), ListActivityHolder.class);				
-				intentAddContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, ConfigAppValues.TypeContacts.ADD_CONTACTS.ordinal());				
+				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), 
+						ListActivityHolder.class);				
+				intentAddContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, 
+						ConfigAppValues.TypeFragment.ADD_CONTACTS.ordinal());				
 				startActivity(intentAddContacts);
 				break;			
 			case deleteBannedId:
-				Intent intentDeleteContacts = new Intent(QuiteSleepApp.getContext(), ListActivityHolder.class);
-				intentDeleteContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, ConfigAppValues.TypeContacts.REMOVE_CONTACTS.ordinal());
+				Intent intentDeleteContacts = new Intent(QuiteSleepApp.getContext(), 
+						ListActivityHolder.class);
+				intentDeleteContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, 
+						ConfigAppValues.TypeFragment.REMOVE_CONTACTS.ordinal());
 				startActivity(intentDeleteContacts);
 				break;									
 			case syncContactsId:				
-				SherlockDialogFragment dialogFragment = WarningFragmentDialog.newInstance(
+				SherlockDialogFragment dialogFragment = ContactsFragmentDialog.newInstance(
 						this, ConfigAppValues.DialogType.SYNC_REST_OF_TIMES);
 				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");		
 				break;

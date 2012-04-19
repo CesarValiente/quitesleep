@@ -17,13 +17,14 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package es.cesar.quitesleep.ui.activities;
+package es.cesar.quitesleep.ui.fragments.base;
 
 import java.util.List;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -41,9 +42,9 @@ import es.cesar.quitesleep.components.adapters.ContactListAdapter;
  * the app to have different commons features without the necessity to
  * implement the same code over and over again.
  */
-public abstract class BaseListSherlockFragment extends SherlockListFragment {
+public abstract class BaseListFragment extends SherlockListFragment {
 	
-	public ContactListAdapter<String> myOwnAdapter;
+	public ArrayAdapter<String> myOwnAdapter;
 	
 	//Used to fix the index cursor when we delete items from the list
 	private boolean fixIndexCursor = false;
@@ -56,11 +57,11 @@ public abstract class BaseListSherlockFragment extends SherlockListFragment {
 	}	
 	
 	/**
-	 * Get all defined contacts from the database and parse it for create
-	 * one contact list only with their contactNames
-	 * @param contactList
+	 * Get all defined info from the database and parse it for create
+	 * one list only with the {@link String} info.
+	 * @param dataInfoList
 	 */
-	public abstract void getDataContacts (List<String> contactList);
+	public abstract void getDataInfo (List<String> dataInfoList);
 	
 	/**
 	 * Refreshes the list to also can use properly the indexer and fastScroll

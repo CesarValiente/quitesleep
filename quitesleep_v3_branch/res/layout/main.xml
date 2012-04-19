@@ -17,4 +17,33 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+    <!-- 
+    <SlidingDrawer 
+    	android:id="@+id/sliding_drawer"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"     
+    	android:handle="@+id/handle"
+    	android:content="@+id/list_view" >
+    	
+    	<ImageView
+    		android:id="@id/handle"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:gravity="center"    		    		    		
+    		android:src="@drawable/sliding_drawer_image" />
+    	<FrameLayout 
+    	    android:layout_width="match_parent"
+    	    android:layout_height="match_parent">
+		   	<com.viewpagerindicator.CirclePageIndicator
+		       	android:id="@+id/help_indicator"
+		       	android:layout_height="wrap_content"
+		       	android:layout_width="fill_parent" />    
+		   	<android.support.v4.view.ViewPager
+		       	android:id="@+id/help_pager"
+		       	android:layout_width="fill_parent"
+		       	android:layout_height="0dp"
+		       	android:layout_weight="1" />
+    	</FrameLayout>    
+    </SlidingDrawer>
+     -->
 </LinearLayout>

@@ -80,7 +80,7 @@ public class ConfigAppValues {
 	
 	
 	//Enum to differenciate between load contact requests
-	public static enum TypeContacts {ADD_CONTACTS, REMOVE_CONTACTS};
+	public static enum TypeFragment {ADD_CONTACTS, REMOVE_CONTACTS, LOGS};
 	
 	//Enum to show different warning dialog depending of the caller
 	public static enum DialogType {SYNC_FIRST_TIME, SYNC_REST_OF_TIMES, ADD_ALL_CONTACTS, 

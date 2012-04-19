@@ -3,33 +3,25 @@ package es.cesar.quitesleep.tasks;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.cesar.quitesleep.components.listeners.LoadContactsListener;
+import android.os.AsyncTask;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.Banned;
 import es.cesar.quitesleep.data.models.Contact;
-import es.cesar.quitesleep.data.models.Id;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
-import es.cesar.quitesleep.ui.activities.BaseListSherlockFragment;
-import es.cesar.quitesleep.utils.ExceptionUtils;
-import es.cesar.quitesleep.utils.Log;
-
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.v4.content.AsyncTaskLoader;
+import es.cesar.quitesleep.settings.ConfigAppValues.TypeFragment;
+import es.cesar.quitesleep.ui.fragments.base.BaseListFragment;
 
 public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 
-	private BaseListSherlockFragment listener;
-	private ConfigAppValues.TypeContacts typeContacts;
+	private BaseListFragment listener;
+	private ConfigAppValues.TypeFragment typeContacts;
 	
 	/**
 	 * Constructor
 	 * @param listener
 	 * @param typeContacts
 	 */
-	public LoadContactsDataTask(BaseListSherlockFragment listener, TypeContacts typeContacts) {
+	public LoadContactsDataTask(BaseListFragment listener, TypeFragment typeContacts) {
 	
 		this.listener = listener;
 		this.typeContacts = typeContacts;
@@ -42,7 +34,7 @@ public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 		
 		List contactList = null;
 		
-		if (typeContacts == TypeContacts.ADD_CONTACTS)
+		if (typeContacts == TypeFragment.ADD_CONTACTS)
 			contactList = (List<Contact>) clientDDBB.getSelects().selectAllNotBannedContacts();
 		else
 			contactList = (List<Banned>) clientDDBB.getSelects().selectAllBannedContacts();
@@ -57,7 +49,7 @@ public class LoadContactsDataTask extends AsyncTask<Void, Void, List<String>> {
 	@Override
 	protected void onPostExecute (List<String> result) {
 	
-		listener.getDataContacts(result);
+		listener.getDataInfo(result);
 	}
 	
 	/**

@@ -80,7 +80,7 @@ public class CallLogDialog {
 	 * Hide and dismiss the synchronization message
 	 * @param context
 	 */
-	public void stopDialog (Context context) {
+	public void stopDialog () {
 		//progressDialog.cancel();
 		progressDialog.dismiss();
 	}

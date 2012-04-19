@@ -97,7 +97,7 @@ public class RemoveCallLogMenu extends Thread {
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));		
 		}finally {
 			//Hide and dismiss de synchronization dialog
-			callLogDialog.stopDialog(QuiteSleepApp.getContext());
+			callLogDialog.stopDialog();
 			
 			//Create and send the numBanned message to the handler in gui main thread
 			Message message = handler.obtainMessage();

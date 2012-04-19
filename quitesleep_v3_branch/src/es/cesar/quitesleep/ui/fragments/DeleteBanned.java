@@ -19,42 +19,34 @@
 
 package es.cesar.quitesleep.ui.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.components.adapters.ContactListAdapter;
-import es.cesar.quitesleep.components.listeners.LoadContactsListener;
-import es.cesar.quitesleep.data.controllers.ClientDDBB;
-import es.cesar.quitesleep.data.models.Banned;
+import es.cesar.quitesleep.components.listeners.ContactDialogListener;
+import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
-import es.cesar.quitesleep.settings.ConfigAppValues.TypeContacts;
+import es.cesar.quitesleep.settings.ConfigAppValues.TypeFragment;
 import es.cesar.quitesleep.tasks.LoadContactsDataTask;
-import es.cesar.quitesleep.ui.activities.BaseListSherlockFragment;
 import es.cesar.quitesleep.ui.activities.EditContact;
-import es.cesar.quitesleep.ui.dialogs.fragments.WarningFragmentDialog;
+import es.cesar.quitesleep.ui.dialogs.fragments.ContactsFragmentDialog;
+import es.cesar.quitesleep.ui.fragments.base.BaseListFragment;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 import es.cesar.quitesleep.utils.Log;
 
@@ -64,10 +56,10 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class DeleteBanned extends BaseListSherlockFragment implements OnItemClickListener {
+public class DeleteBanned extends BaseListFragment implements OnItemClickListener, ContactDialogListener {
 	
 	//Constants
-	final private String CLASS_NAME = this.getClass().getName();	
+	final private String CLASS_NAME = getClass().getName();	
 	
 	//Widgets Ids
 	private final int removeAllMenuId = R.id.menu_removeall;
@@ -78,24 +70,18 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 	public static DeleteBanned newInstance () {
 		
 		DeleteBanned deleteBanned = new DeleteBanned();
-		Bundle bundle = new Bundle();
-		bundle.putInt(ConfigAppValues.TYPE_FRAGMENT, ConfigAppValues.TypeContacts.REMOVE_CONTACTS.ordinal());
-		deleteBanned.setArguments(bundle);
 		return deleteBanned;
 	}
 	
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState) {
 				
-		super.onActivityCreated(savedInstanceState);				
-			
-		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		super.onActivityCreated(savedInstanceState);							
+		setHasOptionsMenu(true);
 		
-		getListView().setOnItemClickListener(this);
-		
+		getListView().setOnItemClickListener(this);		
 		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
-		new LoadContactsDataTask(this, TypeContacts.REMOVE_CONTACTS).execute();
+		new LoadContactsDataTask(this, TypeFragment.REMOVE_CONTACTS).execute();
 	}
 	
 	
@@ -103,7 +89,7 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 	 * Get all banned contact list from the database
 	 */
 	@Override
-	public void getDataContacts (List<String> contactList) {
+	public void getDataInfo (List<String> contactList) {
 			
 		getSherlockActivity().setSupportProgressBarIndeterminateVisibility (false);
 			
@@ -113,46 +99,11 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 				R.layout.list_item,					
 				contactList, 
 				this);
-		
-			getListView().setAdapter(myOwnAdapter);
 			
+			setListAdapter(myOwnAdapter);			
 			refreshList();																							
 		}				
-	}
-	
-	/**
-	 * Function that convert all banned contact list in Contact objects to
-	 * one List<String> with only the contact name attribute.
-	 * 
-	 * @param 		contactList
-	 * @return 		The contactList but only the list with the name contacts
-	 * @see			List<String>
-	 */
-	private List<String> convertContactList (List<Banned> bannedList) throws Exception {
-		
-		try {
-			
-			if (bannedList != null && bannedList.size()>0) {
-				
-				List<String> bannedListString = new ArrayList<String>(bannedList.size());
-				
-				for (int i=0; i<bannedList.size(); i++) {
-					Banned banned = bannedList.get(i);
-					String contactName = banned.getContact().getContactName();
-					if (contactName == null)
-						contactName = "";
-					bannedListString.add(contactName);
-					
-				}
-				return bannedListString;
-			}
-			return null;
-			
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			throw new Exception();
-		}
-	}
+	}	
 	
 	@Override
 	public void onItemClick(
@@ -163,11 +114,7 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 		
 		try {													
 			selectContactName = (String) myOwnAdapter.getItem(position);									
-			
-			/* If we like to use one subactivity for show better contact details
-			 * and edit what phone number and/or mail addresses are used for 
-			 * send busy response, and remove contact from banned list.
-			 */			
+								
 			Intent intentEditContact = new Intent(QuiteSleepApp.getContext(), EditContact.class);
 			intentEditContact.putExtra(ConfigAppValues.CONTACT_NAME, selectContactName);
 			startActivityForResult(intentEditContact, ConfigAppValues.REQCODE_EDIT_CONTACT);
@@ -184,8 +131,10 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 		
 		switch(requestCode) {
 			case ConfigAppValues.REQCODE_EDIT_CONTACT:				
-				if (resultCode == Activity.RESULT_OK)
+				if (resultCode == Activity.RESULT_OK) {
 					myOwnAdapter.remove(selectContactName);
+					refreshList();
+				}
 				break;
 			default:
 				break;
@@ -208,14 +157,11 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 	@Override
 	public boolean onOptionsItemSelected (MenuItem item) {
 							
-		switch (item.getItemId()) {
-		
-			//To comeback to the previous activity we finalize it	
-			case android.R.id.home :
-				getSherlockActivity().finish();			
-				break;
+		switch (item.getItemId()) {		
 			case removeAllMenuId:					
-				//showDialog(WARNING_DIALOG);
+				SherlockDialogFragment dialogFragment = ContactsFragmentDialog.newInstance(
+						this, ConfigAppValues.DialogType.REMOVE_ALL_CONTACTS);
+				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");
 				break;					
 			default:
 				break;
@@ -231,24 +177,27 @@ public class DeleteBanned extends BaseListSherlockFragment implements OnItemClic
 	 */
 	public final Handler handler = new Handler() {
 		public void handleMessage(Message message) {						
+										
+
+			int numRemoveContacts = message.getData().getInt(
+					ConfigAppValues.NUM_REMOVE_CONTACTS);
 			
-			if (myOwnAdapter != null && myOwnAdapter.getCount()>0) {
-				
-				//int count = arrayAdapter.getCount();
-				int numRemoveContacts = message.getData().getInt(
-						ConfigAppValues.NUM_REMOVE_CONTACTS);
-				
-				//clear the arrayAdapter
-				myOwnAdapter.clear();
-				
-				//Show the toast message
-				es.cesar.quitesleep.utils.Toast.d(
-						QuiteSleepApp.getContext(),
-                		numRemoveContacts + " " + QuiteSleepApp.getContext().getString(
-                				R.string.menu_removeall_toast_removecount),
-                		Toast.LENGTH_SHORT);		
-			}
+			myOwnAdapter.clear();
+			refreshList();
+			
+			//Show the toast message
+			es.cesar.quitesleep.utils.Toast.d(
+					QuiteSleepApp.getContext(),
+            		numRemoveContacts + " " + QuiteSleepApp.getContext().getString(
+            				R.string.menu_removeall_toast_removecount),
+            		Toast.LENGTH_SHORT);		
+			
 		}
-	};		
+	};
+
+	@Override
+	public void clickYes() {	
+		DialogOperations.removeAllContacts(getSherlockActivity(), myOwnAdapter, handler);
+	}		
 
 }
