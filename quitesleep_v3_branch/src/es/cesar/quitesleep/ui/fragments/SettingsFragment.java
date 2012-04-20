@@ -34,13 +34,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.components.listeners.ContactDialogListener;
 import es.cesar.quitesleep.data.controllers.ClientDDBB;
 import es.cesar.quitesleep.data.models.MuteOrHangUp;
@@ -64,10 +60,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 	
 	private final String CLASS_NAME = getClass().getName();
 	
-	//IDs for dialogs
-	final int ABOUT_DIALOG		= 1;
-	final int HELP_DIALOG		= 2;
-	
+
 	//Ids for the button widgets	
 	final int mailButtonId = R.id.settings_button_mail;
 	final int smsButtonId = R.id.settings_button_sms;
@@ -220,60 +213,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			Log.e(CLASS_NAME, ExceptionUtils.getString(e));			
 		}
 	}
-
-	
-	/**
-	 * Create the activity dialogs used for it
-	 * 
-	 * @param id
-	 * @return the dialog for the option specified
-	 * @see Dialog
-	 */
-	protected Dialog onCreateDialog (int id) {
 		
-		Dialog dialog;
-		
-		switch (id) {			
-			case ABOUT_DIALOG:				
-				dialog = showWebviewDialog(IDialogs.ABOUT_URI);
-				break;	
-			case HELP_DIALOG:
-				dialog = showWebviewDialog(IDialogs.HELP_SETTINGS_URI);
-				break;
-			default:
-				dialog = null;
-		}
-		
-		return dialog;	
-	}
-	
-	
-	/**
-	 * Create the webview dialog using the file (uri) specified to show the information.
-	 * 
-	 * @return
-	 */
-	public Dialog showWebviewDialog(String uri) {
-		
-		try {
-			  View contentView = getSherlockActivity().getLayoutInflater().inflate(R.layout.webview_dialog, null, false);
-              WebView webView = (WebView) contentView.findViewById(R.id.webview_content);
-              webView.getSettings().setJavaScriptEnabled(true);              
-              
-              webView.loadUrl(uri);
-
-              return new AlertDialog.Builder(getSherlockActivity())
-                  .setCustomTitle(null)
-                  .setPositiveButton(android.R.string.ok, null)
-                  .setView(contentView)
-                  .create();
-              
-		}catch (Exception e) {
-			Log.e(CLASS_NAME, ExceptionUtils.getString(e));
-			return null;
-		}
-	}
-	
 	/**
 	 * Put the ddbb saved data in the activity widgets 
 	 */

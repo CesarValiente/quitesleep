@@ -12,14 +12,14 @@ import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
 import es.cesar.quitesleep.ui.fragments.SettingsFragment;
 import es.cesar.quitesleep.utils.Log;
 
-public class PageViewerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class PageViewerTabsAdapter extends FragmentPagerAdapter implements TitleProvider {
     
 	private final String CLASS_NAME = getClass().getName();
 	
     public static final String[] TAB_TITLES = { "Contacts", "Schedule", "Settings", "Logs"};
     
     
-    public PageViewerAdapter(FragmentManager fm) {
+    public PageViewerTabsAdapter(FragmentManager fm) {
         super(fm);
     }
 

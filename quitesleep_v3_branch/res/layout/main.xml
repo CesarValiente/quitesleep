@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/indicator"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
-    
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-    <!-- 
-    <SlidingDrawer 
+	<LinearLayout
+	   	android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	
+	    <com.viewpagerindicator.TitlePageIndicator
+	        android:id="@+id/indicator"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent" />
+	    
+	    <android.support.v4.view.ViewPager
+	        android:id="@+id/pager"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1" />         
+	</LinearLayout>
+	
+	<SlidingDrawer 
     	android:id="@+id/sliding_drawer"
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"     
     	android:handle="@+id/handle"
-    	android:content="@+id/list_view" >
+    	android:content="@+id/layout_content" >
     	
     	<ImageView
     		android:id="@id/handle"
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:gravity="center"    		    		    		
-    		android:src="@drawable/sliding_drawer_image" />
-    	<FrameLayout 
+    		android:src="@drawable/help" />
+    	<LinearLayout
+    	    android:id="@+id/layout_content"
     	    android:layout_width="match_parent"
-    	    android:layout_height="match_parent">
-		   	<com.viewpagerindicator.CirclePageIndicator
-		       	android:id="@+id/help_indicator"
-		       	android:layout_height="wrap_content"
-		       	android:layout_width="fill_parent" />    
-		   	<android.support.v4.view.ViewPager
-		       	android:id="@+id/help_pager"
-		       	android:layout_width="fill_parent"
-		       	android:layout_height="0dp"
-		       	android:layout_weight="1" />
-    	</FrameLayout>    
+    	    android:layout_height="match_parent"
+    	    android:orientation="vertical" >    	    
+		   	    <android.support.v4.view.ViewPager
+        			android:id="@+id/help_pager"
+			        android:layout_width="fill_parent"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"/>
+			    <com.viewpagerindicator.CirclePageIndicator
+			        android:id="@+id/help_indicator"
+			        android:padding="10dip"
+			        android:layout_height="wrap_content"
+			        android:layout_width="fill_parent"/>
+    	</LinearLayout>    
     </SlidingDrawer>
-     -->
-</LinearLayout>
+
+</FrameLayout>

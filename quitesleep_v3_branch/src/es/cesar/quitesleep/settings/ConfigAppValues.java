@@ -87,6 +87,16 @@ public class ConfigAppValues {
 		REMOVE_ALL_CONTACTS, SMS_DIALOG, MAIL_DIALOG, REMOVE_ALL_LOGS, REFRESH_ALL_LOGS};
 		
 	public static final String TYPE_FRAGMENT = "TYPE_FRAGMENT"; 
+		
+	
+	//About me uri
+	public static final String ABOUT_URI = "file:///android_asset/about.html";
+	
+	//Help files uris
+	public static final String HELP_CONTACT_URI = "file:///android_asset/helpContacts.html";
+	public static final String HELP_LOGS_URI = "file:///android_asset/helpLog.html";
+	public static final String HELP_SCHEDULE_URI = "file:///android_asset/helpSchedule.html";
+	public static final String HELP_SETTINGS_URI = "file:///android_asset/helpSettings.html";
 	
 	
 	//----------	Getters & Setters	-----------------------------------//

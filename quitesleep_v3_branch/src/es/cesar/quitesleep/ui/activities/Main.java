@@ -28,6 +28,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -39,7 +40,8 @@ import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.activities.base.BaseFragmentActivity;
 import es.cesar.quitesleep.ui.dialogs.fragments.ContactsFragmentDialog;
-import es.cesar.quitesleep.ui.fragments.adapter.PageViewerAdapter;
+import es.cesar.quitesleep.ui.fragments.adapter.PageViewerHelpAdapter;
+import es.cesar.quitesleep.ui.fragments.adapter.PageViewerTabsAdapter;
 import es.cesar.quitesleep.utils.ExceptionUtils;
 
 /**
@@ -61,6 +63,9 @@ public class Main extends BaseFragmentActivity implements ContactDialogListener 
 	private ViewPager mPager;
 	private PageIndicator mIndicator;
 	
+	private FragmentPagerAdapter mpHelpAdapter;
+	private ViewPager mHelpPager;
+	private PageIndicator mHelpIndicator;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {																		
@@ -69,13 +74,20 @@ public class Main extends BaseFragmentActivity implements ContactDialogListener 
 		
 		setContentView(R.layout.main);				
 		
-		mAdatper = new PageViewerAdapter(getSupportFragmentManager());
-		
+		//Stuff created to navegate through the different
+		//options in the app
+		mAdatper = new PageViewerTabsAdapter(getSupportFragmentManager());
 		mPager = (ViewPager)findViewById(R.id.pager);
 		mPager.setAdapter(mAdatper);
-		
 		mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-		mIndicator.setViewPager(mPager);		
+		mIndicator.setViewPager(mPager);
+		
+		//Stuff created to navegate through the different help and about me info
+		mpHelpAdapter = new PageViewerHelpAdapter(getSupportFragmentManager());				
+		mHelpPager = (ViewPager)findViewById(R.id.help_pager);
+		mHelpPager.setAdapter(mpHelpAdapter);					
+		mHelpIndicator = (CirclePageIndicator)findViewById(R.id.help_indicator);
+		mHelpIndicator.setViewPager(mHelpPager);
 				
 		//If is the first time QuiteSleep is running, then performs sync operations.		
 		if (isTheFirstTime()) {

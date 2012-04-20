@@ -19,15 +19,12 @@
 
 package es.cesar.quitesleep.ui.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -35,14 +32,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import es.cesar.quitesleep.R;
 import es.cesar.quitesleep.application.QuiteSleepApp;
-import es.cesar.quitesleep.components.interfaces.IDialogs;
 import es.cesar.quitesleep.components.listeners.ContactDialogListener;
 import es.cesar.quitesleep.operations.DialogOperations;
 import es.cesar.quitesleep.settings.ConfigAppValues;
 import es.cesar.quitesleep.ui.activities.ListActivityHolder;
 import es.cesar.quitesleep.ui.dialogs.fragments.ContactsFragmentDialog;
-import es.cesar.quitesleep.utils.ExceptionUtils;
-import es.cesar.quitesleep.utils.Log;
 
 /**
  * 
