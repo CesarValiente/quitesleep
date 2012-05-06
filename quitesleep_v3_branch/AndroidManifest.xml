@@ -24,7 +24,7 @@
 	 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="es.cesar.quitesleep"
-      android:versionCode="11"
+      android:versionCode="12"
       android:versionName="3"
       android:installLocation="auto">
               

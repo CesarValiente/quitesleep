@@ -562,7 +562,7 @@ public class Selects implements IDDBB {
 				Query query = db.query();
 				query.constrain(CallLog.class);
 				
-				//Order by the most new to the most older
+				//Order by the newest to the oldest
 				query.descend(DDBBValues.NUM_ORDER).orderDescending();
 				List<CallLog> callLogList = query.execute();
 				
