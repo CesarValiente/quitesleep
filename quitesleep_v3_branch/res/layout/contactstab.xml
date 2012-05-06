@@ -42,13 +42,15 @@
             	android:text="@string/contacts.separator.addContact"
             	android:layout_marginTop="5dip" />            	           
             	
-           	<Button   				  			
+           	<Button
+           	    android:id="@+id/contacts.button.addBanned"   				  			
            		android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
-  				android:layout_below="@id/contacts.separator.addContact"
+  				android:layout_below="@id/contacts.separator.addContact"  				
+  				android:layout_centerHorizontal="true"  					  					  			
   				android:drawableLeft="@drawable/add_user"  				
   				android:text="@string/contacts.button.addBanned"
-  				android:id="@+id/contacts.button.addBanned" />  	
+  				style="@style/common_button_style"/>  	
   				  					
 	  		<!-- Remove/edit blocked contact -->	  		
   			<TextView
@@ -60,12 +62,14 @@
             	android:layout_marginTop="5dip" />            	           
             		  		
   			<Button  	    				
+  				android:id="@+id/contacts.button.deleteBanned"   	
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
   				android:layout_below="@id/contacts.separator.removeContact"
-  				android:drawableLeft="@drawable/remove_user"  							  			
+  				android:layout_centerHorizontal="true"  				
+  				android:drawableLeft="@drawable/remove_user"  				
   				android:text="@string/contacts.button.deleteBanned"
-  				android:id="@+id/contacts.button.deleteBanned" />  	
+  				style="@style/common_button_style" />
   			  					
   			<!-- Synchronize contacts by the user -->
   			<View
@@ -86,12 +90,14 @@
             	android:layout_marginTop="5dip" />
 	
 			<Button  	  
+  				android:id="@+id/contacts.button.syncContacts" 
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
   				android:layout_below="@id/contacts.separator.syncContacts"
-  				android:drawableLeft="@drawable/sync"
+  				android:layout_centerHorizontal="true"  				
+  				android:drawableLeft="@drawable/sync"   				
   				android:text="@string/contacts.button.syncContacts"
-  				android:id="@+id/contacts.button.syncContacts" />
+  				style="@style/common_button_style" />
     	    	     	   	    	 	       	    	     	   	    	 	 
 		</RelativeLayout>
 	</ScrollView>

@@ -99,12 +99,13 @@
 			android:layout_marginBottom="5dp" />	
 			
 		<Button  	  
+		  	android:id="@+id/mailsettings.button.savemail"		
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
   			android:layout_below="@id/mailsettings.divider1"
   			android:drawableLeft="@drawable/tick_yes"
   			android:text="@string/mailsettings.button.savemail"
-		  	android:id="@+id/mailsettings.button.savemail" />		
+  			style="@style/common_button_style" />
 		  	
 		 <View
 			android:id="@+id/mailsettings.divider2"
@@ -117,13 +118,14 @@
 			
 					  	  			  			  	  	  
   		<ToggleButton
+  			android:id="@+id/mailsettings.togglebutton.mailservice"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"  	
   			android:layout_below="@id/mailsettings.divider2" 
   			android:drawableLeft="@drawable/start_service"
-  			android:id="@+id/mailsettings.togglebutton.mailservice"
   			android:textOn="@string/mailsettings.togglebutton.stop_mail"
-  			android:textOff="@string/mailsettings.togglebutton.start_mail"/>					
+  			android:textOff="@string/mailsettings.togglebutton.start_mail"
+  			style="@style/common_toggle_button_style"/>					
 		
     </RelativeLayout>
 </ScrollView>

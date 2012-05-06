@@ -61,8 +61,8 @@
     <string name="settings.radiobutton.mute">Mute</string>
     <string name="settings.radiobutton.hangup">Hang up</string>    
     <string name="settings.label.services">Start/Stop QuiteSleep service</string>      
-    <string name="settings.label.start_service">Starting QuiteSleep service</string>
-    <string name="settings.label.stop_service">Stopping QuiteSleep service</string>    
+    <string name="settings.label.start_service">Start QuiteSleep service</string>
+    <string name="settings.label.stop_service">Stop QuiteSleep service</string>    
     <string name="settings.toast.start_service">QuiteSleep service has been started...</string>
     <string name="settings.toast.stop_service">QuiteSleep service has been stopped...</string>    
     <string name="settings.toast.fail_service">An unexpected error has occurred!!!</string>

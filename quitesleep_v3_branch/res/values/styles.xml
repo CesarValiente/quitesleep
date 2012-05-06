@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--  
+ 	Copyright 2010-2012 Cesar Valiente Gordo
+ 
+ 	This file is part of QuiteSleep.
+
+    QuiteSleep is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    QuiteSleep is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
 <resources>
-    <style name="mySherlockTheme" parent="@style/Theme.Sherlock.ForceOverflow">
+    <style name="mySherlockTheme" parent="@style/Theme.quitesleep">
          <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+    </style>
+    <style name="common_button_style" >
+        <item name="android:textSize">@dimen/common_button_text_size</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/common_button_selector</item>
+    </style> 
+    <style name="common_toggle_button_style" >
+        <item name="android:textSize">@dimen/common_button_text_size</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/common_toggle_button_selector</item>
     </style>            
 </resources>

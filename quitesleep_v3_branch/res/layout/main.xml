@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--  
+ 	Copyright 2010-2012 Cesar Valiente Gordo
+ 
+ 	This file is part of QuiteSleep.
+
+    QuiteSleep is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    QuiteSleep is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="match_parent"
@@ -29,12 +48,15 @@
     	android:handle="@+id/handle"
     	android:content="@+id/layout_content" >
     	
-    	<ImageView
+    	<Button
     		android:id="@id/handle"
-    		android:layout_width="wrap_content"
+    		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
-    		android:gravity="center"    		    		    		
-    		android:src="@drawable/help" />
+    		android:gravity="center"
+    		android:text="Help/About"    		
+    		android:textStyle="bold"
+    		android:textColor="@color/yellow"    		    		    		
+    		android:background="@drawable/help_about_slide_button" />
     	<LinearLayout
     	    android:id="@+id/layout_content"
     	    android:layout_width="match_parent"

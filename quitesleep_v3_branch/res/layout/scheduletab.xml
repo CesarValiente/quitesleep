@@ -29,77 +29,95 @@
 		android:layout_height="wrap_content">
 		
 		<RelativeLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:orientation="vertical"
+			xmlns:android="http://schemas.android.com/apk/res/android"			
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent" >
-			
+					    
 			<TextView
+            	android:id="@+id/schedule.separator.startTime"
             	style="?android:attr/listSeparatorTextViewStyle"
             	android:layout_height="fill_parent"
-            	android:id="@+id/schedule.separator.startTime"
             	android:text="@string/schedule.separator.startTime"            	
             	android:layout_marginTop="5dip" />
             	
-			<!-- Start hour label -->
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"				
-				android:layout_below="@id/schedule.separator.startTime"				
-				android:id="@+id/schedule.textview.startTime"
-				android:textColor="@color/white"
-				android:padding="2dp"	
-				android:textSize="40dp"				
-				android:text="00:00" />						
-			
-			<!-- Button for define the start hour -->
-			<Button
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_alignBaseline="@id/schedule.textview.startTime"
-				android:layout_toRightOf="@id/schedule.textview.startTime"				
-				android:drawableLeft="@drawable/start_time"
-				android:id="@+id/schedule.button.startTime"
-				android:text="@string/schedule.button.startTime" />
-			
+			<LinearLayout 
+			    android:id="@+id/start_time_layout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:weightSum="3"
+		        android:layout_below="@id/schedule.separator.startTime"
+		        android:paddingTop="2dp">
+		        
+				<!-- Start hour label -->			
+				<TextView
+					android:id="@+id/schedule.textview.startTime"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"											
+					android:textColor="@color/white"
+					android:layout_marginLeft="10dp"					
+					android:textSize="40dp"				
+					android:text="00:00"
+					android:layout_weight="1"
+					android:layout_gravity="center_vertical" />						
+				
+				<!-- Button for define the start hour -->
+				<Button
+					android:id="@+id/schedule.button.startTime"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"											
+					android:drawableLeft="@drawable/start_time"
+					style="@style/common_button_style"
+					android:text="@string/schedule.button.startTime"
+					android:layout_weight="2"					
+					android:layout_gravity="center_vertical"/>
+			</LinearLayout>
 			
 			<TextView
             	style="?android:attr/listSeparatorTextViewStyle"
             	android:layout_height="fill_parent"
             	android:id="@+id/schedule.separator.endTime"
             	android:text="@string/schedule.separator.endTime"
-            	android:layout_below="@id/schedule.textview.startTime"
+            	android:layout_below="@id/start_time_layout"
             	android:layout_marginTop="12dip" /> 
 			
-			<!-- Label for the end hour -->
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"				
-				android:layout_below="@id/schedule.separator.endTime"				
-				android:id="@+id/schedule.textview.endTime"
-				android:textColor="@color/white"
-				android:padding="2dp"				
-				android:textSize="40dp"		
-				android:text="00:00"
-			/>
-		
-			<!-- Button for the end hour -->
-			<Button
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_alignBaseline="@id/schedule.textview.endTime"
-				android:layout_toRightOf="@id/schedule.textview.endTime"
-				android:drawableLeft="@drawable/end_time"
-				android:id="@+id/schedule.button.endTime"
-				android:text="@string/schedule.button.endTime" />
+			<LinearLayout 
+			    android:id="@+id/end_time_layout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:weightSum="3"
+		        android:layout_below="@id/schedule.separator.endTime"
+		        android:paddingTop="2dp">			
+				<!-- Label for the end hour -->
+				<TextView
+					android:id="@+id/schedule.textview.endTime"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"												
+					android:textColor="@color/white"
+					android:layout_marginLeft="10dp"				
+					android:textSize="40dp"		
+					android:text="00:00"
+					android:layout_weight="1"
+					android:layout_gravity="center_vertical" />
+			
+				<!-- Button for the end hour -->
+				<Button
+					android:id="@+id/schedule.button.endTime"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"					
+					android:drawableLeft="@drawable/end_time"
+					style="@style/common_button_style"					
+					android:text="@string/schedule.button.endTime"
+					android:layout_weight="2"
+					android:layout_gravity="center_vertical"/>
+			</LinearLayout>
 			
 			<View
 				android:id="@+id/schedule.divider1"
 				android:layout_width="fill_parent"		
 				android:layout_height="3dip"		
-				android:layout_below="@id/schedule.textview.endTime"
+				android:layout_below="@id/end_time_layout"
 				android:background="@drawable/gradient_black"
-				android:layout_marginTop="15dp"		
+				android:layout_marginTop="5dp"		
 				android:layout_marginBottom="5dp" />
 			
 			<TextView
@@ -174,12 +192,13 @@
 		     
 		    <!-- Button for save the selected week days by the user -->
 			<Button
+				android:id="@+id/schedule.button.daysweek"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/schedule.table.daysweek"
 				android:drawableLeft="@drawable/days_week"
-				android:id="@+id/schedule.button.daysweek"
-				android:text="@string/schedule.button.daysweek" />
+				android:text="@string/schedule.button.daysweek"
+				style="@style/common_button_style" />
 				
 		</RelativeLayout>		 
 	</ScrollView>	

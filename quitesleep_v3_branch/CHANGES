@@ -1,6 +1,15 @@
 //---------------		QuiteSleep CHANGES and History		------------------//
 
-Last revision 27/02/2011
+Latest revision 06/05/2012
+
+06/05/2012
+QuiteSleep 3.0 released. Now QuiteSleep is adapted to the new times, using
+the latest design patterns for Android which started in Android 3.0.
+QuiteSleep uses ActionBar and ViewPager design patterns, fragments and
+customized buttons.
+
+November 2011
+Adapted contact list to make use of the fast navigation.
 
 02/01/2011 - 02/28/2011
 Developing QuiteSleep 2.0 with much more functionality in blocking types and the

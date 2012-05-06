@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -49,13 +50,6 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 	final private String CLASS_NAME = getClass().getName();
 	
 	
-
-	//Ids for the button widgets
-	private final int addBannedId = R.id.contacts_button_addBanned;
-	private final int deleteBannedId = R.id.contacts_button_deleteBanned;
-	private final int syncContactsId = R.id.contacts_button_syncContacts;		
-	
-	
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -71,14 +65,10 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
     	setHasOptionsMenu(true);    	
 						
 		//Instanciate all buttons
-		Button addBannedButton = (Button)getSherlockActivity().findViewById(addBannedId);
-		Button deleteBannedButton = (Button)getSherlockActivity().findViewById(deleteBannedId);			
-		Button syncContactsButton = (Button)getSherlockActivity().findViewById(syncContactsId);
+		getSherlockActivity().findViewById(R.id.contacts_button_addBanned).setOnClickListener(this);
+		getSherlockActivity().findViewById(R.id.contacts_button_deleteBanned).setOnClickListener(this);			
+		getSherlockActivity().findViewById(R.id.contacts_button_syncContacts).setOnClickListener(this);
 								
-		//Define the buttons listener
-		addBannedButton.setOnClickListener(this);
-		deleteBannedButton.setOnClickListener(this);			
-		syncContactsButton.setOnClickListener(this);							
 	}
 	
 	
@@ -91,21 +81,21 @@ public class ContactsFragment extends SherlockFragment implements OnClickListene
 		
 		int viewId = view.getId();				
 		switch (viewId) {
-			case addBannedId:				
+			case R.id.contacts_button_addBanned:				
 				Intent intentAddContacts = new Intent(QuiteSleepApp.getContext(), 
 						ListActivityHolder.class);				
 				intentAddContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, 
 						ConfigAppValues.TypeFragment.ADD_CONTACTS.ordinal());				
 				startActivity(intentAddContacts);
 				break;			
-			case deleteBannedId:
+			case R.id.contacts_button_deleteBanned:
 				Intent intentDeleteContacts = new Intent(QuiteSleepApp.getContext(), 
 						ListActivityHolder.class);
 				intentDeleteContacts.putExtra(ConfigAppValues.TYPE_FRAGMENT, 
 						ConfigAppValues.TypeFragment.REMOVE_CONTACTS.ordinal());
 				startActivity(intentDeleteContacts);
 				break;									
-			case syncContactsId:				
+			case R.id.contacts_button_syncContacts:				
 				SherlockDialogFragment dialogFragment = ContactsFragmentDialog.newInstance(
 						this, ConfigAppValues.DialogType.SYNC_REST_OF_TIMES);
 				dialogFragment.show(getSherlockActivity().getSupportFragmentManager(), "warningDialog");		

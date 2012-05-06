@@ -55,14 +55,16 @@
 		    	<TableRow>		    	
 		    		<!-- Add blocked contact -->
   					<Button   				  			
+  						android:id="@+id/settings.button.mail"  			
   						android:drawableLeft="@drawable/mail"  				
   						android:text="@string/settings.button.mail"
-  						android:id="@+id/settings.button.mail" />  			
+  						style="@style/common_button_style" />
 	  				<!-- Remove/edit blocked contact -->
   					<Button  	    				
+  						android:id="@+id/settings.button.sms"   			
   						android:drawableLeft="@drawable/sms"  							  			
   						android:text="@string/settings.button.sms"
-  						android:id="@+id/settings.button.sms" />  			
+  						style="@style/common_button_style" />
   				</TableRow>
   			</TableLayout>            	            	            
 			
@@ -85,12 +87,13 @@
             	android:layout_marginTop="5dip" />
 	
 			<Button  	  
+  				android:id="@+id/settings.button.blockCallsConfiguration"
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
   				android:layout_below="@id/settings.separator.blockCallsConfiguration"
   				android:drawableLeft="@drawable/blockcalls"
-  				android:text="@string/settings.button.blockCallsConfiguration"
-  				android:id="@+id/settings.button.blockCallsConfiguration" />
+  				android:text="@string/settings.button.blockCallsConfiguration" 
+  				style="@style/common_button_style" />
   				
   				
   			<!-- Mute or block configure section -->
@@ -154,13 +157,14 @@
             	android:layout_below="@id/settings.divider3" />
   	
 		  	<ToggleButton
+  				android:id="@+id/settings.togglebutton.service"
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"  	
   				android:layout_below="@id/settings.label.services" 
   				android:drawableLeft="@drawable/start_service"
-  				android:id="@+id/settings.togglebutton.service"
   				android:textOn="@string/settings.label.stop_service"
-  				android:textOff="@string/settings.label.start_service"/>
+  				android:textOff="@string/settings.label.start_service"
+  				style="@style/common_toggle_button_style" />
   	  		  	  								  
 		</RelativeLayout>
 	</ScrollView>

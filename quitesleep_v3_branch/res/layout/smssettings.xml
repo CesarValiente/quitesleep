@@ -55,12 +55,13 @@
 			android:layout_marginBottom="5dp" />	
 			
 		<Button  	  
+		  	android:id="@+id/smssettings.button.savesms"			
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
   			android:layout_below="@id/smssettings.divider1"
   			android:drawableLeft="@drawable/tick_yes"
   			android:text="@string/smssettings.button.savesms"
-		  	android:id="@+id/smssettings.button.savesms" />			
+  			style="@style/common_button_style" />
   			
   		<View
 			android:id="@+id/smssettings.divider2"
@@ -73,13 +74,14 @@
 			
    	
   		<ToggleButton
+  			android:id="@+id/smssettings.togglebutton.smsservice"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"  	
   			android:layout_below="@id/smssettings.divider2" 
   			android:drawableLeft="@drawable/start_service"
-  			android:id="@+id/smssettings.togglebutton.smsservice"
   			android:textOn="@string/smssettings.togglebutton.stop_sms"
-  			android:textOff="@string/smssettings.togglebutton.start_sms"/>										
+  			android:textOff="@string/smssettings.togglebutton.start_sms"
+  			style="@style/common_toggle_button_style"/>										
   			
 	</RelativeLayout>
 </ScrollView>
