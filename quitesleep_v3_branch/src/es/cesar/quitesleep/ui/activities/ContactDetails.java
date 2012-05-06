@@ -25,6 +25,7 @@ import java.util.List;
 import com.actionbarsherlock.app.ActionBar;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -309,6 +310,10 @@ public class ContactDetails extends BaseFragmentActivity implements OnClickListe
 			addContactButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add, 0, 0, 0);
 			addContactButton.setId(addContactButtonId);
 			addContactButton.setOnClickListener(this);
+			addContactButton.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.common_button_selector));
+			addContactButton.setTextColor(Color.WHITE);
+			addContactButton.setTextSize(20);
 			
 			linearLayout.addView(addContactButton);
 			

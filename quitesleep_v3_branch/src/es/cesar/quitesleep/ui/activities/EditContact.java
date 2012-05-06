@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -306,7 +307,11 @@ public class EditContact extends BaseFragmentActivity implements OnClickListener
 			editButton.setId(editContactButtonId);
 			editButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
 			editButton.setId(editContactButtonId);
-			editButton.setOnClickListener(this);
+			editButton.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.common_button_selector));
+			editButton.setTextColor(Color.WHITE);
+			editButton.setTextSize(20);
+			editButton.setOnClickListener(this);			
 									
 			linearLayout.addView(editButton);
 			
@@ -317,6 +322,10 @@ public class EditContact extends BaseFragmentActivity implements OnClickListener
 			removeContactButton.setId(removeContactButtonId);						
 			removeContactButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delete, 0, 0, 0);
 			removeContactButton.setId(removeContactButtonId);
+			removeContactButton.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.common_button_selector));
+			removeContactButton.setTextColor(Color.WHITE);
+			removeContactButton.setTextSize(20);
 			removeContactButton.setOnClickListener(this);
 			
 			linearLayout.addView(removeContactButton);						
