@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.SlidingDrawer;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -63,6 +64,7 @@ public class Main extends BaseFragmentActivity implements ContactDialogListener 
 	private ViewPager mPager;
 	private PageIndicator mIndicator;
 	
+	private SlidingDrawer mSlidingDrawer;
 	private FragmentPagerAdapter mpHelpAdapter;
 	private ViewPager mHelpPager;
 	private PageIndicator mHelpIndicator;
@@ -83,11 +85,12 @@ public class Main extends BaseFragmentActivity implements ContactDialogListener 
 		mIndicator.setViewPager(mPager);
 		
 		//Stuff created to navegate through the different help and about me info
+		mSlidingDrawer = (SlidingDrawer) findViewById(R.id.sliding_drawer);
 		mpHelpAdapter = new PageViewerHelpAdapter(getSupportFragmentManager());				
 		mHelpPager = (ViewPager)findViewById(R.id.help_pager);
 		mHelpPager.setAdapter(mpHelpAdapter);					
 		mHelpIndicator = (CirclePageIndicator)findViewById(R.id.help_indicator);
-		mHelpIndicator.setViewPager(mHelpPager);
+		mHelpIndicator.setViewPager(mHelpPager);			
 				
 		//If is the first time QuiteSleep is running, then performs sync operations.		
 		if (isTheFirstTime()) {
@@ -95,9 +98,19 @@ public class Main extends BaseFragmentActivity implements ContactDialogListener 
 			SherlockDialogFragment dialog = ContactsFragmentDialog.newInstance(
 					this, ConfigAppValues.DialogType.SYNC_FIRST_TIME);
 			dialog.show(ft, "dialog");							
-		}
-												
-	}			
+		}											
+	}	
+	
+	@Override
+	public void onBackPressed () {
+		
+		//If we have the slidingDrawer open, we close it, if not the normal
+		//behavior of the back button
+		if (mSlidingDrawer.isOpened())
+			mSlidingDrawer.close();
+		else
+			super.onBackPressed();				
+	}
 
 	
 	/**
