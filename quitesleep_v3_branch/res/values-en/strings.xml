@@ -19,7 +19,7 @@
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
  -->
  
-<!-- ENGLISH -->
+<!-- Default language English -->
 <resources>    
     <string name="app_name">QuiteSleep</string>
     
@@ -40,7 +40,7 @@
     <string name="schedule.button.setDate">Set date</string>
     <string name="schedule.button.startTime">Start time</string>
     <string name="schedule.button.endTime">End time</string>
-    <string name="schedule.button.daysweek">Confirm days of week</string>
+    <string name="schedule.button.daysweek">Confirm days of the week</string>
     <string name="schedule.toast.startTime">Start hour set</string>
     <string name="schedule.toast.endTime">End hour set</string>
     <string name="schedule.toast.daysweek.ok">Days of week set</string>
@@ -117,7 +117,7 @@
     
     <!-- @@@@@@@@@@@@@@		EditContact	(RemoveContact)		@@@@@@@@@@@@@@ -->
     <string name="editcontact.button.edit">Edit contact</string>
-    <string name="editcontact.button.remove">Remove from blocked list</string>
+    <string name="editcontact.button.remove">Remove</string>
     <string name="editcontact.toast.edit">Modified contact</string>
     <string name="editcontact.toast.edit.fail">Oppps!!! Something was wrong.. contact couldn\'t be modified!</string>
     <string name="editcontact.toast.remove">Contact removed from blocked list</string>
@@ -133,7 +133,7 @@
     
     
     <!-- @@@@@@@@@@@@@@@@@		ABOUT		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->    
-    
+    <string name="help_about_sliding_text">Help/About</string>
     
     
     

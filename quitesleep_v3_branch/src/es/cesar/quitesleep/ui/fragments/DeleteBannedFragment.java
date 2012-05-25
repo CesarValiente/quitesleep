@@ -56,7 +56,7 @@ import es.cesar.quitesleep.utils.Log;
  * @mail cesar.valiente@gmail.com
  *
  */
-public class DeleteBanned extends BaseListFragment implements OnItemClickListener, ContactDialogListener {
+public class DeleteBannedFragment extends BaseListFragment implements OnItemClickListener, ContactDialogListener {
 	
 	//Constants
 	final private String CLASS_NAME = getClass().getName();	
@@ -67,9 +67,9 @@ public class DeleteBanned extends BaseListFragment implements OnItemClickListene
 	//Attributes
 	private String selectContactName;			
 	
-	public static DeleteBanned newInstance () {
+	public static DeleteBannedFragment newInstance () {
 		
-		DeleteBanned deleteBanned = new DeleteBanned();
+		DeleteBannedFragment deleteBanned = new DeleteBannedFragment();
 		return deleteBanned;
 	}
 	

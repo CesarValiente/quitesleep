@@ -53,7 +53,7 @@
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:gravity="center"
-    		android:text="Help/About"    		
+    		android:text="@string/help_about_sliding_text"    		
     		android:textStyle="bold"
     		android:textColor="@color/yellow"    		    		    		
     		android:background="@drawable/help_about_slide_button" />

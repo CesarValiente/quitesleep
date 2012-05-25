@@ -19,12 +19,15 @@
 
 package es.cesar.quitesleep.ui.fragments.adapter;
 
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.viewpagerindicator.TitleProvider;
 
+import es.cesar.quitesleep.R;
+import es.cesar.quitesleep.application.QuiteSleepApp;
 import es.cesar.quitesleep.ui.fragments.ContactsFragment;
 import es.cesar.quitesleep.ui.fragments.LogsFragment;
 import es.cesar.quitesleep.ui.fragments.ScheduleFragment;
@@ -35,7 +38,13 @@ public class PageViewerTabsAdapter extends FragmentPagerAdapter implements Title
     
 	private final String CLASS_NAME = getClass().getName();
 	
-    public static final String[] TAB_TITLES = { "Contacts", "Schedule", "Settings", "Logs"};
+	private Resources resources = QuiteSleepApp.getContext().getResources();
+	
+    public final String[] TAB_TITLES = { 
+    	resources.getString(R.string.contacts_tab_label), 
+    	resources.getString(R.string.schedule_tab_label),
+    	resources.getString(R.string.settings_tab_label),
+    	resources.getString(R.string.logs_tab_label)};
     
     
     public PageViewerTabsAdapter(FragmentManager fm) {

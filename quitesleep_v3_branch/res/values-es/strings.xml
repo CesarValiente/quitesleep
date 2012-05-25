@@ -28,8 +28,8 @@
    
      <!-- @@@@@@        Contacts Tab        @@@@@@@@@@ -->
     <string name="contacts.tab.label">Contactos</string>
-    <string name="contacts.button.addBanned">Añadir contactos bloqueados</string>
-    <string name="contacts.button.deleteBanned">Quitar y editar contactos bloqueados</string>   
+    <string name="contacts.button.addBanned">Añadir</string>
+    <string name="contacts.button.deleteBanned">Quitar y editar</string>   
     <string name="contacts.button.syncContacts">Sincronizar</string>       
     <string name="contacts.separator.syncContacts">Sincronizar desde la lista de contactos del teléfono</string>
     <string name="contacts.separator.addContact">Añadir contactos bloqueados</string>
@@ -112,7 +112,7 @@
        <!-- @@@@@@@@@@@@@@@    ContactDetails        @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <string name="contactdetails.label.phonedetails">Nº Teléfonos. Escoja para enviar SMS</string>
     <string name="contactdetails.label.maildetails">Direcciones de email. Escoja para enviar Email</string>
-    <string name="contactdetails.button.addcontact">Añadir contacto a bloqueados</string>
+    <string name="contactdetails.button.addcontact">Añadir contacto</string>
     <string name="contactdetails.button.cancel">Atrás</string>
     <string name="contactdetails.toast.added">Contacto añadido a la lista de bloqueados</string>
     <string name="contactdetails.toast.fail">Oppps!!! Algo fue mal.. el contacto no se pudo añadir a la lista de bloqueados!</string>
@@ -121,7 +121,7 @@
    
     <!-- @@@@@@@@@@@@@@        EditContact    (RemoveContact)        @@@@@@@@@@@@@@ -->
     <string name="editcontact.button.edit">Modificar contacto</string>
-    <string name="editcontact.button.remove">Quitar de la lista de bloqueados</string>
+    <string name="editcontact.button.remove">Quitar</string>
      <string name="editcontact.toast.edit">Contacto modificado</string>
      <string name="editcontact.toast.edit.fail">Oppps!!! Algo fue mal.. el contacto no se pudo modificar!</string>
     <string name="editcontact.toast.remove">Contacto quitado de la lista de bloqueados</string>  
@@ -137,7 +137,8 @@
    
    
     <!-- @@@@@@@@@@@@@@@@@        ABOUT        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
-  
+  	<string name="help_about_sliding_text">Ayuda/Acerca de</string>
+  	
    
     <!-- ################################################################### -->
    

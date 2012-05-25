@@ -58,7 +58,7 @@ import es.cesar.quitesleep.utils.Toast;
  * 
  * Class for AddContacts to the banned user list
  */
-public class AddBanned extends BaseListFragment implements OnItemClickListener, ContactDialogListener {
+public class AddBannedFragment extends BaseListFragment implements OnItemClickListener, ContactDialogListener {
 	
 	//Constants
 	final private String CLASS_NAME = this.getClass().getName();	
@@ -68,12 +68,12 @@ public class AddBanned extends BaseListFragment implements OnItemClickListener, 
 	private String selectContactName;			
 			
 	/**
-	 * Creates a new instance of {@link AddBanned}
-	 * @return {@link AddBanned}
+	 * Creates a new instance of {@link AddBannedFragment}
+	 * @return {@link AddBannedFragment}
 	 */
-	public static AddBanned newInstance () {				
+	public static AddBannedFragment newInstance () {				
 		
-		AddBanned addBanned = new AddBanned();								
+		AddBannedFragment addBanned = new AddBannedFragment();								
 		return addBanned;		
 	}
 	
