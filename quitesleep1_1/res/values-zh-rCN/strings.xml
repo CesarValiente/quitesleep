@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+ 	Copyright 2010 Cesar Valiente Gordo
+ 
+ 	This file is part of QuiteSleep.
+
+    QuiteSleep is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    QuiteSleep is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+ 
+<!-- Simplified Chinese, translated by http://goapk.cm -->
+<resources>    
+    <string name="app_name">QuiteSleep</string>
+    
+    
+    <!-- ##############		TABS	######################################## -->
+    
+    <!-- @@@@@@		Contacts Tab		@@@@@@@@@@ -->
+    <string name="contacts.tab.label">联系人</string>
+    <string name="contacts.button.addBanned">添加</string>
+    <string name="contacts.button.deleteBanned">移除和编辑</string>
+    <string name="contacts.button.syncContacts">同步</string>
+    <string name="contacts.separator.addBanned">选择要阻止的联系人</string>
+    <string name="contacts.separator.deleteBanned">选择要移除和编辑的已阻止联系人</string>
+    <string name="contacts.separator.syncContacts">从手机联系人列表中同步</string>
+    
+
+    <!-- @@@@@@@	Schedule Tab		@@@@@@@@@@@ -->
+    <string name="schedule.tab.label">时间表</string>
+    <string name="schedule.button.setDate">设置日期</string>
+    <string name="schedule.button.startTime">开始时间</string>
+    <string name="schedule.button.endTime">停止时间</string>
+    <string name="schedule.button.daysweek">配置每周的天数</string>
+    <string name="schedule.toast.startTime">开始时间设置</string>
+    <string name="schedule.toast.endTime">停止时间设置</string>
+    <string name="schedule.toast.daysweek.ok">每周的天数设置</string>
+    <string name="schedule.toast.daysweek.ko">哎呀！！！每周的天数无法设置.. 你是否已经设置好开始和结束时间了？</string>
+    <string name="schedule.separator.startTime">选择开始时间</string>
+    <string name="schedule.separator.endTime">选择结束时间</string>
+    <string name="schedule.separator.daysweek">选择每周的天数</string>         
+    
+    
+    <!-- @@@@@@@@	Settings Tab		@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="settings.tab.label">设置</string>
+    <string name="settings.label.mail">配置你的Gmail账户用以发送邮件</string>
+    <string name="settings.button.mail">Email</string>
+    <string name="settings.label.sms">配置你的短信设置用以发送信息</string>
+    <string name="settings.button.sms">短信</string>
+    <string name="settings.label.services">开始/停止 QuiteSleep 服务</string>      
+    <string name="settings.label.start_service">开始 QuiteSleep 服务</string>
+    <string name="settings.label.stop_service">停止 QuiteSleep 服务</string>    
+    <string name="settings.toast.start_service">QuiteSleep 服务已经开始...</string>
+    <string name="settings.toast.stop_service">QuiteSleep 服务已经停止...</string>    
+    <string name="settings.toast.fail_service">发生了一个意外的错误！！！</string>
+
+    
+    <!-- @@@@@@@@@@@	Logs Tab	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="logs.tab.label">日志</string>
+    
+    
+
+    
+    <!-- @@@@@@@@@		SMS Settings	@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="smssettings.statement.savesms">写下你的默认短信的标题</string>
+    <string name="smssettings.edittext.savesms">Hi！！我正在睡觉，当我睡醒了我会联系你的。谢谢！</string>
+    <string name="smssettings.button.savesms">保存配置</string>
+    <string name="smssettings.button.cancel">返回</string>    
+    <string name="smssettings.togglebutton.start_sms">开启短信发送</string>
+    <string name="smssettings.togglebutton.stop_sms">关闭短信发送</string>    
+    <string name="smssettings.toast.start_service">已启用发送短信功能</string>
+    <string name="smssettings.toast.stop_service">已禁用发送短信功能</string>
+    <string name="smssettings.toast.fail_service">发生了一个意外的错误！！！</string>
+    <string name="smssettings.toast.save">你的短信数据配置已保存</string>
+        
+                
+                
+    <!-- @@@@@@@@@@@@	MAIL Settings	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="mailsettings.separator.user">你的Gmail账户的账号名</string>
+    <string name="mailsettings.edittext.user">账户@gmail.com</string>
+    <string name="mailsettings.separator.passwd">你Gmail账户的密码</string>
+    <string name="mailsettings.edittext.passwd"/>
+    <string name="mailsettings.separator.subject">你的默认邮件的标题</string>
+    <string name="mailsettings.edittext.subject">我正在睡觉！！</string>
+    <string name="mailsettings.separator.body">你的默认邮件的正文</string>
+    <string name="mailsettings.edittext.body">Hi！！我正在睡觉，当我睡醒了我会联系你的。谢谢！</string>
+    <string name="mailsettings.button.savemail">你的Gmail数据已保存！</string>
+    <string name="mailsettings.button.cancel">返回</string>
+    <string name="mailsettings.togglebutton.start_mail">开启邮件发送</string>
+    <string name="mailsettings.togglebutton.stop_mail">关闭邮件发送</string>
+    <string name="mailsettings.toast.start_service">已启用发送邮件功能</string>
+    <string name="mailsettings.toast.stop_service">已禁用发送邮件功能</string>
+    <string name="mailsettings.toast.fail_service">发生了一个意外的错误！！！</string>
+    <string name="mailsettings.toast.save">你的短信数据配置已保存</string>
+    
+    
+    
+    <!-- @@@@@@@@@@@@@@@	ContactDetails	(AddContact)	@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="contactdetails.label.phonedetails">电话号码。选择用以发送短信</string>
+    <string name="contactdetails.label.maildetails">Email地址。选择用以发送邮件</string>
+    <string name="contactdetails.button.addcontact">添加联系人</string>
+    <string name="contactdetails.button.cancel">返回</string>
+    <string name="contactdetails.toast.added">联系人已经添加到阻止名单</string>
+    <string name="contactdetails.toast.fail">哎呀！！！出现了些错误.. 联系人无法添加到阻止名单！</string>
+    
+    
+    <!-- @@@@@@@@@@@@@@		EditContact	(RemoveContact)		@@@@@@@@@@@@@@ -->
+    <string name="editcontact.button.edit">编辑联系人</string>
+    <string name="editcontact.button.remove">从阻止名单中移除</string>
+    <string name="editcontact.toast.edit">已修改联系人</string>
+    <string name="editcontact.toast.edit.fail">哎呀！！！出现了些错误.. 联系人无法被修改！</string>
+    <string name="editcontact.toast.remove">联系人已从阻止名单中移除</string>
+    <string name="editcontact.toast.remove.fail">哎呀！！！出现了些错误.. 联系人无法从阻止名单中移除！</string>
+    
+    
+    <!-- @@@@@@@@@@@@@@@@@		ABOUT		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
+    <string name="information.about.title">关于 QuiteSleep</string>
+    <string name="information.about.content">QuiteSleep是一个可以控制哪些人可以打断你的美梦，哪些人却不可以的软件。
+    \nQuiteSleep也可以根据你的判断对来电进行静音处理，同时还能发送设定了预置内容的短信(目前还不是很可靠)和邮件来告诉对方你正在睡觉，或是正在忙，等等。
+    \n\n 然后，关于作者？我是软件的作者，Cesar Valiente Gordo，我制作这个软件是作为我的硕士毕业设计，我的专业是关于信息通信与信息系统的。我想要感谢我的导师Jesus M，在软件开发的三个月中，是很难调和工作、学习和生活的。González Barahona 提供了所有的追踪和协助，我的朋友，所有你的支持、构想和意见，当然，还有我的家人，没有了他们，我永远也不能开始和完成这个奇妙的冒险，也无法获得相关研究的成果。
+    \n如有任何的疑问和其他的事情，你可以发邮件到我的个人邮箱 cesar.valiente@gmail.com。
+    \n\nQuiteSleep是一个完全的自由软件(自由和开源的软件)，而且它在GNU GPLv2 协议下进行传播，你可以任意分发、修改、复制或随意的使用它。
+    QuiteSleep在GoogleCode上有一个站点，你可以在这获取源码，地址是http://code.google.com/p/quitesleep/ 你也可以加入QuiteSleep在GoogleGroups上的讨论组 http://groups.google.com/group/QuiteSleep。
+    \n\n我希望QuiteSleep对你来说是有用的，它是一个完全版，但是和所有的软件一样，依然在改进中。
+    如果你想要提任何的意见，比如你喜欢或是不喜欢，它工作的不好或是工作良好，那种情况比较多，丢失，错误，等等..
+    完全自由地在小组里面对软件进行评论，而且如果你对这个项目感兴趣想要一起合作，那么在项目的站点就就可以这样去做。
+    \n\n非常感谢你能使用 QuiteSleep!!</string>
+    <string name="information.help.title">帮助</string>
+    <string name="information.help.content">抱歉，我正在忙着把西班牙文的帮助文档翻译为英文，我会尽快搞定的，而且不就的将来我就会更新QuiteSleep。
+    \n\n但是请不要担心，QuiteSleep的使用是很简单的，你将不会碰到任何问题，相信我！</string>
+   	<string name="information.button.cancel">返回</string>
+    
+    
+    
+    
+    <!-- ################################################################### -->
+    
+    <!-- ##########		DIALOGS		######################## -->
+    
+    <!-- @@@@@@@	Start Time Dialog	@@@@@@@@@@@@ -->    
+    <string name="starttimedialog.message.label">开始时间</string>
+    <string name="starttimedialog.set.label">确定</string>
+    <string name="starttimedialog.cancel.label">取消</string>
+    
+    <!-- @@@@@@@	End Time Dialog	@@@@@@@@@@@@ -->    
+    <string name="endtimedialog.message.label">结束时间</string>
+    <string name="endtimedialog.set.label">确定</string>
+    <string name="endtimedialog.cancel.label">取消</string>
+    
+   
+     <!-- @@@@@@@@@	Sync Contacts Dialog	@@@@@@@@@@@@@@@@@ -->
+    <string name="synccontactsdialog.message.firsttime.label">首次同步联系人。请稍等片刻...</string>
+    <string name="synccontactsdialog.message.anytime.label">正在同步联系人。请稍等片刻...</string>
+    <string name="synccontactsdialog.message.refresh.label">正在刷新联系人。请稍等片刻...</string>
+    
+    
+    <!-- @@@@@@@@@@@	AddAll Dialog	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="addalldialog.dialog.label">正在添加联系人。请稍等片刻...</string>
+    
+    <!-- @@@@@@@@@@@	RemoveAllDialog		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="removealldialog.dialog.label">正在移除联系人。请稍等片刻...</string>
+    
+    
+    <!-- @@@@@@@@@@		Warning Dialog	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="warningdialog.caution.label">警告！！</string>    
+    <string name="warningdialog.contactOperations.label">这将花费一些时间，你确定？</string>
+    <string name="warningdialog.synccontact.label">此操作将删除QuiteSleep之前的联系人配置，并将耗费一些时间。你确定？</string>
+    <string name="warningdialog.sms.label">你已经启用了使用电话线路的选项，根据运营商的不同，可能会被收取一定的费用。只要你喜欢，你可以在任何时间禁用之。</string>
+    <string name="warningdialog.mail.label">你已经启用了使用网络连接的选项，根据运营商的不同，可能会被收取一定的费用。只要你喜欢，你可以在任何时间禁用之。</string>
+    <string name="warningdialog.yes.label">是</string>
+    <string name="warningdialog.no.label">否</string>
+    <string name="warningdialog.ok.label">确定</string>
+	<string name="warningdialog.calllog.remove.label">此操作将删除通话记录信息。你确定？</string>    
+	<string name="warningdialog.calllog.refresh.label">此操作将更新通话记录信息。你确定？</string>
+    
+    <!-- @@@@@@@@@@@	CallLogDialog		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="calllogdialog.dialog.remove.label">正在移除记录。请稍等片刻...</string>
+    <string name="calllogdialog.dialog.refresh.label">正在刷新记录。请稍等片刻...</string>
+    
+    
+    <!-- #################################################################### -->
+    
+    
+    <!-- ##################		MENUS	#################################### -->
+    
+   <!-- @@@@@@@@@@	Menu Information	@@@@@@@@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.information.about">关于</string>
+   <string name="menu.information.help">帮助</string>
+   
+   <!-- @@@@@@@@@@@	Menu Add All	@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.addall.label">添加所有联系人</string>
+   <string name="menu.addall.toast.insertscount">个联系人已添加到阻止名单</string>
+   
+    <!-- @@@@@@@@@@@	Menu Remove All	@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.removeall.label">移除所有联系人</string>
+   <string name="menu.removeall.toast.removecount">个联系人已从阻止名单中被移除</string>
+   
+   
+   <!-- @@@@@@@@@@@@@@		Menu Remove all Call Log		@@@@@@@@@@@@@@@@@ -->
+   <string name="menu.calllog.remove.label">移除</string>
+   <string name="menu.calllog.remove.toast">条记录已从通话记录中被删除</string>
+   <string name="menu.calllog.refresh.label">刷新</string>
+   <string name="menu.calllog.refresh.toast">通话记录列表已更新</string>
+    
+    
+    <!-- @@@@@@@@@@@		Notifications 	@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="quitesleep.notification.start.message">QuiteSleep 正在运行</string>
+    <string name="quitesleep.notification.stop.message">QuiteSleep 已停止</string>
+    
+    
+    
+    <!-- ##################		OTHERS		############################### -->
+    
+    <!-- @@@@@@@@@	Contact Details		@@@@@@@@@@@@@@@@@@ -->
+    <string name="contact.details.name">名字：</string>
+    <string name="contact.details.phones">电话：</string>    
+    <string name="contact.details.mails">邮件：</string>
+    
+    <!--	Day weeks -->
+    <string name="monday">星期一</string>
+    <string name="tuesday">星期二</string>
+    <string name="wednesday">星期三</string>
+    <string name="thursday">星期四</string>
+    <string name="friday">星期五</string>
+    <string name="saturday">星期六</string>
+    <string name="sunday">星期日</string>
+    
+    
+    <!-- #################################################################### -->
+   
+    
+    
+    
+</resources>
