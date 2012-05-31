@@ -29,7 +29,7 @@ package es.cesar.quitesleep.utils;
  */
 public class Log {
 	
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	
 	public static void d (String tag, String content) {
 		if (DEBUG)

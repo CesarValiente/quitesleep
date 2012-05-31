@@ -160,8 +160,8 @@
     <!-- This permission is used to do the hang up action, whitout this, doesn't run well -->
     <uses-permission android:name="android.permission.CALL_PHONE" />   
         
-    <!-- <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" /> 
+    <uses-permission android:name="android.permission.READ_SMS" /> 
+    <!-- <uses-permission android:name="android.permission.RECEIVE_SMS" /> 
     <uses-permission android:name="android.permission.CALL_PHONE" />  -->
     
     <permission 
