@@ -23,77 +23,57 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <!-- Add banned contacts -->
 
         <TextView
             android:id="@+id/contacts.separator.addContact"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="@string/contacts.separator.addContact" />
 
-        <Button
+        <ImageButton
             android:id="@+id/contacts.button.addBanned"
             style="@style/common_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/contacts.separator.addContact"
-            android:layout_centerHorizontal="true"
-            android:drawableLeft="@drawable/add_user"
-            android:text="@string/contacts.button.addBanned" />
+            android:src="@drawable/add_user" />
 
         <!-- Remove/edit blocked contact -->
 
         <TextView
             android:id="@+id/contacts.separator.removeContact"
             style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_below="@id/contacts.button.addBanned"
             android:layout_marginTop="5dip"
             android:text="@string/contacts.separator.removeContact" />
 
-        <Button
+        <ImageButton
             android:id="@+id/contacts.button.deleteBanned"
             style="@style/common_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/contacts.separator.removeContact"
-            android:layout_centerHorizontal="true"
-            android:drawableLeft="@drawable/remove_user"
-            android:text="@string/contacts.button.deleteBanned" />
+            android:src="@drawable/remove_user" />
 
         <!-- Synchronize contacts by the user -->
 
-        <View
-            android:id="@+id/contacts.divider1"
-            android:layout_width="match_parent"
-            android:layout_height="3dip"
-            android:layout_below="@id/contacts.button.deleteBanned"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/gradient_black" />
+        <View style="@style/divider_grey_normal" />
 
         <TextView
             android:id="@+id/contacts.separator.syncContacts"
             style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_below="@id/contacts.divider1"
             android:layout_marginTop="5dip"
             android:text="@string/contacts.separator.syncContacts" />
 
-        <Button
+        <ImageButton
             android:id="@+id/contacts.button.syncContacts"
             style="@style/common_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/contacts.separator.syncContacts"
-            android:layout_centerHorizontal="true"
-            android:drawableLeft="@drawable/sync"
-            android:text="@string/contacts.button.syncContacts" />
-    </RelativeLayout>
+            android:src="@drawable/sync" />
+    </LinearLayout>
 
 </ScrollView>

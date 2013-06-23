@@ -23,9 +23,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/schedule.separator.startTime"
@@ -38,7 +39,6 @@
             android:id="@+id/start_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/schedule.separator.startTime"
             android:paddingTop="2dp"
             android:weightSum="3" >
 
@@ -71,7 +71,6 @@
             android:id="@+id/schedule.separator.endTime"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_height="match_parent"
-            android:layout_below="@id/start_time_layout"
             android:layout_marginTop="12dip"
             android:text="@string/schedule.separator.endTime" />
 
@@ -79,7 +78,6 @@
             android:id="@+id/end_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/schedule.separator.endTime"
             android:paddingTop="2dp"
             android:weightSum="3" >
 
@@ -112,7 +110,6 @@
             android:id="@+id/schedule.divider1"
             android:layout_width="match_parent"
             android:layout_height="3dip"
-            android:layout_below="@id/end_time_layout"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/gradient_black" />
@@ -121,7 +118,6 @@
             android:id="@+id/schedule.separator.daysweek"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_height="match_parent"
-            android:layout_below="@id/schedule.divider1"
             android:layout_marginTop="5dip"
             android:text="@string/schedule.separator.daysweek" />
 
@@ -131,7 +127,6 @@
             android:id="@+id/schedule.table.daysweek"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/schedule.separator.daysweek"
             android:layout_marginTop="5dp"
             android:stretchColumns="0,1,2,3,4,5,6" >
 
@@ -202,9 +197,8 @@
             style="@style/common_button_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/schedule.table.daysweek"
             android:drawableLeft="@drawable/days_week"
             android:text="@string/schedule.button.daysweek" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>
