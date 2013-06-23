@@ -31,7 +31,7 @@ enabled.
         android:paddingRight="16dip"
         android:gravity="center_vertical|left" />
     <View android:id="@+id/abs__titleDivider"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="2dip"
             android:background="@color/abs__holo_blue_light" />
     <FrameLayout
@@ -40,7 +40,7 @@ enabled.
         android:orientation="vertical"
         android:foreground="?attr/windowContentOverlay">
         <FrameLayout android:id="@+id/abs__content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 </com.actionbarsherlock.internal.widget.FakeDialogPhoneWindow>

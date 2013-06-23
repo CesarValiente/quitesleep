@@ -19,14 +19,14 @@
 <com.actionbarsherlock.internal.widget.IcsLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/abs__activity_chooser_view_content"
     android:layout_width="wrap_content"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     style="?attr/activityChooserViewStyle">
 
     <FrameLayout
         android:id="@+id/abs__expand_activities_button"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:focusable="true"
         android:addStatesFromChildren="true"
@@ -48,7 +48,7 @@
     <FrameLayout
         android:id="@+id/abs__default_activity_button"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:focusable="true"
         android:addStatesFromChildren="true"
