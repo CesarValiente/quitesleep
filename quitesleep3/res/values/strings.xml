@@ -37,8 +37,6 @@
     <!-- @@@@@@@	Schedule Tab		@@@@@@@@@@@ -->
     <string name="schedule.tab.label">Schedule</string>
     <string name="schedule.button.setDate">Set date</string>
-    <string name="schedule.button.startTime">Start time</string>
-    <string name="schedule.button.endTime">End time</string>
     <string name="schedule.button.daysweek">Confirm days of the week</string>
     <string name="schedule.toast.startTime">Start hour set</string>
     <string name="schedule.toast.endTime">End hour set</string>

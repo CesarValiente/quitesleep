@@ -31,7 +31,8 @@
         <TextView
             android:id="@+id/schedule.separator.startTime"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
             android:text="@string/schedule.separator.startTime" />
 
@@ -39,7 +40,8 @@
             android:id="@+id/start_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:weightSum="3" >
 
             <!-- Start hour label -->
@@ -56,21 +58,20 @@
 
             <!-- Button for define the start hour -->
 
-            <Button
+            <ImageButton
                 android:id="@+id/schedule.button.startTime"
                 style="@style/common_button_style"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:drawableLeft="@drawable/start_time"
-                android:text="@string/schedule.button.startTime" />
+                android:src="@drawable/start_time" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/schedule.separator.endTime"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dip"
             android:text="@string/schedule.separator.endTime" />
 
@@ -78,7 +79,8 @@
             android:id="@+id/end_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:weightSum="3" >
 
             <!-- Label for the end hour -->
@@ -95,24 +97,18 @@
 
             <!-- Button for the end hour -->
 
-            <Button
+            <ImageButton
                 android:id="@+id/schedule.button.endTime"
                 style="@style/common_button_style"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:drawableLeft="@drawable/end_time"
-                android:text="@string/schedule.button.endTime" />
+                android:src="@drawable/end_time" />
         </LinearLayout>
 
         <View
             android:id="@+id/schedule.divider1"
-            android:layout_width="match_parent"
-            android:layout_height="3dip"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/gradient_black" />
+            style="@style/divider_grey_normal" />
 
         <TextView
             android:id="@+id/schedule.separator.daysweek"
@@ -195,9 +191,11 @@
         <Button
             android:id="@+id/schedule.button.daysweek"
             style="@style/common_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:drawableLeft="@drawable/days_week"
+            android:drawablePadding="10dp"
             android:text="@string/schedule.button.daysweek" />
     </LinearLayout>
 
