@@ -1,14 +1,5 @@
 package com.actionbarsherlock;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Iterator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -27,6 +18,16 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * <p>Helper for implementing the action bar design pattern across all versions
@@ -37,11 +38,9 @@ import com.actionbarsherlock.view.MenuItem;
  * counterpart and you should refer to its documentation for instruction.</p>
  *
  * @author Jake Wharton <jakewharton@gmail.com>
- * @version 4.0.0
  */
 public abstract class ActionBarSherlock {
     protected static final String TAG = "ActionBarSherlock";
-    protected static final boolean DEBUG = false;
 
     private static final Class<?>[] CONSTRUCTOR_ARGS = new Class[] { Activity.class, int.class };
     private static final HashMap<Implementation, Class<? extends ActionBarSherlock>> IMPLEMENTATIONS =
@@ -123,12 +122,12 @@ public abstract class ActionBarSherlock {
         if (!implementationClass.isAnnotationPresent(Implementation.class)) {
             throw new IllegalArgumentException("Class " + implementationClass.getSimpleName() + " is not annotated with @Implementation");
         } else if (IMPLEMENTATIONS.containsValue(implementationClass)) {
-            if (DEBUG) Log.w(TAG, "Class " + implementationClass.getSimpleName() + " already registered");
+            if (BuildConfig.DEBUG) Log.w(TAG, "Class " + implementationClass.getSimpleName() + " already registered");
             return;
         }
 
         Implementation impl = implementationClass.getAnnotation(Implementation.class);
-        if (DEBUG) Log.i(TAG, "Registering " + implementationClass.getSimpleName() + " with qualifier " + impl);
+        if (BuildConfig.DEBUG) Log.i(TAG, "Registering " + implementationClass.getSimpleName() + " with qualifier " + impl);
         IMPLEMENTATIONS.put(impl, implementationClass);
     }
 
@@ -224,7 +223,7 @@ public abstract class ActionBarSherlock {
             throw new IllegalStateException("No implementations match configuration.");
         }
         Class<? extends ActionBarSherlock> impl = impls.values().iterator().next();
-        if (DEBUG) Log.i(TAG, "Using implementation: " + impl.getSimpleName());
+        if (BuildConfig.DEBUG) Log.i(TAG, "Using implementation: " + impl.getSimpleName());
 
         try {
             Constructor<? extends ActionBarSherlock> ctor = impl.getConstructor(CONSTRUCTOR_ARGS);
@@ -254,7 +253,7 @@ public abstract class ActionBarSherlock {
 
 
     protected ActionBarSherlock(Activity activity, int flags) {
-        if (DEBUG) Log.d(TAG, "[<ctor>] activity: " + activity + ", flags: " + flags);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[<ctor>] activity: " + activity + ", flags: " + flags);
 
         mActivity = activity;
         mIsDelegate = (flags & FLAG_DELEGATE) != 0;
@@ -524,6 +523,23 @@ public abstract class ActionBarSherlock {
      */
     public void dispatchPanelClosed(int featureId, android.view.Menu menu) {}
 
+    /**
+     * Notify the action bar that the activity has been destroyed. This method
+     * should be called before the superclass implementation.
+     *
+     * <blockquote><p>
+     * @Override
+     * public void onDestroy() {
+     *     mSherlock.dispatchDestroy();
+     *     super.onDestroy();
+     * }
+     * </p></blockquote>
+     */
+    public void dispatchDestroy() {}
+
+    public void dispatchSaveInstanceState(Bundle outState) {}
+
+    public void dispatchRestoreInstanceState(Bundle savedInstanceState) {}
 
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -535,7 +551,7 @@ public abstract class ActionBarSherlock {
      * @return {@code true} if menu creation should proceed.
      */
     protected final boolean callbackCreateOptionsMenu(Menu menu) {
-        if (DEBUG) Log.d(TAG, "[callbackCreateOptionsMenu] menu: " + menu);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[callbackCreateOptionsMenu] menu: " + menu);
 
         boolean result = true;
         if (mActivity instanceof OnCreatePanelMenuListener) {
@@ -546,7 +562,7 @@ public abstract class ActionBarSherlock {
             result = listener.onCreateOptionsMenu(menu);
         }
 
-        if (DEBUG) Log.d(TAG, "[callbackCreateOptionsMenu] returning " + result);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[callbackCreateOptionsMenu] returning " + result);
         return result;
     }
 
@@ -556,7 +572,7 @@ public abstract class ActionBarSherlock {
      * @return {@code true} if menu preparation should proceed.
      */
     protected final boolean callbackPrepareOptionsMenu(Menu menu) {
-        if (DEBUG) Log.d(TAG, "[callbackPrepareOptionsMenu] menu: " + menu);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[callbackPrepareOptionsMenu] menu: " + menu);
 
         boolean result = true;
         if (mActivity instanceof OnPreparePanelListener) {
@@ -567,7 +583,7 @@ public abstract class ActionBarSherlock {
             result = listener.onPrepareOptionsMenu(menu);
         }
 
-        if (DEBUG) Log.d(TAG, "[callbackPrepareOptionsMenu] returning " + result);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[callbackPrepareOptionsMenu] returning " + result);
         return result;
     }
 
@@ -579,7 +595,7 @@ public abstract class ActionBarSherlock {
      * @return {@code true} if the item selection was handled in the callback.
      */
     protected final boolean callbackOptionsItemSelected(MenuItem item) {
-        if (DEBUG) Log.d(TAG, "[callbackOptionsItemSelected] item: " + item.getTitleCondensed());
+        if (BuildConfig.DEBUG) Log.d(TAG, "[callbackOptionsItemSelected] item: " + item.getTitleCondensed());
 
         boolean result = false;
         if (mActivity instanceof OnMenuItemSelectedListener) {
@@ -590,7 +606,7 @@ public abstract class ActionBarSherlock {
             result = listener.onOptionsItemSelected(item);
         }
 
-        if (DEBUG) Log.d(TAG, "[callbackOptionsItemSelected] returning " + result);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[callbackOptionsItemSelected] returning " + result);
         return result;
     }
 
@@ -650,7 +666,7 @@ public abstract class ActionBarSherlock {
      * @param view The desired content to display.
      */
     public void setContentView(View view) {
-        if (DEBUG) Log.d(TAG, "[setContentView] view: " + view);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[setContentView] view: " + view);
 
         setContentView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     }
@@ -682,7 +698,7 @@ public abstract class ActionBarSherlock {
      * Change the title associated with this activity.
      */
     public void setTitle(int resId) {
-        if (DEBUG) Log.d(TAG, "[setTitle] resId: " + resId);
+        if (BuildConfig.DEBUG) Log.d(TAG, "[setTitle] resId: " + resId);
 
         setTitle(mActivity.getString(resId));
     }
@@ -751,12 +767,12 @@ public abstract class ActionBarSherlock {
      * @return Menu inflater instance.
      */
     public MenuInflater getMenuInflater() {
-        if (DEBUG) Log.d(TAG, "[getMenuInflater]");
+        if (BuildConfig.DEBUG) Log.d(TAG, "[getMenuInflater]");
 
         // Make sure that action views can get an appropriate theme.
         if (mMenuInflater == null) {
             if (getActionBar() != null) {
-                mMenuInflater = new MenuInflater(getThemedContext());
+                mMenuInflater = new MenuInflater(getThemedContext(), mActivity);
             } else {
                 mMenuInflater = new MenuInflater(mActivity);
             }
@@ -775,4 +791,9 @@ public abstract class ActionBarSherlock {
      * @see ActionMode
      */
     public abstract ActionMode startActionMode(ActionMode.Callback callback);
+
+    /**
+     * Ensure that the action bar is attached.
+     */
+    public void ensureActionBar() {}
 }

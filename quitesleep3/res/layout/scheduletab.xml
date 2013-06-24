@@ -40,6 +40,7 @@
             android:id="@+id/start_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:weightSum="3" >
@@ -50,7 +51,7 @@
                 android:id="@+id/schedule.textview.startTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="00:00"
                 android:textColor="@color/white"
@@ -62,7 +63,8 @@
                 android:id="@+id/schedule.button.startTime"
                 style="@style/common_button_style"
                 android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="2"
                 android:src="@drawable/start_time" />
         </LinearLayout>
@@ -101,7 +103,8 @@
                 android:id="@+id/schedule.button.endTime"
                 style="@style/common_button_style"
                 android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="2"
                 android:src="@drawable/end_time" />
         </LinearLayout>
@@ -192,6 +195,7 @@
             android:id="@+id/schedule.button.daysweek"
             style="@style/common_button_style"
             android:layout_width="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:drawableLeft="@drawable/days_week"

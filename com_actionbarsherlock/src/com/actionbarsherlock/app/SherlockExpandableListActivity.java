@@ -77,6 +77,12 @@ public abstract class SherlockExpandableListActivity extends ExpandableListActiv
     }
 
     @Override
+    protected void onDestroy() {
+        getSherlock().dispatchDestroy();
+        super.onDestroy();
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         getSherlock().dispatchPostCreate(savedInstanceState);
         super.onPostCreate(savedInstanceState);
@@ -224,6 +230,12 @@ public abstract class SherlockExpandableListActivity extends ExpandableListActiv
 
     public void requestWindowFeature(long featureId) {
         getSherlock().requestFeature((int)featureId);
+    }
+
+    @Override
+    public View findViewById(int id) {
+        getSherlock().ensureActionBar();
+        return super.findViewById(id);
     }
 
 
