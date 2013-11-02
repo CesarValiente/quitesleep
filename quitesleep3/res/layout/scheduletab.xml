@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--  
+<!--
  	Copyright 2010 Cesar Valiente Gordo
  
  	This file is part of QuiteSleep.
@@ -17,187 +17,190 @@
 
     You should have received a copy of the GNU General Public License
     along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
- -->
+-->
 
-<LinearLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-                
-	<ScrollView 
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content">
-		
-		<RelativeLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"			
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent" >
-					    
-			<TextView
-            	android:id="@+id/schedule.separator.startTime"
-            	style="?android:attr/listSeparatorTextViewStyle"
-            	android:layout_height="fill_parent"
-            	android:text="@string/schedule.separator.startTime"            	
-            	android:layout_marginTop="5dip" />
-            	
-			<LinearLayout 
-			    android:id="@+id/start_time_layout"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:weightSum="3"
-		        android:layout_below="@id/schedule.separator.startTime"
-		        android:paddingTop="2dp">
-		        
-				<!-- Start hour label -->			
-				<TextView
-					android:id="@+id/schedule.textview.startTime"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"											
-					android:textColor="@color/white"								
-					android:textSize="40dp"				
-					android:text="00:00"
-					android:layout_weight="1"
-					android:layout_gravity="center_vertical" />						
-				
-				<!-- Button for define the start hour -->
-				<Button
-					android:id="@+id/schedule.button.startTime"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"											
-					android:drawableLeft="@drawable/start_time"
-					style="@style/common_button_style"
-					android:text="@string/schedule.button.startTime"
-					android:layout_weight="2"					
-					android:layout_gravity="center_vertical"/>
-			</LinearLayout>
-			
-			<TextView
-            	style="?android:attr/listSeparatorTextViewStyle"
-            	android:layout_height="fill_parent"
-            	android:id="@+id/schedule.separator.endTime"
-            	android:text="@string/schedule.separator.endTime"
-            	android:layout_below="@id/start_time_layout"
-            	android:layout_marginTop="12dip" /> 
-			
-			<LinearLayout 
-			    android:id="@+id/end_time_layout"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:weightSum="3"
-		        android:layout_below="@id/schedule.separator.endTime"
-		        android:paddingTop="2dp">			
-				<!-- Label for the end hour -->
-				<TextView
-					android:id="@+id/schedule.textview.endTime"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"												
-					android:textColor="@color/white"								
-					android:textSize="40dp"		
-					android:text="00:00"
-					android:layout_weight="1"
-					android:layout_gravity="center_vertical" />
-			
-				<!-- Button for the end hour -->
-				<Button
-					android:id="@+id/schedule.button.endTime"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"					
-					android:drawableLeft="@drawable/end_time"
-					style="@style/common_button_style"					
-					android:text="@string/schedule.button.endTime"
-					android:layout_weight="2"
-					android:layout_gravity="center_vertical"/>
-			</LinearLayout>
-			
-			<View
-				android:id="@+id/schedule.divider1"
-				android:layout_width="fill_parent"		
-				android:layout_height="3dip"		
-				android:layout_below="@id/end_time_layout"
-				android:background="@drawable/gradient_black"
-				android:layout_marginTop="5dp"		
-				android:layout_marginBottom="5dp" />
-			
-			<TextView
-            	style="?android:attr/listSeparatorTextViewStyle"
-            	android:layout_height="fill_parent"
-            	android:id="@+id/schedule.separator.daysweek"
-            	android:text="@string/schedule.separator.daysweek"
-            	android:layout_below="@id/schedule.divider1"
-            	android:layout_marginTop="5dip" />
-            	
-			
-			<!-- Table for insert the week days in columns -->
-			<TableLayout
-				android:layout_width="fill_parent"
-		    	android:layout_height="fill_parent"
-		    	android:id="@+id/schedule.table.daysweek"
-		    	android:stretchColumns="0,1,2,3,4,5,6"
-		    	android:layout_below="@id/schedule.separator.daysweek"
-		    	android:layout_marginTop="5dp" >
-		    	<TableRow>
-		    		<TextView
-		    			android:text="@string/monday"
-		            	 android:padding="5dip"
-		            	 android:textColor="@color/white" />
-		            <TextView
-		    			android:text="@string/tuesday"
-		            	android:padding="5dip"
-		            	android:textColor="@color/white" />
-		    		<TextView
-		    			android:text="@string/wednesday"
-		            	android:padding="5dip"
-		            	android:textColor="@color/white"/>
-					<TextView
-		    			android:text="@string/thursday"
-		            	 android:padding="5dip"
-		            	 android:textColor="@color/white"/>
-		            <TextView
-		    			android:text="@string/friday"
-		            	android:padding="5dip"
-		            	android:textColor="@color/white"/>	
-		            <TextView
-		    			android:text="@string/saturday"
-		            	android:padding="5dip"
-		            	android:textColor="@color/white"/>
-		            <TextView
-		    			android:text="@string/sunday"
-		            	android:padding="5dip"
-		            	android:textColor="@color/white"/>
-		          </TableRow>
-		          <View
-		          	android:layout_height="2px"
-		          	android:background="@drawable/gradient_blue" />
-		          
-		          <TableRow>
-		          	<CheckBox				
-						android:id="@+id/schedule.checkbox.monday"/>
-					<CheckBox				
-						android:id="@+id/schedule.checkbox.tuesday" />
-					<CheckBox				
-						android:id="@+id/schedule.checkbox.wednesday" />
-					<CheckBox				
-						android:id="@+id/schedule.checkbox.thursday" />
-		          	<CheckBox				
-						android:id="@+id/schedule.checkbox.friday" />
-					<CheckBox				
-						android:id="@+id/schedule.checkbox.saturday" />
-					<CheckBox				
-						android:id="@+id/schedule.checkbox.sunday" />				
-		          </TableRow>
-		          
-		     </TableLayout>
-		     
-		    <!-- Button for save the selected week days by the user -->
-			<Button
-				android:id="@+id/schedule.button.daysweek"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/schedule.table.daysweek"
-				android:drawableLeft="@drawable/days_week"
-				android:text="@string/schedule.button.daysweek"
-				style="@style/common_button_style" />
-				
-		</RelativeLayout>		 
-	</ScrollView>	
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/schedule.separator.startTime"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:text="@string/schedule.separator.startTime" />
+
+        <LinearLayout
+            android:id="@+id/start_time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="3" >
+
+            <!-- Start hour label -->
+
+            <TextView
+                android:id="@+id/schedule.textview.startTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+
+            <!-- Button for define the start hour -->
+
+            <ImageButton
+                android:id="@+id/schedule.button.startTime"
+                style="@style/common_button_style"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="2"
+                android:src="@drawable/start_time" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/schedule.separator.endTime"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dip"
+            android:text="@string/schedule.separator.endTime" />
+
+        <LinearLayout
+            android:id="@+id/end_time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="3" >
+
+            <!-- Label for the end hour -->
+
+            <TextView
+                android:id="@+id/schedule.textview.endTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+
+            <!-- Button for the end hour -->
+
+            <ImageButton
+                android:id="@+id/schedule.button.endTime"
+                style="@style/common_button_style"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="2"
+                android:src="@drawable/end_time" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/schedule.divider1"
+            style="@style/divider_grey_normal" />
+
+        <TextView
+            android:id="@+id/schedule.separator.daysweek"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dip"
+            android:text="@string/schedule.separator.daysweek" />
+
+        <!-- Table for insert the week days in columns -->
+
+        <TableLayout
+            android:id="@+id/schedule.table.daysweek"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:stretchColumns="0,1,2,3,4,5,6" >
+
+            <TableRow>
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/monday"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/tuesday"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/wednesday"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/thursday"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/friday"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/saturday"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:padding="5dip"
+                    android:text="@string/sunday"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <View
+                android:layout_height="2dp"
+                android:background="@drawable/gradient_blue" />
+
+            <TableRow>
+
+                <CheckBox android:id="@+id/schedule.checkbox.monday" />
+
+                <CheckBox android:id="@+id/schedule.checkbox.tuesday" />
+
+                <CheckBox android:id="@+id/schedule.checkbox.wednesday" />
+
+                <CheckBox android:id="@+id/schedule.checkbox.thursday" />
+
+                <CheckBox android:id="@+id/schedule.checkbox.friday" />
+
+                <CheckBox android:id="@+id/schedule.checkbox.saturday" />
+
+                <CheckBox android:id="@+id/schedule.checkbox.sunday" />
+            </TableRow>
+        </TableLayout>
+
+        <!-- Button for save the selected week days by the user -->
+
+        <Button
+            android:id="@+id/schedule.button.daysweek"
+            style="@style/common_button_style"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:drawableLeft="@drawable/days_week"
+            android:drawablePadding="10dp"
+            android:text="@string/schedule.button.daysweek" />
+    </LinearLayout>
+
+</ScrollView>
