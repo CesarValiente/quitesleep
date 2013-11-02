@@ -25,9 +25,10 @@
     android:background="@color/black"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/mailsettings.separator.user"
@@ -39,14 +40,12 @@
             android:id="@+id/mailsettings.edittext.user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mailsettings.separator.user"
             android:inputType="textPersonName"
             android:text="@string/mailsettings.edittext.user" />
 
         <TextView
             android:id="@+id/mailsettings.separator.passwd"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_below="@id/mailsettings.edittext.user"
             android:layout_marginTop="5dip"
             android:text="@string/mailsettings.separator.passwd" />
 
@@ -54,14 +53,11 @@
             android:id="@+id/mailsettings.edittext.passwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mailsettings.separator.passwd"
-            android:inputType="textPassword"
-            android:text="@string/mailsettings.edittext.passwd" />
+            android:inputType="textPassword" />
 
         <TextView
             android:id="@+id/mailsettings.separator.subject"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_below="@id/mailsettings.edittext.passwd"
             android:layout_marginTop="5dip"
             android:text="@string/mailsettings.separator.subject" />
 
@@ -69,14 +65,12 @@
             android:id="@+id/mailsettings.edittext.subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mailsettings.separator.subject"
             android:inputType="textEmailSubject"
             android:text="@string/mailsettings.edittext.subject" />
 
         <TextView
             android:id="@+id/mailsettings.separator.body"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_below="@id/mailsettings.edittext.subject"
             android:layout_marginTop="5dip"
             android:text="@string/mailsettings.separator.body" />
 
@@ -84,45 +78,19 @@
             android:id="@+id/mailsettings.edittext.body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mailsettings.separator.body"
             android:text="@string/mailsettings.edittext.body" />
 
         <View
-            android:id="@+id/mailsettings.divider1"
-            android:layout_width="match_parent"
-            android:layout_height="5dip"
-            android:layout_below="@id/mailsettings.edittext.body"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/gradient_black" />
-
-        <Button
-            android:id="@+id/mailsettings.button.savemail"
-            style="@style/common_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/mailsettings.divider1"
-            android:drawableLeft="@drawable/tick_yes"
-            android:text="@string/mailsettings.button.savemail" />
-
-        <View
-            android:id="@+id/mailsettings.divider2"
-            android:layout_width="match_parent"
-            android:layout_height="3dip"
-            android:layout_below="@id/mailsettings.button.savemail"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/gradient_blue" />
+            style="@style/divider_blue_normal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" />
 
         <ToggleButton
             android:id="@+id/mailsettings.togglebutton.mailservice"
             style="@style/common_toggle_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/mailsettings.divider2"
             android:drawableLeft="@drawable/start_service"
             android:textOff="@string/mailsettings.togglebutton.start_mail"
             android:textOn="@string/mailsettings.togglebutton.stop_mail" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>

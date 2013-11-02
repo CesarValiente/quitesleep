@@ -25,9 +25,10 @@
     android:background="@color/black"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/smssettings.statement.savesms"
@@ -39,46 +40,22 @@
             android:id="@+id/smssettings.edittext.savesms"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_below="@id/smssettings.statement.savesms"
             android:maxLength="160"
             android:text="@string/smssettings.edittext.savesms" />
 
         <View
-            android:id="@+id/smssettings.divider1"
-            android:layout_width="match_parent"
-            android:layout_height="5dip"
-            android:layout_below="@id/smssettings.edittext.savesms"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/gradient_black" />
-
-        <Button
-            android:id="@+id/smssettings.button.savesms"
-            style="@style/common_button_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/smssettings.divider1"
-            android:drawableLeft="@drawable/tick_yes"
-            android:text="@string/smssettings.button.savesms" />
-
-        <View
-            android:id="@+id/smssettings.divider2"
-            android:layout_width="match_parent"
-            android:layout_height="3dip"
-            android:layout_below="@id/smssettings.button.savesms"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/gradient_blue" />
+            style="@style/divider_blue_normal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" />
 
         <ToggleButton
             android:id="@+id/smssettings.togglebutton.smsservice"
             style="@style/common_toggle_button_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/smssettings.divider2"
             android:drawableLeft="@drawable/start_service"
             android:textOff="@string/smssettings.togglebutton.start_sms"
             android:textOn="@string/smssettings.togglebutton.stop_sms" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>

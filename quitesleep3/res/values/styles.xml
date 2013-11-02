@@ -55,4 +55,8 @@
         <item name="android:background">@drawable/gradient_black</item>
     </style>
 
+    <style name="divider_blue_normal" parent="@style/divider_grey_normal">
+        <item name="android:background">@drawable/gradient_blue</item>
+    </style>
+
 </resources>

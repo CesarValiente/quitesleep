@@ -70,28 +70,29 @@
 
 
     <!-- @@@@@@@@@		SMS Settings	@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="smssettings.actionbar.title">SMS configuration</string>
     <string name="smssettings.statement.savesms">Write your default SMS subject</string>
     <string name="smssettings.edittext.savesms">Hi!! I\'m sleeping, when I wake up I\'ll contact you. Thank you!</string>
     <string name="smssettings.button.savesms">Save configuration</string>
-    <string name="smssettings.togglebutton.start_sms">Choose "on" to send sms</string>
-    <string name="smssettings.togglebutton.stop_sms">Choose "off" to send sms</string>
+    <string name="smssettings.togglebutton.start_sms">Activate sms service</string>
+    <string name="smssettings.togglebutton.stop_sms">Deactivate sms service</string>
     <string name="smssettings.toast.start_service">SMS sending activated</string>
     <string name="smssettings.toast.stop_service">SMS sending deactivated</string>
     <string name="smssettings.toast.fail_service">An unexpected error has occurred!!!</string>
     <string name="smssettings.toast.save">Your SMS configuration has been saved</string>
 
     <!-- @@@@@@@@@@@@	MAIL Settings	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <string name="mailsettings.actionbar.title">Email configuration</string>
     <string name="mailsettings.separator.user">Your Gmail account user</string>
     <string name="mailsettings.edittext.user">your.name@gmail.com</string>
     <string name="mailsettings.separator.passwd">Your Gmail account password</string>
-    <string name="mailsettings.edittext.passwd"></string>
     <string name="mailsettings.separator.subject">Your default email subject</string>
     <string name="mailsettings.edittext.subject">I\'m sleeping!!</string>
     <string name="mailsettings.separator.body">Your default email body</string>
     <string name="mailsettings.edittext.body">Hi!! I\'m sleeping, when I wake up I\'ll contact you. Thank you!</string>
-    <string name="mailsettings.button.savemail">Save your mail configuration</string>
-    <string name="mailsettings.togglebutton.start_mail">Choose "on" to send mail</string>
-    <string name="mailsettings.togglebutton.stop_mail">Choose "off" to send mail</string>
+    <string name="mailsettings.button.savemail">Save your configuration</string>
+    <string name="mailsettings.togglebutton.start_mail">Activate email service</string>
+    <string name="mailsettings.togglebutton.stop_mail">Deactivate mail service</string>
     <string name="mailsettings.toast.start_service">Email sending activated</string>
     <string name="mailsettings.toast.stop_service">Email sending deactivated</string>
     <string name="mailsettings.toast.fail_service">An unexpected error has occurred!!!</string>
